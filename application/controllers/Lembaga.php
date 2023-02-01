@@ -708,4 +708,107 @@ Terimakasih';
 			}
 		}
 	}
+
+	public function delPakDetail()
+	{
+		$kd_pak = $this->uri->segment(3);
+		$kd_rab = $this->uri->segment(4);
+
+		$this->model->delete('pak_detail', 'kode_rab', $kd_rab);
+		if ($this->db->affected_rows() > 0) {
+			$this->session->set_flashdata('ok', 'Item berhasil dihapus');
+			redirect('lembaga/pakDetail/' . $kd_pak);
+		} else {
+			$this->session->set_flashdata('error', 'Item tidak dihapus');
+			redirect('lembaga/pakDetail/' . $kd_pak);
+		}
+	}
+
+	public function pakDetailEdit()
+	{
+		$data['user'] = $this->Auth_model->current_user();
+		$data['tahun'] = $this->tahun;
+		$data['bulan'] = $this->bulan;
+
+		$kd_pak = $this->uri->segment(3);
+		$id_rab = $this->uri->segment(4);
+
+		$data['rab'] = $this->model->getBy('rab', 'id_rab', $id_rab)->row();
+		$data['lembaga'] = $this->model->getBy2('lembaga', 'kode', $this->lembaga, 'tahun', $this->tahun)->row();
+		$data['rel'] = $this->model->getBySum('realis', 'kode', $data['rab']->kode, 'nominal')->row();
+		$data['relJml'] = $this->model->getBySum('realis', 'kode', $data['rab']->kode, 'vol')->row();
+		$data['pak'] = $this->model->getBy('pak', 'kode_pak', $kd_pak)->row();
+
+		$this->load->view('lembaga/head', $data);
+		$this->load->view('lembaga/pakDetailEdit', $data);
+		$this->load->view('lembaga/foot');
+	}
+
+	public function addEditPak()
+	{
+		$kd_pak = $this->input->post('kd_pak', true);
+		$kd_rab = $this->input->post('kd_rab', true);
+
+		$rab = $this->model->getBy('rab', 'kode', $kd_rab)->row();
+
+		$qty = $this->input->post('jml', true);
+		$sisa = $this->input->post('sisa', true);
+
+		$satuan = $rab->satuan;
+		$harga_satuan = $rab->harga_satuan;
+		$total = $rab->harga_satuan * $rab->qty;
+		$ket = 'edit';
+		$tahun = $rab->tahun;
+
+		$cek = $this->db->query("SELECT * FROM pak_detail WHERE kode_rab = '$rab->kode' ")->num_rows();
+
+		if ($cek > 0) {
+			$this->session->set_flashdata('error', 'Maaf. item RAB ini sudah dipakai PAK');
+			redirect('lembaga/pakDetail/' . $kd_pak);
+		} elseif ($qty > $sisa) {
+			$this->session->set_flashdata('error', 'Maaf. Jumlah QTY melebihi sisa');
+			redirect('lembaga/pakDetailEdit/' . $kd_pak . '/' . $rab->id_rab);
+		} else {
+			$data = [
+				'kode_pak' => $kd_pak,
+				'kode_rab' => $rab->kode,
+				'qty' => $qty,
+				'satuan' => $satuan,
+				'harga_satuan' => $harga_satuan,
+				'total' => $total,
+				'ket' => $ket,
+				'tahun' => $tahun,
+				'snc' => 'belum',
+			];
+
+			$this->model->input('pak_detail', $data);
+			if ($this->db->affected_rows() > 0) {
+				$this->session->set_flashdata('ok', 'Item berhasil ditambahkan');
+				redirect('lembaga/pakDetail/' . $kd_pak);
+			} else {
+				$this->session->set_flashdata('error', 'Item tidak ditambahkan');
+				redirect('lembaga/pakDetail/' . $kd_pak);
+			}
+		}
+	}
+
+	public function addRab()
+	{
+		$id = $this->uuid->v4();
+		$lembaga = $this->lembaga;
+		$jenis = $this->input->post('jenis');
+		$bidang = $this->input->post('bidang');
+		$kode = $lembaga . '.' . $bidang .  '.' . $jenis . '.' . rand();
+		$nama = $this->input->post('nama');
+		$rencana = $this->input->post('rencana');
+		$qty = $this->input->post('qty');
+		$satuan = $this->input->post('satuan');
+		$harga_satuan = rmRp($this->input->post('harga_satuan', true));
+		$total = $qty * $harga_satuan;
+		$tahun = $this->input->post('tahun');
+
+		$pak = $dt_pak['tt'];
+		$rb = $dt_rab['tt'];
+		$ttl = $rb + $total;
+	}
 }

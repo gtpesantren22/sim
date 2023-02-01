@@ -22,13 +22,13 @@ if ($pesern >= 0 && $pesern <= 25) {
     <div class="page-content">
         <!--breadcrumb-->
         <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-            <div class="breadcrumb-title pe-3">Daftar RAB Lembaga</div>
+            <div class="breadcrumb-title pe-3">PAK Online</div>
             <div class="ps-3">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0 p-0">
-                        <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-folder-open"></i></a>
+                        <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-notepad"></i></a>
                         </li>
-                        <li class="breadcrumb-row active" aria-current="page">Rencana Belanja</li>
+                        <li class="breadcrumb-item active" aria-current="page">RAB</li>
                     </ol>
                 </nav>
             </div>
@@ -114,7 +114,7 @@ if ($pesern >= 0 && $pesern <= 25) {
                                         <td><?= rupiah($r1->harga_satuan) ?></td>
                                         <td><?= rupiah($r1->total) ?></td>
                                         <td class="text-success">
-                                            <?= $pakaiSm->qty > 0 ? "<span class='label label-warning'>dalam pengajuan</span>" : round($sisa, 1) . '%' ?>
+                                            <?= $pakaiSm->qty > 0 ? "<span class='badge bg-warning'>dalam pengajuan</span>" : round($sisa, 1) . '%' ?>
                                         </td>
                                         <td>
                                             <?php
@@ -125,12 +125,12 @@ if ($pesern >= 0 && $pesern <= 25) {
                                                     class="btn btn-sm btn-danger"><i
                                                         class="bx bx-trash"></i></button></a>
                                             <a
-                                                href="<?= 'pak_edit.php?kd=' . $r1->id_rab . '&pak=' . $data->kode_pak; ?>"><button
+                                                href="<?= base_url('lembaga/pakDetailEdit/' . $data->kode_pak . '/' . $r1->id_rab); ?>"><button
                                                     class="btn btn-sm btn-warning"><i
                                                         class="bx bx-pencil"></i></button></a>
                                             <?php } elseif ($pakaiSm->qty < 1 && $pakai->qty > 0) { ?>
                                             <a
-                                                href="<?= 'pak_edit.php?kd=' . $r1->id_rab . '&pak=' . $data->kode_pak; ?>"><button
+                                                href="<?= base_url('lembaga/pakDetailEdit/' . $data->kode_pak . '/' . $r1->id_rab); ?>"><button
                                                     class="btn btn-sm btn-warning"><i
                                                         class="bx bx-pencil"></i></button></a>
                                             <?php } ?>
@@ -194,15 +194,13 @@ if ($pesern >= 0 && $pesern <= 25) {
                                                 <!-- <td><?= rupiah($r1->harga_satuan) ?></td> -->
                                                 <td><?= number_format($r1->total) ?></td>
                                                 <td class="text-success">
-                                                    <?= $r1->ket == 'hapus' ? "<span class='label label-danger btn-rounded'>hapus</span>" : "<span class='label label-success btn-rounded'>edit</span>" ?>
+                                                    <?= $r1->ket == 'hapus' ? "<span class='badge bg-danger btn-rounded'>hapus</span>" : "<span class='badge bg-success btn-rounded'>edit</span>" ?>
                                                 </td>
                                                 <td>
-                                                    <!-- <?php if ($pakde->status === 'belum' || $pakde->status === 'ditolak') { ?>
-                                                    <a onclick="return confirm('Yakin akan dikembalikan ?')"
-                                                        href="<?= 'pak_set.php?kd=kembali&pak=' . $r1->kode_pak . '&id=' . $r1->kode_rab; ?>"><button
-                                                            class="btn btn-xs btn-danger"><i
-                                                                class="fa fa-trash-o"></i></button></a>
-                                                    <?php } ?> -->
+                                                    <?php if ($data->status === 'belum' || $data->status === 'ditolak') { ?>
+                                                    <a href="<?= base_url('lembaga/delPakDetail/' . $r1->kode_pak . '/' . $r1->kode_rab); ?>"
+                                                        class="text-danger tombol-hapus"><i class="bx bx-trash"></i></a>
+                                                    <?php } ?>
                                                 </td>
                                             </tr>
                                             <?php } ?>
@@ -266,8 +264,8 @@ if ($pesern >= 0 && $pesern <= 25) {
                                                     <?php if ($pakde->status === 'belum' || $pakde->status === 'ditolak') { ?>
                                                     <a onclick="return confirm('Yakin akan dikembalikan ?')"
                                                         href="<?= 'pak_set.php?kd=rab&pak=' . $kode_pak . '&id=' . $r1->kode; ?>"><button
-                                                            class="btn btn-xs btn-danger"><i
-                                                                class="fa fa-trash-o"></i></button></a>
+                                                            class="btn btn-sm btn-danger"><i
+                                                                class="bx bx-trash"></i></button></a>
                                                     <?php } ?>
                                                 </td>
                                             </tr>
@@ -368,7 +366,7 @@ if ($pesern >= 0 && $pesern <= 25) {
                                 class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 ">
-                            <input type="text" class="form-control" id="uang" name="harga_satuan" required>
+                            <input type="text" class="form-control uang" id="" name="harga_satuan" required>
                         </div>
 
                     </div>
@@ -376,7 +374,8 @@ if ($pesern >= 0 && $pesern <= 25) {
                         <label for="tahun" class="col-form-label col-md-3 col-sm-3 label-align">Tahun Ajaran<span
                                 class="required">*</span></label>
                         <div class="col-md-6 col-sm-5 ">
-                            <input type="text" name="tahun" required class="form-control" value="<?= $tahun; ?>">
+                            <input type="text" name="tahun" required class="form-control" value="<?= $tahun; ?>"
+                                readonly>
                         </div>
                     </div>
                 </div>

@@ -8,13 +8,13 @@ $ck2 = $this->db->query("SELECT * FROM pak WHERE lembaga = '$lembaga->kode' AND 
     <div class="page-content">
         <!--breadcrumb-->
         <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-            <div class="breadcrumb-title pe-3">Data Pengajuan Lembaga (Disposisi)</div>
+            <div class="breadcrumb-title pe-3">PAK Online</div>
             <div class="ps-3">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0 p-0">
-                        <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-wallet"></i></a>
+                        <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-notepad"></i></a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">Realisasi</li>
+                        <li class="breadcrumb-item active" aria-current="page">RAB</li>
                     </ol>
                 </nav>
             </div>
