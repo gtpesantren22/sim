@@ -794,21 +794,44 @@ Terimakasih';
 
 	public function addRab()
 	{
-		$id = $this->uuid->v4();
-		$lembaga = $this->lembaga;
-		$jenis = $this->input->post('jenis');
-		$bidang = $this->input->post('bidang');
-		$kode = $lembaga . '.' . $bidang .  '.' . $jenis . '.' . rand();
-		$nama = $this->input->post('nama');
-		$rencana = $this->input->post('rencana');
-		$qty = $this->input->post('qty');
-		$satuan = $this->input->post('satuan');
-		$harga_satuan = rmRp($this->input->post('harga_satuan', true));
-		$total = $qty * $harga_satuan;
-		$tahun = $this->input->post('tahun');
+		$kode_pak = $this->input->post('kode_pak',true);
 
-		$pak = $dt_pak['tt'];
-		$rb = $dt_rab['tt'];
+		$dt_rab = $this->db->query("SELECT SUM(total) AS tt FROM rab_sm WHERE lembaga = '$this->lembaga' AND tahun = '$this->tahun' ")->row();
+		$dt_pak = $this->db->query("SELECT SUM(total) AS tt FROM pak_detail WHERE kode_pak = '$kode_pak' AND tahun = '$this->tahun' ")->row();
+		$total = $this->input->post('qty') * rmRp($this->input->post('harga_satuan', true));
+
+		$data = [
+			'id' => $this->uuid->v4(),
+			'lembaga' => $this->lembaga,
+			'jenis' => $this->input->post('jenis'),
+			'bidang' => $this->input->post('bidang'),
+			'kode' => $lembaga . '.' . $bidang .  '.' . $jenis . '.' . rand(),
+			'nama' => $this->input->post('nama'),
+			'rencana' => $this->input->post('rencana'),
+			'qty' => $this->input->post('qty'),
+			'satuan' => $this->input->post('satuan'),
+			'total' => $total,
+			'harga_satuan' => rmRp($this->input->post('harga_satuan', true)),
+			'tahun' => $this->input->post('tahun'),
+			'at' => date('Y-m-d H:i'),
+			'kode_pak' => $kode_pak,
+			'snc' => 'belum',
+		];
+
+		$pak = $dt_pak->tt;
+		$rb = $dt_rab->tt;
 		$ttl = $rb + $total;
+
+		if ($pak >= $ttl) {
+			$this->model->input('rab_sm', $data);
+			if ($this->db->affected_rows() > 0) {
+				$this->session->set_flashdata('ok', 'Item berhasil ditambahkan');
+				redirect('lembaga/pakDetail/' . $kode_pak);
+			} else {
+				$this->session->set_flashdata('error', 'Item tidak ditambahkan');
+				redirect('lembaga/pakDetail/' . $kode_pak);
+			}
+		}
+		
 	}
 }

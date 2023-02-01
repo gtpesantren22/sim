@@ -293,6 +293,7 @@ if ($pesern >= 0 && $pesern <= 25) {
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="" method="post">
+                <input type="hidden" name="kode_pak" value="<?= $data->kode_pak ?>">
                 <div class="modal-body">
                     <div class="row form-group">
                         <label for="tahun" class="col-form-label col-md-3 col-sm-3 label-align">Lembaga <span
