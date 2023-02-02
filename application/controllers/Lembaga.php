@@ -906,4 +906,78 @@ Terimakasih';
 		$this->load->view('lembaga/setting', $data);
 		$this->load->view('lembaga/foot');
 	}
+
+	public function updateAkun()
+	{
+		$id = $this->Auth_model->current_user('id_user');
+		$id_user = $id->id_user;
+
+		$nama = $this->input->post('nama', true);
+		$username = $this->input->post('username', true);
+		$password = $this->input->post('newpass', true);
+		$password2 = $this->input->post('confir_newpass', true);
+		$pass_lama = $this->input->post('pass_lama', true);
+		$pass_baru = password_hash($password, PASSWORD_DEFAULT);
+
+		if ($password == '' && $password2 = '') {
+			
+			$data = [
+				'nama' => strtoupper($nama),
+				'username' => $username
+			];
+			$this->model->update('user', $data, 'id_user', $id_user);
+			if ($this->db->affected_rows() > 0) {
+				$this->session->set_flashdata('ok', 'User akun berhasil diperbarui');
+				redirect('lembaga/setting/');
+			} else {
+				$this->session->set_flashdata('error', 'User akun tidak berhasil diperbarui');
+				redirect('lembaga/setting/');
+			}
+			
+		} else {
+			if ($password != $password2) {
+				$this->session->set_flashdata('error', 'Konfimasi password tidak sama');
+				redirect('lembaga/setting/');
+			} else {
+				
+				$data = [
+					'nama' => $nama,
+					'username' => $username,
+					'password' => $pass_baru
+				];
+				$this->model->update('user', $data, 'id_user', $id_user);
+				if ($this->db->affected_rows() > 0) {
+					$this->session->set_flashdata('ok', 'User akun berhasil diperbarui');
+					redirect('lembaga/setting/');
+				} else {
+					$this->session->set_flashdata('error', 'User akun tidak berhasil diperbarui');
+					redirect('lembaga/setting/');
+				}
+				
+			}
+		}
+	}
+
+	public function updateLembaga()
+	{
+		$id_lm = $this->lembaga;
+		$tahun = $this->tahun;
+
+		$data = [
+			'pj' => $this->input->post('pj', true),
+			'hp' => $this->input->post('hp', true),
+			'hp_kep' => $this->input->post('hp_kep', true),
+			'waktu' => $this->input->post('waktu', true)
+		];
+
+$this->model->update2('lembaga', $data, 'kode', $id_lm, 'tahun', $tahun);
+
+		if ($this->db->affected_rows() > 0) {
+			$this->session->set_flashdata('ok', 'User akun berhasil diperbarui');
+			redirect('lembaga/setting/');
+		} else {
+			$this->session->set_flashdata('error', 'User akun tidak berhasil diperbarui');
+			redirect('lembaga/setting/');
+		}
+	}
 }

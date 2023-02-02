@@ -22,56 +22,93 @@
             <div class="col-12 col-md-6">
                 <div class="card radius-10">
                     <div class="card-body">
-                        <form action="" method="post">
+                        <form action="<?= base_url('lembaga/updateAkun') ?>" method="post">
                             <input type="hidden" name="pass_lama" value="<?= $user->password ?>" required>
                             <div class="box-body">
                                 <div class="form-group mb-2">
                                     <label for="inputEmail3">Nama Lengkap</label>
 
-                                    <input type="text" class="form-control" name="nama" value="<?= $user->nama ?>"
-                                        required>
+                                    <input type="text" class="form-control" name="nama" value="<?= $user->nama ?>" required>
 
                                 </div>
                                 <div class="form-group mb-2">
                                     <label for="inputPassword3">Username</label>
 
-                                    <input type="text" class="form-control" name="username"
-                                        value="<?= $user->username ?>" required>
+                                    <input type="text" class="form-control" name="username" value="<?= $user->username ?>" required>
 
                                 </div>
                                 <div class="form-group mb-2">
                                     <label for="inputPassword3">Level</label>
 
-                                    <input type="text" class="form-control" disabled
-                                        value="Operator <?= $user->level ?>">
+                                    <input type="text" class="form-control" disabled value="Operator <?= $user->level ?>">
 
                                 </div>
                                 <div class="form-group mb-2">
                                     <label for="inputPassword3">Lembaga</label>
 
-                                    <input type="text" class="form-control" value="<?= $lembaga->nama ?>" disabled
-                                        required>
+                                    <input type="text" class="form-control" value="<?= $lembaga->nama ?>" disabled required>
 
                                 </div>
                                 <hr>
                                 <div class="form-group mb-2">
                                     <label for="inputPassword3">Password baru</label>
 
-                                    <input type="password" class="form-control" name="newpass"
-                                        placeholder="Password Baru">
+                                    <input type="password" class="form-control" name="newpass" placeholder="Password Baru">
 
                                 </div>
                                 <div class="form-group mb-2">
                                     <label for="inputPassword3">Confirm password</label>
 
-                                    <input type="password" class="form-control" name="confir_newpass"
-                                        placeholder="Konfirmasi Password Baru">
+                                    <input type="password" class="form-control" name="confir_newpass" placeholder="Konfirmasi Password Baru">
 
                                 </div>
                             </div><!-- /.box-body -->
                             <div class="box-footer">
-                                <button type="submit" name="save_akun" class="btn btn-warning btn-sm">Update Info
+                                <button type="submit" name="" class="btn btn-warning btn-sm">Update Info
                                     Akun</button>
+                            </div><!-- /.box-footer -->
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="card radius-10">
+                    <div class="card-body">
+                        <form class="form-horizontal" method="post" action="<?= base_url('lembaga/updateLembaga') ?>">
+                            <div class="box-body">
+                                <div class="form-group mb-2">
+                                    <label for="inputEmail3" class="">Nama Lembaga</label>
+
+                                    <input type="text" class="form-control" value="<?= $lembaga->nama ?>" disabled>
+
+                                </div>
+                                <div class="form-group mb-2">
+                                    <label for="inputEmail3" class="">Penanggungjawab</label>
+
+                                    <input type="text" class="form-control" placeholder="Email" name="pj" value="<?= $lembaga->pj ?>">
+
+                                </div>
+                                <div class="form-group mb-2">
+                                    <label for="inputEmail3" class="">No. HP (PJ)</label>
+
+                                    <input type="text" class="form-control" name="hp" placeholder="No HP" required value="<?= $lembaga->hp ?>">
+
+                                </div>
+                                <div class="form-group mb-2">
+                                    <label for="inputEmail3" class="">No. HP Kepala</label>
+
+                                    <input type="text" class="form-control" name="hp_kep" placeholder="No HP" required value="<?= $lembaga->hp_kep ?>">
+
+                                </div>
+                                <div class="form-group mb-2">
+                                    <label for="inputEmail3" class="">Waktu</label>
+
+                                    <input type="text" class="form-control" placeholder="Waktu belanja" name="waktu" value="<?= $lembaga->waktu ?>">
+
+                                </div>
+                            </div><!-- /.box-body -->
+                            <div class="box-footer">
+                                <button type="submit" name="" class="btn btn-info pull-right">Update Info Akun Lembaga</button>
                             </div><!-- /.box-footer -->
                         </form>
                     </div>
