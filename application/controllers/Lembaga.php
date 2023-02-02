@@ -657,8 +657,7 @@ Terimakasih';
 		$data['realTotal'] = $this->model->getBySum2('realis', 'lembaga', $this->lembaga, 'tahun', $this->tahun, 'nominal')->row();
 		$data['lembaga'] = $this->model->getBy2('lembaga', 'kode', $this->lembaga, 'tahun', $this->tahun)->row();
 		$data['bidang'] = $this->model->getBy('bidang', 'tahun', $this->tahun)->result();
-
-		// $data['tgl'] = $this->model->getBy('akses', 'lembaga', 'umum')->row();
+		$data['tgl'] = $this->model->getBy('akses', 'lembaga', 'umum')->row();
 		// $data['hak_aks'] = $this->model->getBy2('akses', 'lembaga', $this->lembaga, 'tahun', $this->tahun)->row();
 
 		$this->load->view('lembaga/head', $data);
@@ -794,28 +793,28 @@ Terimakasih';
 
 	public function addRab()
 	{
-		$kode_pak = $this->input->post('kode_pak',true);
+		$kode_pak = $this->input->post('kode_pak', true);
 
 		$dt_rab = $this->db->query("SELECT SUM(total) AS tt FROM rab_sm WHERE lembaga = '$this->lembaga' AND tahun = '$this->tahun' ")->row();
 		$dt_pak = $this->db->query("SELECT SUM(total) AS tt FROM pak_detail WHERE kode_pak = '$kode_pak' AND tahun = '$this->tahun' ")->row();
 		$total = $this->input->post('qty') * rmRp($this->input->post('harga_satuan', true));
 
 		$data = [
-			'id' => $this->uuid->v4(),
+			'id_rab' => $this->uuid->v4(),
 			'lembaga' => $this->lembaga,
-			'jenis' => $this->input->post('jenis'),
-			'bidang' => $this->input->post('bidang'),
-			'kode' => $lembaga . '.' . $bidang .  '.' . $jenis . '.' . rand(),
-			'nama' => $this->input->post('nama'),
-			'rencana' => $this->input->post('rencana'),
-			'qty' => $this->input->post('qty'),
-			'satuan' => $this->input->post('satuan'),
+			'jenis' => $this->input->post('jenis', true),
+			'bidang' => $this->input->post('bidang', true),
+			'kode' => $this->lembaga . '.' . $this->input->post('bidang', true) .  '.' . $this->input->post('jenis', true) . '.' . rand(),
+			'nama' => $this->input->post('nama', true),
+			'rencana' => $this->input->post('rencana', true),
+			'qty' => $this->input->post('qty', true),
+			'satuan' => $this->input->post('satuan', true),
 			'total' => $total,
 			'harga_satuan' => rmRp($this->input->post('harga_satuan', true)),
-			'tahun' => $this->input->post('tahun'),
+			'tahun' => $this->input->post('tahun', true),
 			'at' => date('Y-m-d H:i'),
-			'kode_pak' => $kode_pak,
 			'snc' => 'belum',
+			'kode_pak' => $kode_pak,
 		];
 
 		$pak = $dt_pak->tt;
@@ -831,7 +830,80 @@ Terimakasih';
 				$this->session->set_flashdata('error', 'Item tidak ditambahkan');
 				redirect('lembaga/pakDetail/' . $kode_pak);
 			}
+		} else {
+			$this->session->set_flashdata('error', 'Nominal PAK tidak mencukupi');
+			redirect('lembaga/pakDetail/' . $kode_pak);
 		}
-		
+	}
+
+	public function delRabSm()
+	{
+		$kd_pak = $this->uri->segment(3);
+		$kd_rab = $this->uri->segment(4);
+
+		$this->model->delete('rab_sm', 'kode', $kd_rab);
+		if ($this->db->affected_rows() > 0) {
+			$this->session->set_flashdata('ok', 'Item berhasil dihapus');
+			redirect('lembaga/pakDetail/' . $kd_pak);
+		} else {
+			$this->session->set_flashdata('error', 'Item tidak dihapus');
+			redirect('lembaga/pakDetail/' . $kd_pak);
+		}
+	}
+
+	public function ajukanPAK($kode)
+	{
+		$data = [
+			'status' => 'ajukan'
+		];
+
+		$lm = $this->model->getBy2('lembaga', 'kode', $this->lembaga, 'tahun', $this->tahun)->row();
+
+		$psn = '
+*INFORMASI PENGAJUAN PAK*
+
+Ada pengajuan baru dari :
+    
+Lembaga : ' . $lm->nama . '
+Kode PAK : ' . $kode . '
+
+*_dimohon kepada SEKRETARIAT untuk segera mengecek nya di https://sekretaris.ppdwk.com/_*
+Terimakasih';
+		$this->model->update('pak', $data, 'kode_pak', $kode);
+		if ($this->db->affected_rows() > 0) {
+
+			// kirim_group($this->apiKey, '120363040973404347@g.us', $psn);
+			// kirim_group($this->apiKey, '120363042148360147@g.us', $psn);
+			// kirim_person($this->apiKey, '082302301003', $psn);
+			kirim_person($this->apiKey, '085236924510', $psn);
+
+			$this->session->set_flashdata('ok', 'Pengajuan PAK berhasil dilanjutkan ke Sekretariat');
+			redirect('lembaga/pakDetail/' . $kode);
+		} else {
+			$this->session->set_flashdata('error', 'Pengajuan PAK gagal dilanjutkan ke Sekretariat');
+			redirect('lembaga/pakDetail/' . $kode);
+		}
+	}
+
+	public function info()
+	{
+
+		$data['data'] = $this->model->getBy('info', 'tahun', $this->tahun)->result();
+		$data['user'] = $this->Auth_model->current_user();
+		$data['tahun'] = $this->tahun;
+		$this->load->view('lembaga/head', $data);
+		$this->load->view('lembaga/info', $data);
+		$this->load->view('lembaga/foot');
+	}
+	public function setting()
+	{
+
+		$data['lembaga'] = $this->model->getBy2('lembaga', 'kode', $this->lembaga, 'tahun', $this->tahun)->row();
+		$data['user'] = $this->Auth_model->current_user();
+		$data['tahun'] = $this->tahun;
+
+		$this->load->view('lembaga/head', $data);
+		$this->load->view('lembaga/setting', $data);
+		$this->load->view('lembaga/foot');
 	}
 }

@@ -27,49 +27,49 @@ $ck2 = $this->db->query("SELECT * FROM pak WHERE lembaga = '$lembaga->kode' AND 
                         <?php if (date('Y-m-d') >= $tgl->login && date('Y-m-d') <= $tgl->disposisi) { ?>
                         <h4 class="badge bg-primary">
                             <?= date('d F Y', strtotime($tgl->login)) . ' - ' . date('d F Y', strtotime($tgl->disposisi)); ?>
-                            </h5>
-                            <?php if ($ck2 < 1) { ?>
-                            <button class="btn btn-success btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#exampleModal"><i class="bx bx-plus-square"></i> Daftar PAK
-                                Baru</button>
-                            <?php } ?>
+                        </h4>
+                        <?php if ($ck2 < 1) { ?>
+                        <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal"><i
+                                class="bx bx-plus-square"></i> Daftar PAK
+                            Baru</button>
+                        <?php } ?>
 
-                            <div class="table-responsive mt-3">
-                                <table id="example" class="table table-striped table-bordered" style="width:100%">
-                                    <thead>
-                                        <tr style="color: white; background-color: #008CFF; font-weight: bold;">
-                                            <th>No</th>
-                                            <th>Kode PAK</th>
-                                            <th>Tanggal PAK</th>
-                                            <th>Status</th>
-                                            <th>Tahun</th>
-                                            <th>#</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                            $no = 1;
-                                            foreach ($data as $ls_jns) :
-                                            ?>
-                                        <tr>
-                                            <td><?= $no++; ?></td>
-                                            <td><?= $ls_jns->kode_pak; ?></td>
-                                            <td><?= $ls_jns->tgl_pak; ?></td>
-                                            <td><?= $ls_jns->status; ?></td>
-                                            <td><?= $ls_jns->tahun; ?></td>
-                                            <td><a href="<?= base_url('lembaga/pakDetail/' . $ls_jns->kode_pak) ?>"><button
-                                                        class="btn btn-info btn-sm"><i class="bx bx-search"></i>
-                                                        Edit PAK</button></a></td>
-                                        </tr>
-                                        <?php endforeach; ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <?php } else { ?>
-                            <center>
-                                <p style="color: red; font-weight: bold;">Belum ada Jadwal PAK Aktif</p>
-                            </center>
-                            <?php } ?>
+                        <div class="table-responsive mt-3">
+                            <table id="example" class="table table-striped table-bordered" style="width:100%">
+                                <thead>
+                                    <tr style="color: white; background-color: #008CFF; font-weight: bold;">
+                                        <th>No</th>
+                                        <th>Kode PAK</th>
+                                        <th>Tanggal PAK</th>
+                                        <th>Status</th>
+                                        <th>Tahun</th>
+                                        <th>#</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                        $no = 1;
+                                        foreach ($data as $ls_jns) :
+                                        ?>
+                                    <tr>
+                                        <td><?= $no++; ?></td>
+                                        <td><?= $ls_jns->kode_pak; ?></td>
+                                        <td><?= $ls_jns->tgl_pak; ?></td>
+                                        <td><?= $ls_jns->status; ?></td>
+                                        <td><?= $ls_jns->tahun; ?></td>
+                                        <td><a href="<?= base_url('lembaga/pakDetail/' . $ls_jns->kode_pak) ?>"><button
+                                                    class="btn btn-info btn-sm"><i class="bx bx-search"></i>
+                                                    Edit PAK</button></a></td>
+                                    </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <?php } else { ?>
+                        <center>
+                            <p style="color: red; font-weight: bold;">Belum ada Jadwal PAK Aktif</p>
+                        </center>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
