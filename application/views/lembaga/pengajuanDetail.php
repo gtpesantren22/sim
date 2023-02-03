@@ -131,10 +131,11 @@
                                     $no = 1;
                                     if ($pj->cair ==  1) {
                                         $rls = $this->db->query("SELECT * FROM realis WHERE kode_pengajuan = '$pj->kode_pengajuan' AND tahun = '$tahun' ")->result();
+                                        $nm = $this->db->query("SELECT SUM(nominal) AS jml FROM realis WHERE kode_pengajuan = '$pj->kode_pengajuan' AND tahun = '$tahun' ")->row();
                                     } else {
                                         $rls = $this->db->query("SELECT * FROM real_sm WHERE kode_pengajuan = '$pj->kode_pengajuan' AND tahun = '$tahun' ")->result();
+                                        $nm = $this->db->query("SELECT SUM(nominal) AS jml FROM real_sm WHERE kode_pengajuan = '$pj->kode_pengajuan' AND tahun = '$tahun' ")->row();
                                     }
-                                    $nm = $this->db->query("SELECT SUM(nominal) AS jml FROM real_sm WHERE lembaga = '$lembaga->kode' AND tahun = '$tahun' ")->row();
 
                                     foreach ($rls as $ls_jns) {
                                         $kd_rab = $ls_jns->kode;

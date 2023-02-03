@@ -63,7 +63,7 @@
                                         <td><?= rupiah($kfe) ?></td>
                                         <td>
                                             <?php if($a->apr == 1 AND $a->cair == 0){ ?>
-                                            <a href="<?= base_url('account/pengajuanDtl/' . $a->kode_pengajuan) ?>"><button
+                                            <a href="<?= base_url('kasir/cairProses/' . $a->kode_pengajuan) ?>"><button
                                                     class="btn btn-primary btn-sm"><i class="bx bx-search"></i> Cek &
                                                     Cairkan</button></a>
                                                 </td>

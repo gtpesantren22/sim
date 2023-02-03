@@ -17,6 +17,11 @@ class KasirModel extends CI_Model
         return $this->db->get();
     }
     
+    function getBy($table, $where1, $dtwhere1)
+    {
+        $this->db->where($where1, $dtwhere1);
+        return $this->db->get($table);
+    }
     function getBy2($table, $where1, $dtwhere1, $where2, $dtwhere2)
     {
         $this->db->where($where1, $dtwhere1);
@@ -32,5 +37,13 @@ class KasirModel extends CI_Model
         $this->db->where('pengajuan.tahun', $tahun);
         $this->db->not_like('kode_pengajuan', 'DISP.');
         return $this->db->get();
+    }
+
+    function getBySum($table, $where, $dtwhere, $sum)
+    {
+        $this->db->select('*');
+        $this->db->select_sum($sum, 'jml');
+        $this->db->where($where, $dtwhere);
+        return $this->db->get($table);
     }
 }
