@@ -7,7 +7,6 @@ class KasirModel extends CI_Model
     public function __construct()
     {
         parent::__construct();
-       
     }
     function apikey()
     {
@@ -16,7 +15,7 @@ class KasirModel extends CI_Model
         $this->db->where('nama', 'Bendahara');
         return $this->db->get();
     }
-    
+
     function getBy($table, $where1, $dtwhere1)
     {
         $this->db->where($where1, $dtwhere1);
@@ -28,7 +27,7 @@ class KasirModel extends CI_Model
         $this->db->where($where2, $dtwhere2);
         return $this->db->get($table);
     }
-    
+
     public function getPengajuan($tahun)
     {
         $this->db->from('pengajuan');
@@ -45,5 +44,17 @@ class KasirModel extends CI_Model
         $this->db->select_sum($sum, 'jml');
         $this->db->where($where, $dtwhere);
         return $this->db->get($table);
+    }
+
+    public function update($table, $data, $where, $dtwhere)
+    {
+        $this->db->where($where, $dtwhere);
+        $this->db->update($table, $data);
+    }
+
+    public function delete($table, $where, $dtwhere)
+    {
+        $this->db->where($where, $dtwhere);
+        $this->db->delete($table);
     }
 }
