@@ -25,7 +25,7 @@
                         <?php if ($hak_aks->disposisi === 'Y') { ?>
                         <?php if ($pj->spj == 3) { ?>
                         <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal"><i
-                                class="bx bx-plus"></i> Tambah Pengajuan Baru</button>
+                        class="bx bx-plus"></i> Tambah Pengajuan Baru</button>
                         <?php } ?>
 
                         <div class="table-responsive mt-3">

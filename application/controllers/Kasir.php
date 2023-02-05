@@ -64,7 +64,7 @@ class Kasir extends CI_Controller
         if ($crr->jml > 0) {
             $data['tbl_slct'] = 'realis';
             $sts_tmbl = 'disabled';
-            $data['dcair'] = $data['crr']->jml;
+            $data['dcair'] = $crr->jml;
             $data['dblm'] = 0;
         } else {
             $data['tbl_slct'] = 'real_sm';
@@ -106,18 +106,17 @@ class Kasir extends CI_Controller
 
     public function cairkan()
     {
-
         $id = $this->uuid->v4();
 
         $kd_pnj = $this->input->post('kode_pengajuan', true);
         $dataPj = $this->model->getBy('pengajuan', 'kode_pengajuan', $kd_pnj)->row();
-        $jml = $this->db->query("SELECT SUM(nom_cair), SUM(nom_serap) FROM real_sm WHERE kode_pengajuan = '$kd_pnj' ")->row();
+        $jml = $this->db->query("SELECT SUM(nom_cair) as nom_cair, SUM(nom_serap) as nom_serap FROM real_sm WHERE kode_pengajuan = '$kd_pnj' ")->row();
         $dataReal = $this->model->getBy('real_sm', 'kode_pengajuan', $kd_pnj)->result();
 
         $lembaga =  $dataPj->lembaga;
-        $tgl_cair = $this->model->input('tgl_cair', true);
-        $kasir = $this->model->input('kasir', true);
-        $penerima = $this->model->input('penerima', true);
+        $tgl_cair = $this->input->post('tgl_cair', true);
+        $kasir = $this->input->post('kasir', true);
+        $penerima = $this->input->post('penerima', true);
 
         $data = [
             'id_cair' => $id,
@@ -130,11 +129,10 @@ class Kasir extends CI_Controller
             'penerima' => $penerima,
             'tahun' => $this->tahun,
         ];
+
         $data2 = ['cair' => 1];
         $this->model->input('pencairan', $data);
         $this->model->update('pengajuan', $data2, 'kode_pengajuan', $kd_pnj);
-        // $sql = mysqli_query($conn, "INSERT INTO pencairan VALUES ('$id', '$kd_pnj','$lembaga','$nominal','$nominal_cair', '$tgl_cair','$kasir', '$penerima', '$tahun_ajaran')");
-        // $pnj = mysqli_query($conn, "UPDATE pengajuan SET cair = 1 WHERE kode_pengajuan = '$kd_pnj' AND tahun = '$tahun_ajaran' ");
 
         foreach ($dataReal as $x) {
             $id_pnj = $x->id_realis;
@@ -156,11 +154,191 @@ class Kasir extends CI_Controller
                 'nom_serap' => $x->nom_serap,
                 'stas' => $x->stas
             ];
-            // $add = mysqli_query($conn, "INSERT INTO realis SELECT * FROM real_sm WHERE id_realis = '$id_pnj' AND tahun = '$tahun_ajaran' ");
-            // $del = mysqli_query($conn, "DELETE FROM real_sm WHERE id_realis = '$id_pnj' AND tahun = '$tahun_ajaran' ");
 
             $this->model->input('realis', $dt);
             $this->model->delete('real_sm', 'id_realis', $id_pnj);
         }
+
+        $psn = '
+*INFORMASI PENCAIRAN PENGAJUAN*
+
+Pencairan pengajuan dari :
+    
+Lembaga : ' . $lem . '
+Kode Pengajuan : ' . $kd_pnj . '
+Pada : ' . $tgl_cair . '
+Nominal : ' . rupiah($jml->nom_serap) . '
+Penerima : ' . $penerima . '
+
+*_telah dicairkan oleh Bendahara Bag. Admin Pencairan._*
+Terimakasih';
+
+        if ($this->db->affected_rows() > 0) {
+            // kirim_group($this->apiKey, '120363040973404347@g.us', $psn);
+            // kirim_group($this->apiKey, '120363042148360147@g.us', $psn);
+            // kirim_person($this->apiKey, '082264061060', $psn);
+            kirim_person($this->apiKey, '085236924510', $psn);
+
+            $this->session->set_flashdata('ok', 'Pengajuan sudah dicairkan');
+            redirect('kasir/cairProses/' . $kd_pnj);
+        } else {
+            $this->session->set_flashdata('error', 'Pengajuan tidak bisa dicairkan');
+            redirect('kasir/cairProses/' . $kd_pnj);
+        }
+    }
+
+    public function pengajuanDisp()
+    {
+        $data['user'] = $this->Auth_model->current_user();
+        $data['tahun'] = $this->tahun;
+        $data['bulan'] = $this->bulan;
+
+        $data['data'] = $this->model->getPengajuanDisp($this->tahun)->result();
+        // $data['lembaga'] = $this->model->getBy2('lembaga', 'kode'$this->tahun)->result();
+        // $data['pj'] = $this->model->getPjn('pengajuan', $this->lembaga, $this->tahun)->row();
+
+        $this->load->view('kasir/head', $data);
+        $this->load->view('kasir/pengajuan', $data);
+        $this->load->view('kasir/foot');
+    }
+
+    public function tanggungan()
+    {
+        $data['user'] = $this->Auth_model->current_user();
+        $data['tahun'] = $this->tahun;
+        $data['bulan'] = $this->bulan;
+
+        $data['data'] = $this->model->getByJoin('tangg', 'tb_santri', 'nis', 'nis', 'tangg.tahun', $this->tahun)->result();
+
+        $this->load->view('kasir/head', $data);
+        $this->load->view('kasir/tanggungan', $data);
+        $this->load->view('kasir/foot');
+    }
+
+    public function delTanggungan($id)
+    {
+        $this->model->delete('tangg', 'id_tangg', $id);
+        if ($this->db->affected_rows() > 0) {
+            $this->session->set_flashdata('ok', 'Tanggungan berhasil dihapus');
+            redirect('kasir/tanggungan');
+        } else {
+            $this->session->set_flashdata('error', 'Tanggungan berhasil dihapus');
+            redirect('kasir/tanggungan');
+        }
+    }
+
+    public function discrb($nis)
+    {
+        $data['user'] = $this->Auth_model->current_user();
+        $data['tahun'] = $this->tahun;
+        $data['bulan'] = $this->bulan;
+
+        $data['sn'] = $this->model->getBy('tb_santri', 'nis', $nis)->row();
+        $data['tgn'] = $this->model->getBy2('tangg', 'nis', $nis, 'tahun', $this->tahun)->row();
+        $data['masuk'] = $this->db->query("SELECT SUM(nominal) AS jml FROM pembayaran WHERE nis = '$nis' AND tahun = '$this->tahun' GROUP BY nis ")->row();
+        $data['bayar'] = $this->model->getBy2('pembayaran', 'nis', $nis, 'tahun', $this->tahun)->result();
+
+
+        $this->load->view('kasir/head', $data);
+        $this->load->view('kasir/discrb', $data);
+        $this->load->view('kasir/foot');
+    }
+
+    public function addbayar()
+    {
+        $user = $this->Auth_model->current_user();
+
+        $nominal = rmRp($this->input->post('nominal', true));
+        $tgl = $this->input->post('tgl', true);
+        $kasir = $user->nama;
+        $nama = $this->input->post('nama', true);
+        $nis = $this->input->post('nis', true);
+        $tahun = $this->tahun;
+        $dekos = $this->input->post('dekos', true);
+        $bulan_bayar = $this->input->post('bulan', true);
+
+        $dp = $this->model->getBy('tb_santri', 'nis', $nis)->row();
+        $dpBr = $this->model->getBy2('tangg', 'nis', $nis, 'tahun', $this->tahun)->row();
+
+        $by = $nominal + $this->input->post('masuk', true);
+        $ttl = $this->input->post('ttl', true);
+        $alm = $dp->desa . '-' . $dp->kec . '-' . $dp->kab;
+        // $hpNo = $dp->hp;
+        $hpNo = '085236924510';
+
+        $data = [
+            'nis' => $nis,
+            'nama' => $nama,
+            'tgl' => $tgl,
+            'nominal' => $nominal,
+            'bulan' => $bulan_bayar,
+            'tahun' => $tahun,
+            'kasir' => $kasir,
+        ];
+        $data2 = [
+            'nis' => $nis,
+            'nominal' => 300000,
+            'bulan' => $bulan_bayar,
+            'tahun' => $tahun,
+            'tgl' => $tgl,
+            'penerima' => $kasir,
+            'stts' => 1,
+            'waktu' => date('Y-m-d H:i'),
+        ];
+
+        $pesan = '
+*KWITANSI PEMBAYARAN ELEKTRONIK*
+*PP DARUL LUGHAH WAL KAROMAH*
+Bendahara Pondok Pesantren Darul Lughah Wal Karomah telah menerima pembayaran BP dari wali santri berikut :
+    
+No. BRIVA : *' . $dpBr->briva . '*
+Nama : *' . $nama . '*
+Alamat : *' . $alm . '* 
+Nominal Pembayaran: *' . rupiah($nominal) . '*
+Tanggal Bayar : *' . $tgl . '*
+Pembayaran Untuk: *BP (Biaya Pendidikan) bulan ' . $this->bulan[$bulan_bayar] . '*
+Penerima: *' . $kasir . '*
+
+Bukti Penerimaan ini *DISIMPAN* oleh wali santri sebagai bukti pembayaran Biaya Pendidikan PP Darul Lughah Wal Karomah Tahun Pelajaran '.$tahun.'.
+*Hal – hal yang berkaitan dengan Teknis keuangan dapat menghubungi Contact Person Bendahara berikut :*
+*https://wa.me/6287757777273*
+*https://wa.me/6285235583647*
+
+Terimakasih';
+
+        if ($by > $ttl) {
+            $this->session->set_flashdata('error', 'Maaf pembayaran melebihi');
+            redirect('kasir/discrb/'.$nis);
+        } else {
+            $cek = $this->db->query("SELECT * FROM pembayaran WHERE nis = '$nis' AND bulan = '$bulan_bayar' AND tahun = '$tahun' ")->num_rows();
+            if ($cek < 1) {
+                if ($dekos == 'Y') {
+                    $this->model->input('pembayaran', $data);
+                    $this->model->inputDb2('kos', $data2);
+                    // $qr = mysqli_query($conn, "INSERT INTO pembayaran VALUES ('', '$nis', '$nama', '$tgl', '$nominal', '$bulan_bayar', '$tahun_ajaran', '$kasir') ");
+                    // $qr2 = mysqli_query($conn_dekos, "INSERT INTO kos VALUES ('', '$nis', 300000, '$bulan_bayar', '$tahun_ajaran', '$tgl', '$kasir', 1, NOW() ) ");
+
+                    if ($this->db->affected_rows() > 0) {
+                        $this->session->set_flashdata('ok', 'Tanggungan berhasil diinput');
+                       redirect('kasir/discrb/'.$nis);
+                    } else {
+                        $this->session->set_flashdata('error', 'Tanggungan tidak berhasil diinput');
+                       redirect('kasir/discrb/'.$nis);
+                    }
+                } else {
+                    // $qr = mysqli_query($conn, "INSERT INTO pembayaran VALUES ('', '$nis', '$nama', '$tgl', '$nominal', '$bulan_bayar', '$tahun_ajaran', '$kasir') ");
+
+                    if ($qr) {
+                        // Japri 1
+                        kirim_person($this->api_key, $hpNo, $pesan);
+
+                   
+                    }
+                }
+            } else {
+               
+            }
+        }
+
     }
 }

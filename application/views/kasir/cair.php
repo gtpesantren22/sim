@@ -78,33 +78,29 @@ $dt = $this->db->query("SELECT SUM(nom_cair) as jml, SUM(IF( stas = 'tunai', nom
                                         $ids = explode('-', $ls_jns->id_realis);
                                         $idOk = $ids[0];
                                     ?>
-                                    <tr>
-                                        <td>
+                                        <tr>
+                                            <td>
 
-                                        </td>
-                                        <td><?= $ls_jns->kode; ?></td>
-                                        <td><?= $ls_jns->pj; ?></td>
-                                        <td><?= $ls_jns->ket; ?></td>
-                                        <td><?= rupiah($ls_jns->nominal); ?></td>
-                                        <td><?= rupiah($ls_jns->nom_cair); ?></td>
-                                        <td>
-                                            <form action="<?= base_url('kasir/editSerap'); ?>" method="post">
-                                                <input type="hidden" name="id" value="<?= $ls_jns->id_realis; ?>">
-                                                <input type="hidden" name="nom_cair" value="<?= $ls_jns->nom_cair; ?>">
-                                                <input type="hidden" name="kode_pengajuan"
-                                                    value="<?= $ls_jns->kode_pengajuan; ?>">
-                                                <input type="hidden" name="table" value="<?= $tbl_slct ?>">
-                                                <div class="input-group input-group-sm ">
-                                                    <input type="text" class="form-control form-control-sm uang"
-                                                        name="serap" value="<?= $ls_jns->nom_serap; ?>"
-                                                        aria-describedby="button-addon2">
-                                                    <button class="btn btn-success" type="submit" id="button-addon2"><i
-                                                            class="bx bx-check"></i></button>
-                                                </div>
-                                            </form>
-                                        </td>
-                                        <td><span class="badge bg-primary"><?= $ls_jns->stas; ?></span></td>
-                                    </tr>
+                                            </td>
+                                            <td><?= $ls_jns->kode; ?></td>
+                                            <td><?= $ls_jns->pj; ?></td>
+                                            <td><?= $ls_jns->ket; ?></td>
+                                            <td><?= rupiah($ls_jns->nominal); ?></td>
+                                            <td><?= rupiah($ls_jns->nom_cair); ?></td>
+                                            <td>
+                                                <form action="<?= base_url('kasir/editSerap'); ?>" method="post">
+                                                    <input type="hidden" name="id" value="<?= $ls_jns->id_realis; ?>">
+                                                    <input type="hidden" name="nom_cair" value="<?= $ls_jns->nom_cair; ?>">
+                                                    <input type="hidden" name="kode_pengajuan" value="<?= $ls_jns->kode_pengajuan; ?>">
+                                                    <input type="hidden" name="table" value="<?= $tbl_slct ?>">
+                                                    <div class="input-group input-group-sm ">
+                                                        <input type="text" class="form-control form-control-sm uang" name="serap" value="<?= $ls_jns->nom_serap; ?>" <?= $pjn->cair == 1 ? 'disabled' : '' ?> aria-describedby="button-addon2">
+                                                        <button class="btn btn-success" type="submit" <?= $pjn->cair == 1 ? 'disabled' : '' ?> id="button-addon2"><i class="bx bx-check"></i></button>
+                                                    </div>
+                                                </form>
+                                            </td>
+                                            <td><span class="badge bg-primary"><?= $ls_jns->stas; ?></span></td>
+                                        </tr>
 
                                     <?php } ?>
                                 </tbody>
@@ -142,33 +138,29 @@ $dt = $this->db->query("SELECT SUM(nom_cair) as jml, SUM(IF( stas = 'tunai', nom
                                         $ids = explode('-', $ls_jns->id_realis);
                                         $idOk = $ids[0];
                                     ?>
-                                    <tr>
-                                        <td>
+                                        <tr>
+                                            <td>
 
-                                        </td>
-                                        <td><?= $ls_jns->kode; ?></td>
-                                        <td><?= $ls_jns->pj; ?></td>
-                                        <td><?= $ls_jns->ket; ?></td>
-                                        <td><?= rupiah($ls_jns->nominal); ?></td>
-                                        <td><?= rupiah($ls_jns->nom_cair); ?></td>
-                                        <td>
-                                            <form action="<?= base_url('kasir/editSerap'); ?>" method="post">
-                                                <input type="hidden" name="id" value="<?= $ls_jns->id_realis; ?>">
-                                                <input type="hidden" name="nom_cair" value="<?= $ls_jns->nom_cair; ?>">
-                                                <input type="hidden" name="kode_pengajuan"
-                                                    value="<?= $ls_jns->kode_pengajuan; ?>">
-                                                <input type="hidden" name="table" value="<?= $tbl_slct ?>">
-                                                <div class="input-group input-group-sm ">
-                                                    <input type="text" class="form-control form-control-sm uang"
-                                                        name="serap" value="<?= $ls_jns->nom_serap; ?>"
-                                                        aria-describedby="button-addon2">
-                                                    <button class="btn btn-success" type="submit" id="button-addon2"><i
-                                                            class="bx bx-check"></i></button>
-                                                </div>
-                                            </form>
-                                        </td>
-                                        <td><span class="badge bg-danger"><?= $ls_jns->stas; ?></span></td>
-                                    </tr>
+                                            </td>
+                                            <td><?= $ls_jns->kode; ?></td>
+                                            <td><?= $ls_jns->pj; ?></td>
+                                            <td><?= $ls_jns->ket; ?></td>
+                                            <td><?= rupiah($ls_jns->nominal); ?></td>
+                                            <td><?= rupiah($ls_jns->nom_cair); ?></td>
+                                            <td>
+                                                <form action="<?= base_url('kasir/editSerap'); ?>" method="post">
+                                                    <input type="hidden" name="id" value="<?= $ls_jns->id_realis; ?>">
+                                                    <input type="hidden" name="nom_cair" value="<?= $ls_jns->nom_cair; ?>">
+                                                    <input type="hidden" name="kode_pengajuan" value="<?= $ls_jns->kode_pengajuan; ?>">
+                                                    <input type="hidden" name="table" value="<?= $tbl_slct ?>">
+                                                    <div class="input-group input-group-sm ">
+                                                        <input type="text" class="form-control form-control-sm uang" <?= $pjn->cair == 1 ? 'disabled' : '' ?> name="serap" value="<?= $ls_jns->nom_serap; ?>" aria-describedby="button-addon2">
+                                                        <button class="btn btn-success" type="submit" id="button-addon2" <?= $pjn->cair == 1 ? 'disabled' : '' ?>><i class="bx bx-check"></i></button>
+                                                    </div>
+                                                </form>
+                                            </td>
+                                            <td><span class="badge bg-danger"><?= $ls_jns->stas; ?></span></td>
+                                        </tr>
 
                                     <?php } ?>
                                 </tbody>
@@ -183,45 +175,44 @@ $dt = $this->db->query("SELECT SUM(nom_cair) as jml, SUM(IF( stas = 'tunai', nom
                                 </tfoot>
                             </table>
                         </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-8">
-                                <?= form_open('kasir/cairkan'); ?>
-                                <input type="hidden" name="kode_pengajuan" value="<?= $pjn->kode_pengajuan ?>">
-                                <div class="form-group mb-2">
-                                    <label for="inputEmail3"">Jumlah akan
+                        <?php if ($pjn->cair == 0) : ?>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <?= form_open('kasir/cairkan'); ?>
+                                    <input type="hidden" name="kode_pengajuan" value="<?= $pjn->kode_pengajuan ?>">
+                                    <div class="form-group mb-2">
+                                        <label for="inputEmail3"">Jumlah akan
                                         dicairkan</label>
-                                        <input type=" text" name="total" class="form-control" id=""
-                                        value="<?= rupiah($dt->brg_serap + $dt->tunai_serap) ?>" readonly>
+                                        <input type=" text" name="total" class="form-control" id="" value="<?= rupiah($dt->brg_serap + $dt->tunai_serap) ?>" readonly>
 
-                                </div>
-                                <div class="form-group mb-2">
-                                    <label for="inputPassword3"">Tanggal
+                                    </div>
+                                    <div class="form-group mb-2">
+                                        <label for="inputPassword3"">Tanggal
                                         Pencairan</label>
                                     <input type=" text" class="form-control" id="date" name="tgl_cair" required>
 
-                                </div>
-                                <div class="form-group mb-2">
-                                    <label for="inputPassword3"">Penerima</label>
+                                    </div>
+                                    <div class="form-group mb-2">
+                                        <label for="inputPassword3"">Penerima</label>
                                 <input type=" text" class="form-control" id="" name="penerima" required>
+                                    </div>
+
+                                    <div class="form-group mb-2">
+                                        <label for="inputPassword3">Pencair</label>
+                                        <input type=" text" name="kasir" class="form-control" value="<?= $user->nama ?>" readonly>
+                                    </div>
+
+                                    <div class="form-group mb-2">
+
+                                        <button type="submit" name="cairkan" class="btn btn-success pull-right"><i class="bx bx-save"></i> Simpan pencairan</button>
+
+                                    </div>
+                                    <?= form_close(); ?>
                                 </div>
-
-                                <div class="form-group mb-2">
-                                    <label for="inputPassword3">Pencair</label>
-                                    <input type=" text" name="kasir" class="form-control" value="<?= $user->nama ?>"
-                                        readonly>
-                                </div>
-
-                                <div class="form-group mb-2">
-
-                                    <button type="submit" name="cairkan" class="btn btn-success pull-right"><i
-                                            class="bx bx-save"></i> Simpan pencairan</button>
-
-                                </div>
-                                <?= form_close(); ?>
+                                <div class="col-md-4"></div>
                             </div>
-                            <div class="col-md-4"></div>
-                        </div>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
