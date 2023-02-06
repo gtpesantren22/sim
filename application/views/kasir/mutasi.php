@@ -35,18 +35,18 @@
                                     <?php
                                     $no = 1;
                                     
-                                    while ($dt = mysqli_fetch_assoc($sql)) {
-                                        if ($dt['status'] == 0) {
-                                            $stas = "<span class='label label-danger'><i class='fa fa-times'></i> Verval Bendahara</span> | <span class='label label-danger'><i class='fa fa-times'></i> Verval Pendataan</span>";
+                                    foreach ($data as $dt) {
+                                        if ($dt->status == 0) {
+                                            $stas = "<span class='label label-danger'><i class='bx bx-no-entry'></i> Verval Bendahara</span> | <span class='label label-danger'><i class='bx bx-no-entry'></i> Verval Pendataan</span>";
                                         }
                                     ?>
                                         <tr>
                                             <td><?= $no++; ?></td>
-                                            <td><?= $dt['nis']; ?></td>
-                                            <td><?= $dt['nama']; ?></td>
-                                            <td><?= $dt['alasan']; ?></td>
-                                            <td><?= $dt['tgl_mutasi']; ?></td>
-                                            <td><a class="btn btn-success btn-xs" href="<?= 'mutasi_dtl.php?nis=' . $dt['nis']; ?>"><i class="fa fa-search"></i> Lihat Tanggungan</a></td>
+                                            <td><?= $dt->nis; ?></td>
+                                            <td><?= $dt->nama; ?></td>
+                                            <td><?= $dt->alasan; ?></td>
+                                            <td><?= $dt->tgl_mutasi; ?></td>
+                                            <td><a class="btn btn-success btn-sm" href="<?= base_url('kasir/mutasiDtl/' . $dt->nis); ?>"><i class="bx bx-search"></i> Lihat Tanggungan</a></td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>

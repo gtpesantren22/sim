@@ -9,6 +9,7 @@ class KasirModel extends CI_Model
         parent::__construct();
         $this->db2 = $this->load->database('dekos',true);
         $this->db3 = $this->load->database('sekretaris',true);
+        $this->db4 = $this->load->database('santri',true);
     }
     function apikey()
     {
@@ -101,6 +102,18 @@ class KasirModel extends CI_Model
         $this->db2->update($table, $data);
     }
 
+    public function updateDb3($table, $data, $where, $dtwhere)
+    {
+        $this->db3->where($where, $dtwhere);
+        $this->db3->update($table, $data);
+    }
+
+    public function updateDb4($table, $data, $where, $dtwhere)
+    {
+        $this->db4->where($where, $dtwhere);
+        $this->db4->update($table, $data);
+    }
+
     public function getBayarAll()
     {
         $this->db->select('pembayaran.*, tb_santri.jkl, tb_santri.k_formal, tb_santri.t_formal');
@@ -110,10 +123,28 @@ class KasirModel extends CI_Model
         $this->db->order_by('pembayaran.tgl', 'DESC');
         return $this->db->get();
     }
-
-    public function getMutasi($tahun)
+    
+    public function getMutasi()
     {
-        $sql = mysqli_query($conn_sekretaris, "SELECT a.*, b.* FROM mutasi a JOIN tb_santri b ON a.nis=b.nis WHERE status = 0 AND aktif = 'Y' ORDER BY id_mutasi DESC ");
-        
+        // $sql = mysqli_query($conn_sekretaris, "SELECT a.*, b.* FROM mutasi a JOIN tb_santri b ON a.nis=b.nis WHERE status = 0 AND aktif = 'Y' ORDER BY id_mutasi DESC ");
+        $this->db3->select('mutasi.*, tb_santri.*');
+        $this->db3->from('mutasi');
+        $this->db3->join('tb_santri', 'ON mutasi.nis=tb_santri.nis');
+        $this->db3->where('mutasi.status', '0');
+        $this->db3->where('tb_santri.aktif', 'Y');
+        return $this->db3->get();
+    }
+
+    function getByDb3($table, $where1, $dtwhere1)
+    {
+        $this->db3->where($where1, $dtwhere1);
+        return $this->db3->get($table);
+    }
+
+    function getBy2Db3($table, $where1, $dtwhere1, $where2, $dtwhere2)
+    {
+        $this->db3->where($where1, $dtwhere1);
+        $this->db3->where($where2, $dtwhere2);
+        return $this->db3->get($table);
     }
 }

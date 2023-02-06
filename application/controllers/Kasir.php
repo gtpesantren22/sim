@@ -9,6 +9,10 @@ class Kasir extends CI_Controller
         $this->load->model('KasirModel', 'model');
         $this->load->model('Auth_model');
 
+        $this->db2 = $this->load->database('dekos', true);
+        $this->db3 = $this->load->database('sekretaris', true);
+        $this->db4 = $this->load->database('santri', true);
+
         $user = $this->Auth_model->current_user();
         $this->tahun = $this->session->userdata('tahun');
         // $this->jenis = ['A. Belanja Barang', 'B. Langganan & Jasa', 'Belanja Kegiatan', 'D. Umum'];
@@ -381,10 +385,166 @@ Terimakasih';
         $data['tahun'] = $this->tahun;
         $data['bulan'] = $this->bulan;
 
-        $data['rls'] = $this->model->getBayarAll()->result();
+        $data['data'] = $this->model->getMutasi()->result();
 
         $this->load->view('kasir/head', $data);
         $this->load->view('kasir/mutasi', $data);
         $this->load->view('kasir/foot');
+    }
+    
+    public function mutasiDtl($nis)
+    {
+        $data['user'] = $this->Auth_model->current_user();
+        $data['tahun'] = $this->tahun;
+        $data['bulan'] = $this->bulan;
+
+        $data['sn'] = $this->model->getBy('tb_santri', 'nis', $nis)->row();
+        $data['tgn'] = $this->model->getBy2('tangg', 'nis', $nis, 'tahun', $this->tahun)->row();
+        $data['masuk'] = $this->db->query("SELECT SUM(nominal) AS jml FROM pembayaran WHERE nis = '$nis' AND tahun = '$this->tahun' GROUP BY nis ")->row();
+        $data['bayar'] = $this->model->getBy2('pembayaran', 'nis', $nis, 'tahun', $this->tahun)->result();
+
+        $data['mts'] = $this->model->getByDb3('mutasi', 'nis', $nis)->row();
+        $data['rc_byar'] = $this->model->getBy2('tangg', 'nis', $nis, 'tahun', $this->tahun)->row();
+
+        if (date('m', strtotime($data['mts']->tgl_mutasi)) == 5 || date('m', strtotime($data['mts']->tgl_mutasi)) == 6) {
+            $data['tgbyr'] = $data['rc_byar']->me_ju;
+            $data['dekos'] = 0;
+        } else {
+            if ($data['rc_byar']->me_ju == $data['rc_byar']->ju_ap) {
+                $data['dekos'] = 0;
+            } else {
+                $data['dekos'] = 300000;
+            }
+            $data['tgbyr'] = $data['rc_byar']->ju_ap - $data['dekos'];
+        }
+
+        $data['tglbr'] = date('d', strtotime($data['mts']->tgl_mutasi));
+
+        $this->load->view('kasir/head', $data);
+        $this->load->view('kasir/mutasi_dtl', $data);
+        $this->load->view('kasir/foot');
+    }
+
+    public function bayarMutasi()
+    {
+        $user = $this->Auth_model->current_user();
+
+        $nominal = rmRp($this->input->post('nominal_bp', true));
+        $tgl = $this->input->post('tgl', true);
+        $kasir = $user->nama;
+        $nama = $this->input->post('nama', true);
+        $nis = $this->input->post('nis', true);
+        $tahun = $this->tahun;
+        $dekos = rmRp($this->input->post('nominal_dks', true));
+        $bulan_bayar = $this->input->post('bulan', true);
+
+        $dp = $this->model->getBy('tb_santri', 'nis', $nis)->row();
+        $dpBr = $this->model->getBy2('tangg', 'nis', $nis, 'tahun', $this->tahun)->row();
+
+        $by = $nominal + $this->input->post('masuk', true);
+        $ttl = $this->input->post('ttl', true);
+        $alm = $dp->desa . '-' . $dp->kec . '-' . $dp->kab;
+        // $hpNo = $dp->hp;
+        $hpNo = '085236924510';
+
+        $data = [
+            'nis' => $nis,
+            'nama' => $nama,
+            'tgl' => $tgl,
+            'nominal' => $nominal,
+            'bulan' => $bulan_bayar,
+            'tahun' => $tahun,
+            'kasir' => $kasir,
+        ];
+        $data2 = [
+            'nis' => $nis,
+            'nominal' => $dekos,
+            'bulan' => $bulan_bayar,
+            'tahun' => $tahun,
+            'tgl' => $tgl,
+            'penerima' => $kasir,
+            'stts' => 1,
+            'waktu' => date('Y-m-d H:i'),
+        ];
+
+        $pesan = '
+*KWITANSI PEMBAYARAN ELEKTRONIK*
+*PP DARUL LUGHAH WAL KAROMAH*
+Bendahara Pondok Pesantren Darul Lughah Wal Karomah telah menerima pembayaran BP dari wali santri berikut :
+    
+No. BRIVA : *' . $dpBr->briva . '*
+Nama : *' . $nama . '*
+Alamat : *' . $alm . '* 
+Nominal Pembayaran: *' . rupiah($nominal) . '*
+Tanggal Bayar : *' . $tgl . '*
+Pembayaran Untuk: *BP (Biaya Pendidikan) bulan ' . $this->bulan[$bulan_bayar] . '*
+Penerima: *' . $kasir . '*
+
+Bukti Penerimaan ini *DISIMPAN* oleh wali santri sebagai bukti pembayaran Biaya Pendidikan PP Darul Lughah Wal Karomah Tahun Pelajaran ' . $tahun . '.
+*Hal – hal yang berkaitan dengan Teknis keuangan dapat menghubungi Contact Person Bendahara berikut :*
+*https://wa.me/6287757777273*
+*https://wa.me/6285235583647*
+
+Terimakasih';
+
+        if ($by > $ttl) {
+            $this->session->set_flashdata('error', 'Maaf pembayaran melebihi');
+            redirect('kasir/mutasiDtl/' . $nis);
+        } else {
+            $cek = $this->db->query("SELECT * FROM pembayaran WHERE nis = '$nis' AND bulan = '$bulan_bayar' AND tahun = '$tahun' ")->num_rows();
+            if ($cek < 1) {
+                
+                    $this->model->inputDb2('kos', $data2);
+                    $this->model->input('pembayaran', $data);
+
+                    if ($this->db->affected_rows() > 0) {
+                        kirim_person($this->apiKey, $hpNo, $pesan);
+                        $this->session->set_flashdata('ok', 'Tanggungan berhasil diinput');
+                        redirect('kasir/mutasiDtl/' . $nis);
+                    } else {
+                        $this->session->set_flashdata('error', 'Tanggungan tidak berhasil diinput');
+                        redirect('kasir/mutasiDtl/' . $nis);
+                    }
+                
+            } else {
+                $this->session->set_flashdata('error', 'Maaf pembayaran ini bulan ini sudah ada');
+                redirect('kasir/mutasiDtl/' . $nis);
+            }
+        }
+    }
+
+    public function vervalMutasi($id)
+    {
+        $mutasi = $this->model->getByDb3('mutasi', 'id_mutasi', $id)->row();
+        $dts = $this->model->getBy('tb_santri', 'nis', $mutasi->nis)->row();
+
+        // $sql = mysqli_query($conn_santri, "UPDATE mutasi SET status = 1 WHERE id_mutasi = '$id_mutasi' ");
+        // $sql2 = mysqli_query($conn_sekretaris, "UPDATE mutasi SET status = 1 WHERE id_mutasi = '$id_mutasi' ");
+
+        $this->model->updateDb3('mutasi', ['status' => 1], 'nis', $mutasi->nis);
+        $this->model->updateDb4('mutasi', ['status' => 1], 'nis', $mutasi->nis);
+        $hpNo = '085236924510';
+        $psn = '*INFORMASI MUTASI*
+
+*PENERBITAN SURAT BERHENTI*
+    
+Nama : ' . $dts->nama . '
+Alamat : ' . $dts->desa . '-' . $dts->kec . '-' . $dts->kab . '
+Sekolah : ' . $dts->t_formal . '
+Tgl Mutasi : ' .  $mutasi->tgl_mutasi . '
+
+*_telah diverifikasi oleh BENDAHARA PESANTREN. Untuk selanjutnya surat mutasi sudah bisa diterbitkan oleh SEKRETARIAT_*
+Terimakasih';
+
+        if ($this->db->affected_rows() > 0) {
+            // kirim_group($this->apiKey, '120363028015516743@g.us', $psn);
+            kirim_person($this->apiKey, $hpNo, $psn);
+            $this->session->set_flashdata('ok', 'Mutasi berhasil diverval');
+            redirect('kasir/mutasiDtl/' . $mutasi->nis);
+        } else {
+            $this->session->set_flashdata('error', 'Mutasi gagal diverval');
+            redirect('kasir/mutasiDtl/' . $mutasi->nis);
+        }
+
     }
 }
