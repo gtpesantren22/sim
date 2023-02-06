@@ -72,7 +72,7 @@ class Kasir extends CI_Controller
             $data['dcair'] = 0;
             $data['dblm'] = $dt2->jml;
         }
-        // $rls = mysqli_query($conn, "SELECT * FROM $tbl_slct WHERE kode_pengajuan = '$kode' AND stas = 'tunai' AND tahun = '$tahun_ajaran' ORDER BY stas ASC ");
+
         $data['rls'] = $this->model->getBy2($data['tbl_slct'], 'kode_pengajuan', $kode, 'stas', 'tunai')->result();
         $data['rls2'] = $this->model->getBy2($data['tbl_slct'], 'kode_pengajuan', $kode, 'stas', 'barang')->result();
 
@@ -317,7 +317,7 @@ Terimakasih';
                     $this->model->input('pembayaran', $data);
 
                     if ($this->db->affected_rows() > 0) {
-                        kirim_person($this->api_key, $hpNo, $pesan);
+                        kirim_person($this->apiKey, $hpNo, $pesan);
                         $this->session->set_flashdata('ok', 'Tanggungan berhasil diinput');
                         redirect('kasir/discrb/' . $nis);
                     } else {
@@ -328,7 +328,7 @@ Terimakasih';
                     $this->model->input('pembayaran', $data);
 
                     if ($this->db->affected_rows() > 0) {
-                        kirim_person($this->api_key, $hpNo, $pesan);
+                        kirim_person($this->apiKey, $hpNo, $pesan);
                         $this->session->set_flashdata('ok', 'Tanggungan berhasil diinput');
                         redirect('kasir/discrb/' . $nis);
                     } else {
@@ -360,5 +360,31 @@ Terimakasih';
             $this->session->set_flashdata('error', 'Tanggungan tidak berhasil dihapus');
             redirect('kasir/discrb/' . $data->nis);
         }
+    }
+
+    public function bayar()
+    {
+        $data['user'] = $this->Auth_model->current_user();
+        $data['tahun'] = $this->tahun;
+        $data['bulan'] = $this->bulan;
+
+        $data['rls'] = $this->model->getBayarAll()->result();
+
+        $this->load->view('kasir/head', $data);
+        $this->load->view('kasir/bayar', $data);
+        $this->load->view('kasir/foot');
+    }
+
+    public function mutasi()
+    {
+        $data['user'] = $this->Auth_model->current_user();
+        $data['tahun'] = $this->tahun;
+        $data['bulan'] = $this->bulan;
+
+        $data['rls'] = $this->model->getBayarAll()->result();
+
+        $this->load->view('kasir/head', $data);
+        $this->load->view('kasir/mutasi', $data);
+        $this->load->view('kasir/foot');
     }
 }

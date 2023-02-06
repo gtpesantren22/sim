@@ -94,7 +94,7 @@
                 </li>
 
                 <li>
-                    <a href="<?= base_url('kasir/pak'); ?>">
+                    <a href="<?= base_url('kasir/mutasi'); ?>">
                         <div class="parent-icon"><i class='bx bx-link-external'></i>
                         </div>
                         <div class="menu-title">Mutasi Santri</div>

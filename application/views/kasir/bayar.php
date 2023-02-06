@@ -3,7 +3,7 @@
     <div class="page-content">
         <!--breadcrumb-->
         <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-            <div class="breadcrumb-title pe-3">Data Tanggungan Santri</div>
+            <div class="breadcrumb-title pe-3">Data Pembayaran Tanggungan Santri</div>
             <div class="ps-3">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0 p-0">
@@ -25,33 +25,37 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Nama</th>
-                                        <th>Briva</th>
+                                        <th>JKL</th>
+                                        <th>KelSas</th>
+                                        <th>Tanggal Bayar</th>
+                                        <th>Bulan</th>
                                         <th>Nominal</th>
-                                        <th>Tahun</th>
-                                        <th>Act</th>
+                                        <th>Tahun Ajaran</th>
+                                        <th>Penerima</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
-
                                     $no = 1;
-
-                                    foreach ($data as $a) : ?>
+                                    foreach ($rls as $ls_jns) { ?>
                                         <tr>
-                                            <td><?= $no++ ?></td>
-                                            <td><?= $a->nama ?></td>
-                                            <td><?= $a->briva ?></td>
-                                            <td>Rp. <?= number_format($a->total, 0, '.', '.') ?></td>
-                                            <td><?= $a->tahun ?></td>
+                                            <td><?= $no++; ?></td>
+                                            <td><?= $ls_jns->nama; ?></td>
+                                            <td><?= $ls_jns->jkl; ?></td>
+                                            <td><?= $ls_jns->k_formal . ' - ' . $ls_jns->t_formal; ?></td>
+                                            <td><?= $ls_jns->tgl; ?></td>
+                                            <td><?= $bulan[$ls_jns->bulan]; ?></td>
+                                            <td><?= rupiah($ls_jns->nominal); ?></td>
+                                            <td><?= $ls_jns->tahun; ?></td>
+                                            <td><?= $ls_jns->kasir; ?></td>
                                             <td>
-                                                <a href="<?= base_url('kasir/discrb/' . $a->nis); ?>"><button class="btn btn-info btn-sm">Discrb</button></a>
-                                                <a class="tombol-hapus" href="<?= base_url('kasir/delTanggungan/' . $a->id_tangg) ?>">
-                                                    <button class="btn btn-danger btn-sm">Hapus</button>
-                                                </a>
+                                                <a href="<?= base_url('kasir/delBayar/' . $ls_jns->id); ?>" class="tbl-confirm" value="Data ini akan dihapus dan akan menghapus data dekosan nya juga"><span class="btn btn-danger btn-sm">Del</span></a>
                                             </td>
                                         </tr>
                                         <!-- Modal -->
-                                    <?php endforeach ?>
+
+                                    <?php } ?>
                                 </tbody>
                             </table>
                         </div>

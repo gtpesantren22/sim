@@ -8,6 +8,7 @@ class KasirModel extends CI_Model
     {
         parent::__construct();
         $this->db2 = $this->load->database('dekos',true);
+        $this->db3 = $this->load->database('sekretaris',true);
     }
     function apikey()
     {
@@ -98,5 +99,21 @@ class KasirModel extends CI_Model
     {
         $this->db2->where($where, $dtwhere);
         $this->db2->update($table, $data);
+    }
+
+    public function getBayarAll()
+    {
+        $this->db->select('pembayaran.*, tb_santri.jkl, tb_santri.k_formal, tb_santri.t_formal');
+        $this->db->from('pembayaran');
+        $this->db->join('tb_santri', 'ON pembayaran.nis=tb_santri.nis');
+        $this->db->where('pembayaran.tahun', $this->tahun);
+        $this->db->order_by('pembayaran.tgl', 'DESC');
+        return $this->db->get();
+    }
+
+    public function getMutasi($tahun)
+    {
+        $sql = mysqli_query($conn_sekretaris, "SELECT a.*, b.* FROM mutasi a JOIN tb_santri b ON a.nis=b.nis WHERE status = 0 AND aktif = 'Y' ORDER BY id_mutasi DESC ");
+        
     }
 }
