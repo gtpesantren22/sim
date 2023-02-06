@@ -299,7 +299,7 @@ Tanggal Bayar : *' . $tgl . '*
 Pembayaran Untuk: *BP (Biaya Pendidikan) bulan ' . $this->bulan[$bulan_bayar] . '*
 Penerima: *' . $kasir . '*
 
-Bukti Penerimaan ini *DISIMPAN* oleh wali santri sebagai bukti pembayaran Biaya Pendidikan PP Darul Lughah Wal Karomah Tahun Pelajaran '.$tahun.'.
+Bukti Penerimaan ini *DISIMPAN* oleh wali santri sebagai bukti pembayaran Biaya Pendidikan PP Darul Lughah Wal Karomah Tahun Pelajaran ' . $tahun . '.
 *Hal – hal yang berkaitan dengan Teknis keuangan dapat menghubungi Contact Person Bendahara berikut :*
 *https://wa.me/6287757777273*
 *https://wa.me/6285235583647*
@@ -308,37 +308,57 @@ Terimakasih';
 
         if ($by > $ttl) {
             $this->session->set_flashdata('error', 'Maaf pembayaran melebihi');
-            redirect('kasir/discrb/'.$nis);
+            redirect('kasir/discrb/' . $nis);
         } else {
             $cek = $this->db->query("SELECT * FROM pembayaran WHERE nis = '$nis' AND bulan = '$bulan_bayar' AND tahun = '$tahun' ")->num_rows();
             if ($cek < 1) {
                 if ($dekos == 'Y') {
-                    $this->model->input('pembayaran', $data);
                     $this->model->inputDb2('kos', $data2);
-                    // $qr = mysqli_query($conn, "INSERT INTO pembayaran VALUES ('', '$nis', '$nama', '$tgl', '$nominal', '$bulan_bayar', '$tahun_ajaran', '$kasir') ");
-                    // $qr2 = mysqli_query($conn_dekos, "INSERT INTO kos VALUES ('', '$nis', 300000, '$bulan_bayar', '$tahun_ajaran', '$tgl', '$kasir', 1, NOW() ) ");
+                    $this->model->input('pembayaran', $data);
 
                     if ($this->db->affected_rows() > 0) {
+                        kirim_person($this->api_key, $hpNo, $pesan);
                         $this->session->set_flashdata('ok', 'Tanggungan berhasil diinput');
-                       redirect('kasir/discrb/'.$nis);
+                        redirect('kasir/discrb/' . $nis);
                     } else {
                         $this->session->set_flashdata('error', 'Tanggungan tidak berhasil diinput');
-                       redirect('kasir/discrb/'.$nis);
+                        redirect('kasir/discrb/' . $nis);
                     }
                 } else {
-                    // $qr = mysqli_query($conn, "INSERT INTO pembayaran VALUES ('', '$nis', '$nama', '$tgl', '$nominal', '$bulan_bayar', '$tahun_ajaran', '$kasir') ");
+                    $this->model->input('pembayaran', $data);
 
-                    if ($qr) {
-                        // Japri 1
+                    if ($this->db->affected_rows() > 0) {
                         kirim_person($this->api_key, $hpNo, $pesan);
-
-                   
+                        $this->session->set_flashdata('ok', 'Tanggungan berhasil diinput');
+                        redirect('kasir/discrb/' . $nis);
+                    } else {
+                        $this->session->set_flashdata('error', 'Tanggungan tidak berhasil diinput');
+                        redirect('kasir/discrb/' . $nis);
                     }
                 }
             } else {
-               
+                $this->session->set_flashdata('error', 'Maaf pembayaran ini bulan ini sudah ada');
+                redirect('kasir/discrb/' . $nis);
             }
         }
+    }
 
+    public function delBayar($id)
+    {
+        $data = $this->model->getBy('pembayaran', 'id', $id)->row();
+
+        // $sql = mysqli_query($conn, "DELETE FROM pembayaran WHERE id = '$id' AND tahun = '$tahun_ajaran' ");
+        // $sql2 = mysqli_query($conn_dekos, "DELETE FROM kos WHERE nis = '$nis' AND bulan = '$buln' AND tahun = '$tahun' ");
+
+        $this->model->deleteBayar($data->nis, $data->bulan, $data->tahun);
+        $this->model->delete('pembayaran', 'id', $id);
+
+        if ($this->db->affected_rows() > 0) {
+            $this->session->set_flashdata('ok', 'Tanggungan berhasil dihapus');
+            redirect('kasir/discrb/' . $data->nis);
+        } else {
+            $this->session->set_flashdata('error', 'Tanggungan tidak berhasil dihapus');
+            redirect('kasir/discrb/' . $data->nis);
+        }
     }
 }

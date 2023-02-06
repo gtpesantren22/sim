@@ -69,6 +69,14 @@ class KasirModel extends CI_Model
         $this->db->delete($table);
     }
 
+    public function deleteBayar($nis, $bulan, $tahun)
+    {
+        $this->db2->where('nis', $nis);
+        $this->db2->where('bulan', $bulan);
+        $this->db2->where('tahun', $tahun);
+        $this->db2->delete('kos');
+    }
+
     public function input($tbl, $data)
     {
         $this->db->insert($tbl, $data);

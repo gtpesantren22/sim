@@ -79,10 +79,12 @@
                                                 <div class="d-flex align-items-center">
                                                     <div>
                                                         <p class="mb-0 text-secondary">Belum Bayar</p>
-                                                        <h4 class="my-1 text-danger"><?= rupiah($tgn->total - $masuk->jml) ?></h4>
+                                                        <h4 class="my-1 text-danger">
+                                                            <?= rupiah($tgn->total - $masuk->jml) ?></h4>
                                                         <p class="mb-0 font-13">Sisa tanggungan yang belum lunas</p>
                                                     </div>
-                                                    <div class="widgets-icons-2 rounded-circle bg-gradient-bloody text-white ms-auto"><i class='bx bxs-wallet'></i>
+                                                    <div class="widgets-icons-2 rounded-circle bg-gradient-bloody text-white ms-auto">
+                                                        <i class='bx bxs-wallet'></i>
                                                     </div>
                                                 </div>
                                             </div>
@@ -153,9 +155,7 @@
                                                     <td><span class="badge bg-success"><?= $r->kasir; ?></span>
                                                     </td>
                                                     <td>
-                                                        <form action="" method="post">
-                                                            <a href="hapus.php?kd=del_by&id=<?= $r->id; ?>" class="tbl-confirm" value="Data ini akan dihapus dan akan menghapus data dekosan nya juga"><span class="btn btn-danger btn-sm">Del</span></a>
-                                                        </form>
+                                                        <a href="<?= base_url('kasir/delBayar/' . $r->id); ?>" class="tbl-confirm" value="Data ini akan dihapus dan akan menghapus data dekosan nya juga"><span class="btn btn-danger btn-sm">Del</span></a>
                                                     </td>
                                                 </tr>
                                             <?php } ?>
