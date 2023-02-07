@@ -112,11 +112,11 @@
 <script src="<?= base_url('vertical/'); ?>assets/plugins/simplebar/js/simplebar.min.js"></script>
 <script src="<?= base_url('vertical/'); ?>assets/plugins/metismenu/js/metisMenu.min.js"></script>
 <script src="<?= base_url('vertical/'); ?>assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
-<script src="<?= base_url('vertical/'); ?>assets/plugins/vectormap/jquery-jvectormap-2.0.2.min.js"></script>
-<script src="<?= base_url('vertical/'); ?>assets/plugins/vectormap/jquery-jvectormap-world-mill-en.js"></script>
+<!-- <script src="<?= base_url('vertical/'); ?>assets/plugins/vectormap/jquery-jvectormap-2.0.2.min.js"></script> -->
+<!-- <script src="<?= base_url('vertical/'); ?>assets/plugins/vectormap/jquery-jvectormap-world-mill-en.js"></script> -->
 <script src="<?= base_url('vertical/'); ?>assets/plugins/chartjs/js/Chart.min.js"></script>
 <script src="<?= base_url('vertical/'); ?>assets/plugins/chartjs/js/Chart.extension.js"></script>
-<script src="<?= base_url('vertical/'); ?>assets/js/index.js"></script>
+<!-- <script src="<?= base_url('vertical/'); ?>assets/js/index.js"></script> -->
 <script src="<?= base_url('vertical/'); ?>assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
 <script src="<?= base_url('vertical/'); ?>assets/plugins/datatable/js/dataTables.bootstrap5.min.js"></script>
 <script src="<?= base_url('vertical/'); ?>assets/js/jquery.mask.min.js"></script>

@@ -32,6 +32,17 @@ class Kasir extends CI_Controller
         $data['user'] = $this->Auth_model->current_user();
         $data['tahun'] = $this->tahun;
 
+        $bos = $this->model->getBySum('bos', 'tahun', $this->tahun, 'nominal')->row();
+        $pembayaran = $this->model->getBySum('pembayaran', 'tahun', $this->tahun, 'nominal')->row();
+        $pesantren = $this->model->getBySum('pesantren', 'tahun', $this->tahun, 'nominal')->row();
+        $kebijakan = $this->model->getBySum('kebijakan', 'tahun', $this->tahun, 'nominal')->row();
+        $realis = $this->model->getBySum('realis', 'tahun', $this->tahun, 'nom_serap')->row();
+
+        $data['masuk'] = $bos->jml + $pembayaran->jml + $pesantren->jml;
+        $data['keluar'] = $kebijakan->jml + $realis->jml;
+
+        $data['lembaga'] = $this->model->getBy('lembaga', 'tahun', $this->tahun)->result();
+
         $this->load->view('kasir/head', $data);
         $this->load->view('kasir/index', $data);
         $this->load->view('kasir/foot');
@@ -168,7 +179,7 @@ class Kasir extends CI_Controller
 
 Pencairan pengajuan dari :
     
-Lembaga : ' . $lem . '
+Lembaga : ' . $lembaga . '
 Kode Pengajuan : ' . $kd_pnj . '
 Pada : ' . $tgl_cair . '
 Nominal : ' . rupiah($jml->nom_serap) . '
@@ -637,6 +648,40 @@ Terimakasih';
         } else {
             $this->session->set_flashdata('error', 'User akun tidak berhasil diperbarui');
             redirect('kasir/setting');
+        }
+    }
+
+    public function uploadFoto()
+    {
+
+        $user = $this->Auth_model->current_user();
+
+        $file_name = 'PROFILE-' . rand(0, 99999999);
+        $config['upload_path']          = FCPATH . '/vertical/assets/uploads/profile/';
+        $config['allowed_types']        = 'jpg|jpeg|png';
+        $config['file_name']            = $file_name;
+        $config['overwrite']            = true;
+
+        $this->load->library('upload', $config);
+
+        if (!$this->upload->do_upload('file')) {
+            $data['error'] = $this->upload->display_errors();
+        } else {
+            $uploaded_data = $this->upload->data();
+
+            $new_data = [
+                'foto' =>  $uploaded_data['file_name']
+            ];
+            $this->model->update('user', $new_data, 'id_user', $user->id_user);
+            // unlink('./vertical/assets/uploads/honor/' . $file->files);
+
+            if ($this->db->affected_rows() > 0) {
+                $this->session->set_flashdata('ok', 'Upload foto sukses');
+                redirect('kasir/setting');
+            } else {
+                $this->session->set_flashdata('error', 'Upload foto sukses');
+                redirect('kasir/setting');
+            }
         }
     }
 }

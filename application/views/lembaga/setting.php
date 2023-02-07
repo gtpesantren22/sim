@@ -64,8 +64,8 @@
                                 </div>
                             </div><!-- /.box-body -->
                             <div class="box-footer">
-                                <button type="submit" name="" class="btn btn-warning btn-sm">Update Info
-                                    Akun</button>
+                                <button type="submit" name="" class="btn btn-warning btn-sm">Update InfoAkun</button>
+                                <button type="button" name="" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="bx bx-upload"></i>Upload Foto Profil</button>
                             </div><!-- /.box-footer -->
                         </form>
                     </div>
@@ -119,4 +119,28 @@
     </div>
 </div>
 <!--end page wrapper -->
-<!--end page wrapper -->
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Unggah Foto Profile</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <?= form_open_multipart('lembaga/uploadFoto') ?>
+            <div class="modal-body">
+                <div class="form-group mb-2">
+                    <label for="">Upload Foto</label>
+                    <input type="file" name="file" class="form-control form-control-sm" required>
+                </div>
+                <small class="text-danger">- Foto yang diupload berbentuk PERSEGI agar hasilnya pas</small><br>
+                <small class="text-danger">- Foto yang diupload berupa JPG,JPEG, dan PNG</small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Upload Foto</button>
+            </div>
+            <?= form_close() ?>
+        </div>
+    </div>
+</div>

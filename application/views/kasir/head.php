@@ -282,7 +282,11 @@
                     </div>
                     <div class="user-box dropdown">
                         <a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="<?= base_url('vertical/'); ?>assets/images/avatars/avatar-2.png" class="user-img" alt="user avatar">
+                            <?php if($user->foto != ''){ ?>
+                            <img src="<?= base_url('vertical/assets/uploads/profile/'.$user->foto); ?>" class="user-img" alt="user avatar">
+                            <?php }else{ ?>
+                                <img src="<?= base_url('vertical/assets/uploads/profile/user-avatar.png'); ?>" class="user-img" alt="user avatar">
+                            <?php } ?>
                             <div class="user-info ps-3">
                                 <p class="user-name mb-0"><?= $user->nama; ?></p>
                                 <p class="designattion mb-0"><?= $user->level; ?></p>

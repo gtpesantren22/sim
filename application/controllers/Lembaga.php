@@ -970,7 +970,7 @@ Terimakasih';
 			'waktu' => $this->input->post('waktu', true)
 		];
 
-$this->model->update2('lembaga', $data, 'kode', $id_lm, 'tahun', $tahun);
+		$this->model->update2('lembaga', $data, 'kode', $id_lm, 'tahun', $tahun);
 
 		if ($this->db->affected_rows() > 0) {
 			$this->session->set_flashdata('ok', 'User akun berhasil diperbarui');
@@ -978,6 +978,40 @@ $this->model->update2('lembaga', $data, 'kode', $id_lm, 'tahun', $tahun);
 		} else {
 			$this->session->set_flashdata('error', 'User akun tidak berhasil diperbarui');
 			redirect('lembaga/setting/');
+		}
+	}
+
+	public function uploadFoto()
+	{
+
+		$user = $this->Auth_model->current_user();
+
+		$file_name = 'PROFILE-' . rand(0, 99999999);
+		$config['upload_path']          = FCPATH . '/vertical/assets/uploads/profile/';
+		$config['allowed_types']        = 'jpg|jpeg|png';
+		$config['file_name']            = $file_name;
+		$config['overwrite']            = true;
+
+		$this->load->library('upload', $config);
+
+		if (!$this->upload->do_upload('file')) {
+			$data['error'] = $this->upload->display_errors();
+		} else {
+			$uploaded_data = $this->upload->data();
+
+			$new_data = [
+				'foto' =>  $uploaded_data['file_name']
+			];
+			$this->model->update('user', $new_data, 'id_user', $user->id_user);
+			// unlink('./vertical/assets/uploads/honor/' . $file->files);
+
+			if ($this->db->affected_rows() > 0) {
+				$this->session->set_flashdata('ok', 'Upload foto sukses');
+				redirect('lembaga/setting');
+			} else {
+				$this->session->set_flashdata('error', 'Upload foto sukses');
+				redirect('lembaga/setting');
+			}
 		}
 	}
 }

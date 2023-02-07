@@ -21,6 +21,7 @@ class Admin extends CI_Controller
 		$api = $this->model->apiKey()->row();
 		$this->apiKey = $api->nama_key;
 		$this->user = $user->nama;
+		$this->lembaga = $user->lembaga;
 
 		if (!$this->Auth_model->current_user() || $user->level != 'admin') {
 			redirect('login/logout');
@@ -31,6 +32,17 @@ class Admin extends CI_Controller
 	{
 		$data['user'] = $this->Auth_model->current_user();
 		$data['tahun'] = $this->tahun;
+
+		$bos = $this->model->getBySum('bos', 'tahun', $this->tahun, 'nominal')->row();
+		$pembayaran = $this->model->getBySum('pembayaran', 'tahun', $this->tahun, 'nominal')->row();
+		$pesantren = $this->model->getBySum('pesantren', 'tahun', $this->tahun, 'nominal')->row();
+		$kebijakan = $this->model->getBySum('kebijakan', 'tahun', $this->tahun, 'nominal')->row();
+		$realis = $this->model->getBySum('realis', 'tahun', $this->tahun, 'nom_serap')->row();
+		
+		$data['masuk'] = $bos->jml + $pembayaran->jml + $pesantren->jml ;
+		$data['keluar'] = $kebijakan->jml + $realis->jml ;
+		
+		$data['lembaga'] = $this->model->getBy('lembaga', 'tahun', $this->tahun)->result();
 
 		$this->load->view('admin/head', $data);
 		$this->load->view('admin/index', $data);
@@ -1476,6 +1488,124 @@ https://simkupaduka.ppdwk.com/';
 		} else {
 			$this->session->set_flashdata('error', 'Akses PAK tidak bisa diupdate');
 			redirect('admin/setting');
+		}
+	}
+
+	public function settingUser()
+	{
+
+		$data['lembaga'] = $this->model->getBy2('lembaga', 'kode', $this->lembaga, 'tahun', $this->tahun)->row();
+		$data['user'] = $this->Auth_model->current_user();
+		$data['tahun'] = $this->tahun;
+
+		$this->load->view('admin/head', $data);
+		$this->load->view('admin/settingAkun', $data);
+		$this->load->view('admin/foot');
+	}
+
+	public function updateAkun()
+	{
+		$id = $this->Auth_model->current_user('id_user');
+		$id_user = $id->id_user;
+
+		$nama = $this->input->post('nama', true);
+		$username = $this->input->post('username', true);
+		$password = $this->input->post('newpass', true);
+		$password2 = $this->input->post('confir_newpass', true);
+		$pass_lama = $this->input->post('pass_lama', true);
+		$pass_baru = password_hash($password, PASSWORD_DEFAULT);
+
+		if ($password == '' && $password2 = '') {
+
+			$data = [
+				'nama' => strtoupper($nama),
+				'username' => $username
+			];
+			$this->model->update('user', $data, 'id_user', $id_user);
+			if ($this->db->affected_rows() > 0) {
+				$this->session->set_flashdata('ok', 'User akun berhasil diperbarui');
+				redirect('admin/setting');
+			} else {
+				$this->session->set_flashdata('error', 'User akun tidak berhasil diperbarui');
+				redirect('admin/setting');
+			}
+		} else {
+			if ($password != $password2) {
+				$this->session->set_flashdata('error', 'Konfimasi password tidak sama');
+				redirect('admin/setting');
+			} else {
+
+				$data = [
+					'nama' => $nama,
+					'username' => $username,
+					'password' => $pass_baru
+				];
+				$this->model->update('user', $data, 'id_user', $id_user);
+				if ($this->db->affected_rows() > 0) {
+					$this->session->set_flashdata('ok', 'User akun berhasil diperbarui');
+					redirect('admin/setting');
+				} else {
+					$this->session->set_flashdata('error', 'User akun tidak berhasil diperbarui');
+					redirect('admin/setting');
+				}
+			}
+		}
+	}
+
+	public function updateLembaga()
+	{
+		$id_lm = $this->lembaga;
+		$tahun = $this->tahun;
+
+		$data = [
+			'pj' => $this->input->post('pj', true),
+			'hp' => $this->input->post('hp', true),
+			'hp_kep' => $this->input->post('hp_kep', true),
+			'waktu' => $this->input->post('waktu', true)
+		];
+
+		$this->model->update2('lembaga', $data, 'kode', $id_lm, 'tahun', $tahun);
+
+		if ($this->db->affected_rows() > 0) {
+			$this->session->set_flashdata('ok', 'User akun berhasil diperbarui');
+			redirect('admin/setting');
+		} else {
+			$this->session->set_flashdata('error', 'User akun tidak berhasil diperbarui');
+			redirect('admin/setting');
+		}
+	}
+
+	public function uploadFoto()
+	{
+
+		$user = $this->Auth_model->current_user();
+
+		$file_name = 'PROFILE-' . rand(0, 99999999);
+		$config['upload_path']          = FCPATH . '/vertical/assets/uploads/profile/';
+		$config['allowed_types']        = 'jpg|jpeg|png';
+		$config['file_name']            = $file_name;
+		$config['overwrite']            = true;
+
+		$this->load->library('upload', $config);
+
+		if (!$this->upload->do_upload('file')) {
+			$data['error'] = $this->upload->display_errors();
+		} else {
+			$uploaded_data = $this->upload->data();
+
+			$new_data = [
+				'foto' =>  $uploaded_data['file_name']
+			];
+			$this->model->update('user', $new_data, 'id_user', $user->id_user);
+			// unlink('./vertical/assets/uploads/honor/' . $file->files);
+
+			if ($this->db->affected_rows() > 0) {
+				$this->session->set_flashdata('ok', 'Upload foto sukses');
+				redirect('admin/setting');
+			} else {
+				$this->session->set_flashdata('error', 'Upload foto sukses');
+				redirect('admin/setting');
+			}
 		}
 	}
 }
