@@ -391,7 +391,7 @@ Terimakasih';
         $this->load->view('kasir/mutasi', $data);
         $this->load->view('kasir/foot');
     }
-    
+
     public function mutasiDtl($nis)
     {
         $data['user'] = $this->Auth_model->current_user();
@@ -493,19 +493,18 @@ Terimakasih';
         } else {
             $cek = $this->db->query("SELECT * FROM pembayaran WHERE nis = '$nis' AND bulan = '$bulan_bayar' AND tahun = '$tahun' ")->num_rows();
             if ($cek < 1) {
-                
-                    $this->model->inputDb2('kos', $data2);
-                    $this->model->input('pembayaran', $data);
 
-                    if ($this->db->affected_rows() > 0) {
-                        kirim_person($this->apiKey, $hpNo, $pesan);
-                        $this->session->set_flashdata('ok', 'Tanggungan berhasil diinput');
-                        redirect('kasir/mutasiDtl/' . $nis);
-                    } else {
-                        $this->session->set_flashdata('error', 'Tanggungan tidak berhasil diinput');
-                        redirect('kasir/mutasiDtl/' . $nis);
-                    }
-                
+                $this->model->inputDb2('kos', $data2);
+                $this->model->input('pembayaran', $data);
+
+                if ($this->db->affected_rows() > 0) {
+                    kirim_person($this->apiKey, $hpNo, $pesan);
+                    $this->session->set_flashdata('ok', 'Tanggungan berhasil diinput');
+                    redirect('kasir/mutasiDtl/' . $nis);
+                } else {
+                    $this->session->set_flashdata('error', 'Tanggungan tidak berhasil diinput');
+                    redirect('kasir/mutasiDtl/' . $nis);
+                }
             } else {
                 $this->session->set_flashdata('error', 'Maaf pembayaran ini bulan ini sudah ada');
                 redirect('kasir/mutasiDtl/' . $nis);
@@ -545,6 +544,99 @@ Terimakasih';
             $this->session->set_flashdata('error', 'Mutasi gagal diverval');
             redirect('kasir/mutasiDtl/' . $mutasi->nis);
         }
+    }
 
+    public function info()
+    {
+        $data['data'] = $this->model->getBy('info', 'tahun', $this->tahun)->result();
+        $data['user'] = $this->Auth_model->current_user();
+        $data['tahun'] = $this->tahun;
+        $this->load->view('kasir/head', $data);
+        $this->load->view('kasir/info', $data);
+        $this->load->view('kasir/foot');
+    }
+
+    public function setting()
+    {
+
+        $data['lembaga'] = $this->model->getBy2('lembaga', 'kode', $this->lembaga, 'tahun', $this->tahun)->row();
+        $data['user'] = $this->Auth_model->current_user();
+        $data['tahun'] = $this->tahun;
+
+        $this->load->view('kasir/head', $data);
+        $this->load->view('kasir/setting', $data);
+        $this->load->view('kasir/foot');
+    }
+
+    public function updateAkun()
+    {
+        $id = $this->Auth_model->current_user('id_user');
+        $id_user = $id->id_user;
+
+        $nama = $this->input->post('nama', true);
+        $username = $this->input->post('username', true);
+        $password = $this->input->post('newpass', true);
+        $password2 = $this->input->post('confir_newpass', true);
+        $pass_lama = $this->input->post('pass_lama', true);
+        $pass_baru = password_hash($password, PASSWORD_DEFAULT);
+
+        if ($password == '' && $password2 = '') {
+
+            $data = [
+                'nama' => strtoupper($nama),
+                'username' => $username
+            ];
+            $this->model->update('user', $data, 'id_user', $id_user);
+            if ($this->db->affected_rows() > 0) {
+                $this->session->set_flashdata('ok', 'User akun berhasil diperbarui');
+                redirect('kasir/setting');
+            } else {
+                $this->session->set_flashdata('error', 'User akun tidak berhasil diperbarui');
+                redirect('kasir/setting');
+            }
+        } else {
+            if ($password != $password2) {
+                $this->session->set_flashdata('error', 'Konfimasi password tidak sama');
+                redirect('kasir/setting');
+            } else {
+
+                $data = [
+                    'nama' => $nama,
+                    'username' => $username,
+                    'password' => $pass_baru
+                ];
+                $this->model->update('user', $data, 'id_user', $id_user);
+                if ($this->db->affected_rows() > 0) {
+                    $this->session->set_flashdata('ok', 'User akun berhasil diperbarui');
+                    redirect('kasir/setting');
+                } else {
+                    $this->session->set_flashdata('error', 'User akun tidak berhasil diperbarui');
+                    redirect('kasir/setting');
+                }
+            }
+        }
+    }
+
+    public function updateLembaga()
+    {
+        $id_lm = $this->lembaga;
+        $tahun = $this->tahun;
+
+        $data = [
+            'pj' => $this->input->post('pj', true),
+            'hp' => $this->input->post('hp', true),
+            'hp_kep' => $this->input->post('hp_kep', true),
+            'waktu' => $this->input->post('waktu', true)
+        ];
+
+        $this->model->update2('lembaga', $data, 'kode', $id_lm, 'tahun', $tahun);
+
+        if ($this->db->affected_rows() > 0) {
+            $this->session->set_flashdata('ok', 'User akun berhasil diperbarui');
+            redirect('kasir/setting');
+        } else {
+            $this->session->set_flashdata('error', 'User akun tidak berhasil diperbarui');
+            redirect('kasir/setting');
+        }
     }
 }
