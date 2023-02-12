@@ -42,6 +42,7 @@ class Account extends CI_Controller
 		$data['keluar'] = $kebijakan->jml + $realis->jml;
 
 		$data['lembaga'] = $this->model->getBy('lembaga', 'tahun', $this->tahun)->result();
+$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
 
 		$this->load->view('account/head', $data);
 		$this->load->view('account/index', $data);
@@ -68,6 +69,7 @@ class Account extends CI_Controller
 		$data['tahun'] = $this->model->getAll('tahun')->result();
 		$data['bidang'] = $this->model->getBy('bidang', 'tahun', $this->tahun)->result();
 		$data['user'] = $this->Auth_model->current_user();
+		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/masukPes', $data);
@@ -107,6 +109,7 @@ class Account extends CI_Controller
 		$data['tahun'] = $this->model->getAll('tahun')->result();
 		$data['bidang'] = $this->model->getBy('bidang', 'tahun', $this->tahun)->result();
 		$data['user'] = $this->Auth_model->current_user();
+		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/editPes', $data);
@@ -158,6 +161,7 @@ class Account extends CI_Controller
 		$data['tahun'] = $this->model->getAll('tahun')->result();
 		$data['bidang'] = $this->model->getBy('bidang', 'tahun', $this->tahun)->result();
 		$data['user'] = $this->Auth_model->current_user();
+		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/masukBos', $data);
@@ -197,6 +201,7 @@ class Account extends CI_Controller
 		$data['tahun'] = $this->model->getAll('tahun')->result();
 		$data['bidang'] = $this->model->getBy('bidang', 'tahun', $this->tahun)->result();
 		$data['user'] = $this->Auth_model->current_user();
+		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/editBos', $data);
@@ -246,6 +251,7 @@ class Account extends CI_Controller
 		$data['tahun'] = $this->model->getAll('tahun')->result();
 		$data['bidang'] = $this->model->getBy('bidang', 'tahun', $this->tahun)->result();
 		$data['user'] = $this->Auth_model->current_user();
+		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/masukBp', $data);
@@ -257,6 +263,7 @@ class Account extends CI_Controller
 		$data['data'] = $this->model->getBy('lembaga', 'tahun', $this->tahun)->result();
 		// $data['sumBp'] = $this->model->selectSum('pembayaran', 'nominal', 'tahun', $this->tahun)->row();
 		$data['user'] = $this->Auth_model->current_user();
+		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/rab', $data);
@@ -272,6 +279,7 @@ class Account extends CI_Controller
 		$data['sumC'] = $this->model->getTotalRabJenis('C', $kode, $this->tahun)->row();
 		$data['sumD'] = $this->model->getTotalRabJenis('D', $kode, $this->tahun)->row();
 		$data['user'] = $this->Auth_model->current_user();
+		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/rabDetail', $data);
@@ -284,6 +292,7 @@ class Account extends CI_Controller
 		$data['lembaga'] = $this->model->getBy('lembaga', 'kode', $data['data']->lembaga)->row();
 		$data['rel'] = $this->model->getBySum('realis', 'kode', $data['data']->kode, 'nominal')->row();
 		$data['user'] = $this->Auth_model->current_user();
+		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/rabEdit', $data);
@@ -354,6 +363,7 @@ class Account extends CI_Controller
 		$data['bidang'] = $this->model->getBy('bidang', 'tahun', $this->tahun)->result();
 		$data['user'] = $this->Auth_model->current_user();
 		$data['tahun'] = $this->tahun;
+$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
 
 		$this->load->view('account/head', $data);
 		$this->load->view('account/kbj', $data);
@@ -404,6 +414,7 @@ class Account extends CI_Controller
 	{
 		$data['data'] = $this->model->getBy2('pak', 'status', 'disetujui', 'tahun', $this->tahun)->result();
 		$data['user'] = $this->Auth_model->current_user();
+		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/pak', $data);
@@ -418,6 +429,7 @@ class Account extends CI_Controller
 		$data['rpakSum'] = $this->model->selectSum('pak_detail', 'total', 'kode_pak', $kode)->row();
 		$data['rabnewSum'] = $this->model->selectSum('rab_sm', 'total', 'lembaga', $data['data']->lembaga)->row();
 		$data['user'] = $this->Auth_model->current_user();
+		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/pakDetail', $data);
@@ -517,6 +529,7 @@ class Account extends CI_Controller
 		$data['data'] = $this->model->getBy('lembaga', 'tahun', $this->tahun)->result();
 		$data['tahun_ajaran'] = $this->tahun;
 		$data['user'] = $this->Auth_model->current_user();
+		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/data', $data);
@@ -541,6 +554,7 @@ class Account extends CI_Controller
 
 		$data['rabA'] = $this->model->getBy2('rab', 'lembaga', $lembaga, 'tahun', $this->tahun)->result();
 		$data['user'] = $this->Auth_model->current_user();
+		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/realDetail', $data);
@@ -555,6 +569,7 @@ class Account extends CI_Controller
 		$data['rel'] = $this->model->getBySum('realis', 'kode', $kode, 'nominal')->row();
 		$data['relData'] = $this->model->getBy('realis', 'kode', $kode)->result();
 		$data['user'] = $this->Auth_model->current_user();
+		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/cekRab', $data);
@@ -567,6 +582,7 @@ class Account extends CI_Controller
 		$data['bulan'] = $this->bulan;
 		$data['tahun'] = $this->tahun;
 		$data['user'] = $this->Auth_model->current_user();
+		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/pengajuan', $data);
@@ -614,6 +630,7 @@ class Account extends CI_Controller
 		$data['nomC'] = $this->model->getBySum2('real_sm', 'kode_pengajuan', $kode, 'jenis', 'C', 'nominal')->row();
 		$data['nomD'] = $this->model->getBySum2('real_sm', 'kode_pengajuan', $kode, 'jenis', 'D', 'nominal')->row();
 		$data['user'] = $this->Auth_model->current_user();
+		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/pengajuanDetail', $data);
@@ -777,6 +794,7 @@ Terimakasih';
 		$data['bulan'] = $this->bulan;
 		$data['tahun'] = $this->tahun;
 		$data['user'] = $this->Auth_model->current_user();
+		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/spj', $data);
@@ -951,6 +969,7 @@ https://simkupaduka.ppdwk.com/';
 		$data['tahun'] = $this->tahun;
 
 		$data['user'] = $this->Auth_model->current_user();
+		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/disp', $data);
@@ -962,6 +981,7 @@ https://simkupaduka.ppdwk.com/';
 
 		$data['data'] = $this->model->getBy('info', 'tahun', $this->tahun)->result();
 		$data['user'] = $this->Auth_model->current_user();
+		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/info', $data);
@@ -974,6 +994,7 @@ https://simkupaduka.ppdwk.com/';
 		$data['tahun'] = $this->tahun;
 
 		$data['user'] = $this->Auth_model->current_user();
+		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/infoAdd', $data);
@@ -1010,6 +1031,7 @@ https://simkupaduka.ppdwk.com/';
 		$data['tahun'] = $this->tahun;
 
 		$data['user'] = $this->Auth_model->current_user();
+		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/infoEdit', $data);
@@ -1058,6 +1080,7 @@ https://simkupaduka.ppdwk.com/';
 		$data['bulan'] = $this->bulan;
 		$data['tahun'] = $this->tahun;
 		$data['user'] = $this->Auth_model->current_user();
+		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/history', $data);
@@ -1080,6 +1103,7 @@ https://simkupaduka.ppdwk.com/';
 		$data['apr'] = $this->model->getBy('approv', 'kode_pengajuan', $kode)->result();
 		$data['cair'] = $this->model->getBy('pencairan', 'kode_pengajuan', $kode)->result();
 		$data['user'] = $this->Auth_model->current_user();
+		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/historyDtl', $data);
@@ -1118,6 +1142,7 @@ https://simkupaduka.ppdwk.com/';
 		$data['lembaga'] = $this->model->getBy2('lembaga', 'kode', $this->lembaga, 'tahun', $this->tahun)->row();
 		$data['user'] = $this->Auth_model->current_user();
 		$data['tahun'] = $this->tahun;
+$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
 
 		$this->load->view('account/head', $data);
 		$this->load->view('account/setting', $data);

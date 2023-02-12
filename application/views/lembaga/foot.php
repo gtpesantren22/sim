@@ -5,7 +5,7 @@
 <a href="javaScript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
 <!--End Back To Top Button-->
 <footer class="page-footer">
-    <p class="mb-0">Copyright © 2021. All right reserved.</p>
+    <p class="mb-0">Copyright © 2023. SIMKUPADUKA-APP | PP DWK.</p>
 </footer>
 </div>
 <!--end wrapper-->
@@ -126,8 +126,7 @@
 <script src="<?= base_url('vertical/'); ?>assets/plugins/datetimepicker/js/picker.time.js"></script>
 <script src="<?= base_url('vertical/'); ?>assets/plugins/datetimepicker/js/picker.date.js"></script>
 <script src="<?= base_url('vertical/'); ?>assets/plugins/bootstrap-material-datetimepicker/js/moment.min.js"></script>
-<script
-    src="<?= base_url('vertical/'); ?>assets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.min.js">
+<script src="<?= base_url('vertical/'); ?>assets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.min.js">
 </script>
 <script src="<?= base_url('vertical/'); ?>assets/plugins/select2/js/select2.min.js"></script>
 <!--notification js -->
@@ -135,173 +134,171 @@
 <script src="<?= base_url('vertical/'); ?>assets/plugins/notifications/js/notifications.min.js"></script>
 <script src="<?= base_url('vertical/'); ?>assets/sw/sweetalert2.all.min.js"></script>
 <script src="<?= base_url('vertical/'); ?>assets/plugins/notifications/js/my-notif.js"></script>
-<script src='https://cdn.tiny.cloud/1/vdqx2klew412up5bcbpwivg1th6nrh3murc6maz8bukgos4v/tinymce/5/tinymce.min.js'
-    referrerpolicy="origin">
+<script src='https://cdn.tiny.cloud/1/vdqx2klew412up5bcbpwivg1th6nrh3murc6maz8bukgos4v/tinymce/5/tinymce.min.js' referrerpolicy="origin">
 </script>
 <script>
-$(document).ready(function() {
-    $('#example').DataTable();
-    $('#example3').DataTable();
+    $(document).ready(function() {
+        $('#example').DataTable();
+        $('#example3').DataTable();
 
-    $('.single-select').select2({
-        theme: 'bootstrap4',
-        width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' :
-            'style',
-        placeholder: $(this).data('placeholder'),
-        allowClear: Boolean($(this).data('allow-clear')),
+        $('.single-select').select2({
+            theme: 'bootstrap4',
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            placeholder: $(this).data('placeholder'),
+            allowClear: Boolean($(this).data('allow-clear')),
+        });
     });
-});
 </script>
 
 <script>
-$(document).ready(function() {
-    var table = $('#example2').DataTable({
-        lengthChange: false,
-        buttons: ['copy', 'excel', 'pdf', 'print']
+    $(document).ready(function() {
+        var table = $('#example2').DataTable({
+            lengthChange: false,
+            buttons: ['copy', 'excel', 'pdf', 'print']
+        });
+
+        table.buttons().container()
+            .appendTo('#example2_wrapper .col-md-6:eq(0)');
     });
-
-    table.buttons().container()
-        .appendTo('#example2_wrapper .col-md-6:eq(0)');
-});
 </script>
 <script>
-tinymce.init({
-    selector: '#mytextarea'
-});
+    tinymce.init({
+        selector: '#mytextarea'
+    });
 </script>
 <script type="text/javascript">
-$(document).ready(function() {
+    $(document).ready(function() {
 
-    // Format mata uang.
-    $('.uang').mask('000.000.000.000', {
-        reverse: true
-    });
+        // Format mata uang.
+        $('.uang').mask('000.000.000.000', {
+            reverse: true
+        });
 
-})
+    })
 </script>
 <script>
-$(function() {
+    $(function() {
 
-    $('#date').bootstrapMaterialDatePicker({
-        time: false
-    });
-    $('#date2').bootstrapMaterialDatePicker({
-        time: false
-    });
-    $('#date-time').bootstrapMaterialDatePicker({
-        format: 'YYYY-MM-DD HH:mm'
-    });
+        $('#date').bootstrapMaterialDatePicker({
+            time: false
+        });
+        $('#date2').bootstrapMaterialDatePicker({
+            time: false
+        });
+        $('#date-time').bootstrapMaterialDatePicker({
+            format: 'YYYY-MM-DD HH:mm'
+        });
 
-});
+    });
 </script>
 <!--app JS-->
 <script src="<?= base_url('vertical/'); ?>assets/js/app.js"></script>
 <script>
-$(function() {
-    "use strict";
-    // chart 1
+    $(function() {
+        "use strict";
+        // chart 1
 
-    var ctx = document.getElementById("chart1").getContext('2d');
+        var ctx = document.getElementById("chart1").getContext('2d');
 
-    var gradientStroke1 = ctx.createLinearGradient(0, 0, 0, 300);
-    gradientStroke1.addColorStop(0, '#6078ea');
-    gradientStroke1.addColorStop(1, '#17c5ea');
+        var gradientStroke1 = ctx.createLinearGradient(0, 0, 0, 300);
+        gradientStroke1.addColorStop(0, '#6078ea');
+        gradientStroke1.addColorStop(1, '#17c5ea');
 
-    var A = Number(<?= $prsnA ?>);
-    var B = Number(<?= $prsnB ?>);
-    var C = Number(<?= $prsnC ?>);
-    var D = Number(<?= $prsnD ?>);
+        var A = Number(<?= $prsnA ?>);
+        var B = Number(<?= $prsnB ?>);
+        var C = Number(<?= $prsnC ?>);
+        var D = Number(<?= $prsnD ?>);
 
-    var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['A. Belanja Barang', 'B. Langganan & Jasa', 'C. Belanja Kegiatan', 'D. Umum'],
-            datasets: [{
-                label: 'Realisasi',
-                data: [A, B, C, D],
-                borderColor: gradientStroke1,
-                backgroundColor: gradientStroke1,
-                hoverBackgroundColor: gradientStroke1,
-                pointRadius: 0,
-                fill: false,
-                borderWidth: 0
-            }]
-        },
-
-        options: {
-            maintainAspectRatio: false,
-            legend: {
-                position: 'bottom',
-                display: false,
-                labels: {
-                    boxWidth: 8
-                }
-            },
-            tooltips: {
-                displayColors: false,
-            },
-            scales: {
-                xAxes: [{
-                    barPercentage: .5
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['A. Belanja Barang', 'B. Langganan & Jasa', 'C. Belanja Kegiatan', 'D. Umum'],
+                datasets: [{
+                    label: 'Realisasi',
+                    data: [A, B, C, D],
+                    borderColor: gradientStroke1,
+                    backgroundColor: gradientStroke1,
+                    hoverBackgroundColor: gradientStroke1,
+                    pointRadius: 0,
+                    fill: false,
+                    borderWidth: 0
                 }]
-            }
-        }
-    });
+            },
 
-});
+            options: {
+                maintainAspectRatio: false,
+                legend: {
+                    position: 'bottom',
+                    display: false,
+                    labels: {
+                        boxWidth: 8
+                    }
+                },
+                tooltips: {
+                    displayColors: false,
+                },
+                scales: {
+                    xAxes: [{
+                        barPercentage: .5
+                    }]
+                }
+            }
+        });
+
+    });
 </script>
 <script type="text/javascript">
-$(document).ready(function() {
-    var app = {
-        show: function() {
-            $.ajax({
-                url: '<?= base_url('lembaga/show') ?>',
-                method: "GET",
-                success: function(data) {
-                    $("#jakarta").html(data)
-                }
-            })
-        },
-        tampil: function() {
-            var kotaId = $(this).val();
-            $.ajax({
-                url: '<?= base_url('lembaga/data') ?>',
-                method: "POST",
-                data: {
-                    kotaId: kotaId
-                },
-                success: function(data) {
-                    $("#search_query").html(data)
-                }
-            })
+    $(document).ready(function() {
+        var app = {
+            show: function() {
+                $.ajax({
+                    url: '<?= base_url('lembaga/show') ?>',
+                    method: "GET",
+                    success: function(data) {
+                        $("#jakarta").html(data)
+                    }
+                })
+            },
+            tampil: function() {
+                var kotaId = $(this).val();
+                $.ajax({
+                    url: '<?= base_url('lembaga/data') ?>',
+                    method: "POST",
+                    data: {
+                        kotaId: kotaId
+                    },
+                    success: function(data) {
+                        $("#search_query").html(data)
+                    }
+                })
+            }
         }
+        app.show();
+        $(document).on("change", "#jakarta", app.tampil)
+    })
+
+    $(document).ready(function() {
+        //$("#search_results").slideUp();
+        $("#button_find").click(function(event) {
+            event.preventDefault();
+            //search_ajax_way();
+            ajax_search();
+        });
+    });
+
+    function ajax_search() {
+
+        var judul = $("#search_query").val();
+        $.ajax({
+            url: "<?= base_url('lembaga/cari') ?>",
+            data: "judul=" + judul,
+            success: function(data) {
+                // jika data sukses diambil dari server, tampilkan di <select id=kota>
+                $("#display_results").html(data);
+            }
+        });
+
     }
-    app.show();
-    $(document).on("change", "#jakarta", app.tampil)
-})
-
-$(document).ready(function() {
-    //$("#search_results").slideUp();
-    $("#button_find").click(function(event) {
-        event.preventDefault();
-        //search_ajax_way();
-        ajax_search();
-    });
-});
-
-function ajax_search() {
-
-    var judul = $("#search_query").val();
-    $.ajax({
-        url: "<?= base_url('lembaga/cari') ?>",
-        data: "judul=" + judul,
-        success: function(data) {
-            // jika data sukses diambil dari server, tampilkan di <select id=kota>
-            $("#display_results").html(data);
-        }
-    });
-
-}
 </script>
 </body>
 

@@ -42,7 +42,7 @@
                                 <div class="border p-4 rounded">
                                     <div class="text-center">
                                         <!-- <h4 class="">SIMKUPADUKA APP</h3> -->
-                                        <img src="<?= base_url('vertical/'); ?>assets/images/logo-img.png" width="180"
+                                        <img src="<?= base_url('vertical/'); ?>assets/images/logo.png" width="180"
                                             alt="" />
                                     </div>
                                     <div class="login-separater text-center mb-2"> <span>LOGIN AKUN</span>
