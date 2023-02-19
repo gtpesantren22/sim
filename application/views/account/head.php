@@ -124,6 +124,9 @@ use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Base;
                         <li>
                             <a href="<?= base_url('account/spj'); ?>"><i class="bx bx-right-arrow-alt"></i>SPJ</a>
                         </li>
+                        <li>
+                            <a href="<?= base_url('account/lain'); ?>"><i class="bx bx-right-arrow-alt"></i>Pengeluaran Lain</a>
+                        </li>
                     </ul>
                 </li>
                 <li>
@@ -194,17 +197,17 @@ use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Base;
                                     </a>
                                     <div class="header-notifications-list">
                                         <?php foreach ($pjnData->result() as $data) : ?>
-                                        <a class="dropdown-item" href="javascript:;">
-                                            <div class="d-flex align-items-center">
-                                                <div class="notify bg-light-primary text-primary"><i class="bx bx-wallet"></i>
+                                            <a class="dropdown-item" href="javascript:;">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="notify bg-light-primary text-primary"><i class="bx bx-wallet"></i>
+                                                    </div>
+                                                    <div class="flex-grow-1">
+                                                        <h6 class="msg-name">New Customers<span class="msg-time float-end">14 Sec
+                                                                ago</span></h6>
+                                                        <p class="msg-info">5 new user registered</p>
+                                                    </div>
                                                 </div>
-                                                <div class="flex-grow-1">
-                                                    <h6 class="msg-name">New Customers<span class="msg-time float-end">14 Sec
-                                                            ago</span></h6>
-                                                    <p class="msg-info">5 new user registered</p>
-                                                </div>
-                                            </div>
-                                        </a>
+                                            </a>
                                         <?php endforeach; ?>
                                     </div>
                                     <a href="<?= base_url('account/pengajuan') ?>">
@@ -246,9 +249,9 @@ use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Base;
                             </div>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="javascript:;"><i class="bx bx-user"></i><span>Profile</span></a>
+                            <li><a class="dropdown-item" href="<?= base_url('account/setting') ?>"><i class="bx bx-user"></i><span>Profile</span></a>
                             </li>
-                            <li><a class="dropdown-item" href="<?= base_url(); ?>"><i class='bx bx-home-circle'></i><span>Dashboard</span></a>
+                            <li><a class="dropdown-item" href="<?= base_url('account'); ?>"><i class='bx bx-home-circle'></i><span>Dashboard</span></a>
                             </li>
                             <li>
                                 <div class="dropdown-divider mb-0"></div>

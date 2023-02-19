@@ -21,6 +21,7 @@ class Account extends CI_Controller
 		$api = $this->model->apiKey()->row();
 		$this->apiKey = $api->nama_key;
 		$this->user = $user->nama;
+		$this->lembaga = $user->lembaga;
 
 		if (!$this->Auth_model->current_user() || $user->level != 'account') {
 			redirect('login/logout');
@@ -37,11 +38,12 @@ class Account extends CI_Controller
 		$pesantren = $this->model->getBySum('pesantren', 'tahun', $this->tahun, 'nominal')->row();
 		$kebijakan = $this->model->getBySum('kebijakan', 'tahun', $this->tahun, 'nominal')->row();
 		$realis = $this->model->getBySum('realis', 'tahun', $this->tahun, 'nom_serap')->row();
+		$keluar = $this->model->getBySum('keluar', 'tahun', $this->tahun, 'nominal')->row();
 		$dekos = $this->model->getDekosSum($this->tahun)->row();
 		$nikmus = $this->model->getNikmusSum($this->tahun)->row();
 
 		$data['masuk'] = $bos->jml + $pembayaran->jml + $pesantren->jml;
-		$data['keluar'] = $kebijakan->jml + $realis->jml + $dekos->nominal + $nikmus->nom_kriteria + $nikmus->transport + $nikmus->sopir;
+		$data['keluar'] = $kebijakan->jml + $realis->jml + $dekos->nominal + $nikmus->nom_kriteria + $nikmus->transport + $nikmus->sopir + $keluar->nominal;
 
 		$data['lembaga'] = $this->model->getBy('lembaga', 'tahun', $this->tahun)->result();
 		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
@@ -1254,6 +1256,55 @@ https://simkupaduka.ppdwk.com/';
 				$this->session->set_flashdata('error', 'Upload foto sukses');
 				redirect('account/setting');
 			}
+		}
+	}
+
+	public function lain()
+	{
+		$data['lembaga'] = $this->model->getBy2('lembaga', 'kode', $this->lembaga, 'tahun', $this->tahun)->row();
+		$data['user'] = $this->Auth_model->current_user();
+		$data['tahun'] = $this->tahun;
+		$data['keluar'] = $this->model->getBy('keluar', 'tahun', $this->tahun)->result();
+		$data['sumKeluar'] = $this->model->getBySum('keluar', 'tahun', $this->tahun, 'nominal')->row();
+		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
+
+		$this->load->view('account/head', $data);
+		$this->load->view('account/keluar', $data);
+		$this->load->view('account/foot');
+	}
+
+	public function saveOut()
+	{
+		$data = [
+			'id_keluar' => $this->uuid->v4(),
+			'nominal' => rmRp($this->input->post('nominal', true)),
+			'tanggal' => $this->input->post('tanggal', true),
+			'pj' => $this->input->post('pj', true),
+			'ket' => $this->input->post('ket', true),
+			'tahun' => $this->tahun,
+			'kasir' => $this->user,
+			'at' => date('Y-m-d H:i:s')
+		];
+
+		$this->model->input('keluar', $data);
+		if ($this->db->affected_rows() > 0) {
+			$this->session->set_flashdata('ok', 'Input data sukses');
+			redirect('account/lain');
+		} else {
+			$this->session->set_flashdata('error', 'Input data gagal');
+			redirect('account/lain');
+		}
+	}
+
+	public function delLain($id)
+	{
+		$this->model->delete('keluar', 'id_keluar', $id);
+		if ($this->db->affected_rows() > 0) {
+			$this->session->set_flashdata('ok', 'Hapus data sukses');
+			redirect('account/lain');
+		} else {
+			$this->session->set_flashdata('error', 'Hapus data gagal');
+			redirect('account/lain');
 		}
 	}
 }
