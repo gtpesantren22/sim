@@ -302,6 +302,6 @@ class AdminModel extends CI_Model
         $this->db2->select_sum('nominal', 'nominal');
         $this->db2->where('tahun', $tahun);
         $this->db2->from('setor');
-        return $this->db->get();
+        return $this->db2->get();
     }
 }
