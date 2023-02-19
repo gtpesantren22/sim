@@ -10,6 +10,7 @@ class AdminModel extends CI_Model
         $this->table = 'tangg';
 
         $this->db2 = $this->load->database('dekos', true);
+        $this->db5 = $this->load->database('nikmus', true);
     }
 
     public function add($data)
@@ -303,5 +304,15 @@ class AdminModel extends CI_Model
         $this->db2->where('tahun', $tahun);
         $this->db2->from('setor');
         return $this->db2->get();
+    }
+
+    public function getNikmusSum($tahun)
+    {
+        $this->db5->select_sum('nom_kriteria', 'nom_kriteria');
+        $this->db5->select_sum('transport', 'transport');
+        $this->db5->select_sum('sopir', 'sopir');
+        $this->db5->where('tahun', $tahun);
+        $this->db5->from('pengajuan');
+        return $this->db5->get();
     }
 }

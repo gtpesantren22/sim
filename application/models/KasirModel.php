@@ -155,4 +155,14 @@ class KasirModel extends CI_Model
         $this->db2->from('setor');
         return $this->db2->get();
     }
+
+    public function getNikmusSum($tahun)
+    {
+        $this->db5->select_sum('nom_kriteria', 'nom_kriteria');
+        $this->db5->select_sum('transport', 'transport');
+        $this->db5->select_sum('sopir', 'sopir');
+        $this->db5->where('tahun', $tahun);
+        $this->db5->from('pengajuan');
+        return $this->db5->get();
+    }
 }
