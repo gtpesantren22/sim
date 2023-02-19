@@ -7,9 +7,9 @@ class KasirModel extends CI_Model
     public function __construct()
     {
         parent::__construct();
-        $this->db2 = $this->load->database('dekos',true);
-        $this->db3 = $this->load->database('sekretaris',true);
-        $this->db4 = $this->load->database('santri',true);
+        $this->db2 = $this->load->database('dekos', true);
+        $this->db3 = $this->load->database('sekretaris', true);
+        $this->db4 = $this->load->database('santri', true);
     }
     function apikey()
     {
@@ -30,7 +30,7 @@ class KasirModel extends CI_Model
         $this->db->where($where2, $dtwhere2);
         return $this->db->get($table);
     }
-    
+
     public function getPengajuan($tahun)
     {
         $this->db->from('pengajuan');
@@ -40,7 +40,7 @@ class KasirModel extends CI_Model
         $this->db->not_like('kode_pengajuan', 'DISP.');
         return $this->db->get();
     }
-    
+
     public function getPengajuanDisp($tahun)
     {
         $this->db->from('pengajuan');
@@ -50,7 +50,7 @@ class KasirModel extends CI_Model
         $this->db->like('kode_pengajuan', 'DISP.');
         return $this->db->get();
     }
-    
+
     function getBySum($table, $where, $dtwhere, $sum)
     {
         $this->db->select('*');
@@ -58,13 +58,13 @@ class KasirModel extends CI_Model
         $this->db->where($where, $dtwhere);
         return $this->db->get($table);
     }
-    
+
     public function update($table, $data, $where, $dtwhere)
     {
         $this->db->where($where, $dtwhere);
         $this->db->update($table, $data);
     }
-    
+
     public function delete($table, $where, $dtwhere)
     {
         $this->db->where($where, $dtwhere);
@@ -91,7 +91,7 @@ class KasirModel extends CI_Model
     function getByJoin($table1, $table2, $on1, $on2, $where1, $dtwhere1)
     {
         $this->db->from($table1);
-        $this->db->join($table2, 'ON '.$table1.'.'.$on1.' = '.$table2.'.'.$on2);
+        $this->db->join($table2, 'ON ' . $table1 . '.' . $on1 . ' = ' . $table2 . '.' . $on2);
         $this->db->where($where1, $dtwhere1);
         return $this->db->get();
     }
@@ -123,7 +123,7 @@ class KasirModel extends CI_Model
         $this->db->order_by('pembayaran.tgl', 'DESC');
         return $this->db->get();
     }
-    
+
     public function getMutasi()
     {
         // $sql = mysqli_query($conn_sekretaris, "SELECT a.*, b.* FROM mutasi a JOIN tb_santri b ON a.nis=b.nis WHERE status = 0 AND aktif = 'Y' ORDER BY id_mutasi DESC ");
@@ -146,5 +146,13 @@ class KasirModel extends CI_Model
         $this->db3->where($where1, $dtwhere1);
         $this->db3->where($where2, $dtwhere2);
         return $this->db3->get($table);
+    }
+
+    public function getDekosSum($tahun)
+    {
+        $this->db2->select_sum('nominal', 'nominal');
+        $this->db2->where('tahun', $tahun);
+        $this->db2->from('setor');
+        return $this->db->get();
     }
 }

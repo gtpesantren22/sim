@@ -8,6 +8,8 @@ class AdminModel extends CI_Model
     {
         parent::__construct();
         $this->table = 'tangg';
+
+        $this->db2 = $this->load->database('dekos', true);
     }
 
     public function add($data)
@@ -292,6 +294,14 @@ class AdminModel extends CI_Model
         $this->db->from('user');
         $this->db->join('lembaga', 'ON user.lembaga=lembaga.kode');
         $this->db->where('lembaga.tahun', $dtwhere2);
+        return $this->db->get();
+    }
+
+    public function getDekosSum($tahun)
+    {
+        $this->db2->select_sum('nominal', 'nominal');
+        $this->db2->where('tahun', $tahun);
+        $this->db2->from('setor');
         return $this->db->get();
     }
 }
