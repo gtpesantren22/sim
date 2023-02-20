@@ -41,8 +41,11 @@ class Kasir extends CI_Controller
         $dekos = $this->model->getDekosSum($this->tahun)->row();
         $nikmus = $this->model->getNikmusSum($this->tahun)->row();
 
-        $data['masuk'] = $bos->jml + $pembayaran->jml + $pesantren->jml;
-        $data['keluar'] = $kebijakan->jml + $realis->jml + $dekos->nominal + $nikmus->nom_kriteria + $nikmus->transport + $nikmus->sopir + $keluar->nominal;
+        $sumPinjam = $this->model->getBySum('peminjaman', 'tahun', $this->tahun, 'nominal')->row();
+        $sumCicil = $this->model->getBySum('cicilan', 'tahun', $this->tahun, 'nominal')->row();
+
+        $data['masuk'] = $bos->jml + $pembayaran->jml + $pesantren->jml + $sumCicil->jml;
+        $data['keluar'] = $kebijakan->jml + $realis->jml + $dekos->nominal + $nikmus->nom_kriteria + $nikmus->transport + $nikmus->sopir + $keluar->jml + $sumPinjam->jml;
 
         $data['lembaga'] = $this->model->getBy('lembaga', 'tahun', $this->tahun)->result();
 
