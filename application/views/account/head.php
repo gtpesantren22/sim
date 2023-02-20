@@ -197,7 +197,7 @@ use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Base;
                                     </a>
                                     <div class="header-notifications-list">
                                         <?php foreach ($pjnData->result() as $data) :
-                                            $lmb = $this->db->query("SELECT * FROM lembaga WHERE kode = '$data->lembaga' AND tahun = '$tahun' ");
+                                            $lmb = $this->db->query("SELECT * FROM lembaga WHERE kode = '$data->lembaga' AND tahun = '$tahun' ")->row();
                                         ?>
                                             <a class="dropdown-item" href="<?= base_url('account/pengajuanDtl/' . $data->kode_pengajuan) ?>">
                                                 <div class="d-flex align-items-center">
