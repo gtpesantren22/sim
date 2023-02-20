@@ -196,15 +196,16 @@ use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Base;
                                         </div>
                                     </a>
                                     <div class="header-notifications-list">
-                                        <?php foreach ($pjnData->result() as $data) : ?>
-                                            <a class="dropdown-item" href="javascript:;">
+                                        <?php foreach ($pjnData->result() as $data) :
+                                            $lmb = $this->db->query("SELECT * FROM lembaga WHERE kode = '$data->lembaga' AND tahun = '$tahun' ");
+                                        ?>
+                                            <a class="dropdown-item" href="<?= base_url('account/pengajuanDtl/' . $data->kode_pengajuan) ?>">
                                                 <div class="d-flex align-items-center">
                                                     <div class="notify bg-light-primary text-primary"><i class="bx bx-wallet"></i>
                                                     </div>
                                                     <div class="flex-grow-1">
-                                                        <h6 class="msg-name">New Customers<span class="msg-time float-end">14 Sec
-                                                                ago</span></h6>
-                                                        <p class="msg-info">5 new user registered</p>
+                                                        <h6 class="msg-name"><?= $data->kode_pengajuan ?><span class="msg-time float-end"><?= $data->at ?></span></h6>
+                                                        <p class="msg-info"><?= $lmb->nama ?></p>
                                                     </div>
                                                 </div>
                                             </a>
