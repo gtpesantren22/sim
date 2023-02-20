@@ -10,6 +10,7 @@ class KasirModel extends CI_Model
         $this->db2 = $this->load->database('dekos', true);
         $this->db3 = $this->load->database('sekretaris', true);
         $this->db4 = $this->load->database('santri', true);
+        $this->db5 = $this->load->database('nikmus', true);
     }
     function apikey()
     {
@@ -164,5 +165,14 @@ class KasirModel extends CI_Model
         $this->db5->where('tahun', $tahun);
         $this->db5->from('pengajuan');
         return $this->db5->get();
+    }
+
+    public function getByrGroup($tahun)
+    {
+        $this->db->select('bulan');
+        $this->db->from('pembayaran');
+        $this->db->group_by('bulan');
+        $this->db->where('tahun', $tahun);
+        return $this->db->get();
     }
 }

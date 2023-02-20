@@ -687,4 +687,19 @@ Terimakasih';
             }
         }
     }
+
+    public function rekap()
+    {
+
+        $data['lembaga'] = $this->model->getBy2('lembaga', 'kode', $this->lembaga, 'tahun', $this->tahun)->row();
+        $data['user'] = $this->Auth_model->current_user();
+        $data['tahun'] = $this->tahun;
+        $data['bulan'] = $this->bulan;
+        $data['hasil'] = $this->model->getByrGroup($this->tahun)->result();
+        $data['total'] = $this->model->getBySum('pembayaran', 'tahun', $this->tahun, 'nominal')->row();
+
+        $this->load->view('kasir/head', $data);
+        $this->load->view('kasir/rekap', $data);
+        $this->load->view('kasir/foot');
+    }
 }
