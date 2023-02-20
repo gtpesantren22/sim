@@ -1372,7 +1372,7 @@ https://simkupaduka.ppdwk.com/';
 		$data['lembaga'] = $this->model->getBy2('lembaga', 'kode', $this->lembaga, 'tahun', $this->tahun)->row();
 		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
 
-		$data['dataPinjam'] = $this->model->getBy('peminjaman', 'tahun', $this->tahun, 'id_pinjam', $id)->row();
+		$data['dataPinjam'] = $this->model->getBy('peminjaman', 'id_pinjam', $id)->row();
 		$data['cicil'] = $this->model->getBy('cicilan', 'kode_pinjam', $data['dataPinjam']->kode_pinjam)->result();
 		$data['sumPinjam'] = $this->model->getBySum('peminjaman', 'tahun', $this->tahun, 'nominal')->row();
 
