@@ -1310,4 +1310,114 @@ https://simkupaduka.ppdwk.com/';
 			redirect('account/lain');
 		}
 	}
+
+	public function pinjam()
+	{
+		$data['user'] = $this->Auth_model->current_user();
+		$data['tahun'] = $this->tahun;
+		$data['lembaga'] = $this->model->getBy2('lembaga', 'kode', $this->lembaga, 'tahun', $this->tahun)->row();
+		$data['pinjam'] = $this->model->getBy('peminjaman', 'tahun', $this->tahun)->result();
+		$data['sumPinjam'] = $this->model->getBySum('peminjaman', 'tahun', $this->tahun, 'nominal')->row();
+		$data['sumCicil'] = $this->model->getBySum('cicilan', 'tahun', $this->tahun, 'nominal')->row();
+		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
+
+		$this->load->view('admin/head', $data);
+		$this->load->view('admin/pinjam', $data);
+		$this->load->view('admin/foot');
+	}
+
+	public function savePinjam()
+	{
+		$data = [
+			'id_pinjam' => $this->uuid->v4(),
+			'kode_pinjam' => 'PINJAM-' . rand(0, 99999999),
+			'nominal' => rmRp($this->input->post('nominal', true)),
+			'jml_cicil' => $this->input->post('jml_cicil', true),
+			'peminjam' => $this->input->post('peminjam', true),
+			'tgl_pinjam' => $this->input->post('tgl_pinjam', true),
+			'tahun' => $this->tahun,
+			'at' => date('Y-m-d H:i:s')
+		];
+
+		$this->model->input('peminjaman', $data);
+		if ($this->db->affected_rows() > 0) {
+			$this->session->set_flashdata('ok', 'Input data sukses');
+			redirect('admin/pinjam');
+		} else {
+			$this->session->set_flashdata('error', 'Input data gagal');
+			redirect('admin/pinjam');
+		}
+	}
+
+	public function delPinjam($id)
+	{
+		$data = $this->model->getBy('peminjaman', 'id_pinjam', $id)->row();
+
+		$this->model->delete('peminjaman', 'id_pinjam', $id);
+		$this->model->delete('cicilan', 'kode_pinjam', $data->kode_pinjam);
+
+		if ($this->db->affected_rows() > 0) {
+			$this->session->set_flashdata('ok', 'Hapus data sukses');
+			redirect('admin/pinjam');
+		} else {
+			$this->session->set_flashdata('error', 'Hapus data gagal');
+			redirect('admin/pinjam');
+		}
+	}
+
+	public function infoPinjam($id)
+	{
+		$data['user'] = $this->Auth_model->current_user();
+		$data['tahun'] = $this->tahun;
+		$data['lembaga'] = $this->model->getBy2('lembaga', 'kode', $this->lembaga, 'tahun', $this->tahun)->row();
+		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
+
+		$data['cicil'] = $this->model->getBy('cicilan', 'tahun', $this->tahun)->result();
+		$data['dataPinjam'] = $this->model->getBy('peminjaman', 'tahun', $this->tahun, 'id_pinjam', $id)->row();
+		$data['sumPinjam'] = $this->model->getBySum('peminjaman', 'tahun', $this->tahun, 'nominal')->row();
+
+		$data['sumCicil'] = $this->model->getBySum('cicilan', 'kode_pinjam', $data['dataPinjam']->kode_pinjam, 'nominal')->row();
+
+		$this->load->view('admin/head', $data);
+		$this->load->view('admin/infoPinjam', $data);
+		$this->load->view('admin/foot');
+	}
+
+	public function addCicil()
+	{
+		$dataPinjam = $this->model->getBy('peminjaman', 'kode_pinjam', $this->input->post('kode_pinjam', true))->row();
+		$data = [
+			'id_cicilan' => $this->uuid->v4(),
+			'kode_pinjam' =>  $this->input->post('kode_pinjam', true),
+			'ket ' =>  $this->input->post('ket', true),
+			'tgl_setor ' =>  $this->input->post('tgl_setor', true),
+			'nominal ' =>  $dataPinjam->nominal / $dataPinjam->jml_cicil,
+			'tahun' => $this->tahun,
+			'at' => date('Y-m-d H:i:s')
+		];
+
+		$this->model->input('cicilan', $data);
+		if ($this->db->affected_rows() > 0) {
+			$this->session->set_flashdata('ok', 'Input data sukses');
+			redirect('admin/infoPinjam/' . $dataPinjam->id_pinjam);
+		} else {
+			$this->session->set_flashdata('error', 'Input data gagal');
+			redirect('admin/infoPinjam/' . $dataPinjam->id_pinjam);
+		}
+	}
+
+	public function delCicil($id)
+	{
+		$data = $this->model->getBy('cicilan', 'id_cicilan', $id)->row();
+		$dataPinjam = $this->model->getBy('peminjaman', 'kode_pinjam', $data->kode_pinjam)->row();
+
+		$this->model->delete('cicilan', 'id_cicilan', $id);
+		if ($this->db->affected_rows() > 0) {
+			$this->session->set_flashdata('ok', 'Hapus data sukses');
+			redirect('admin/infoPinjam/' . $dataPinjam->id_pinjam);
+		} else {
+			$this->session->set_flashdata('error', 'Hapus data gagal');
+			redirect('admin/infoPinjam/' . $dataPinjam->id_pinjam);
+		}
+	}
 }

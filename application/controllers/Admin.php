@@ -1767,6 +1767,22 @@ https://simkupaduka.ppdwk.com/';
 		}
 	}
 
+	public function delPinjam($id)
+	{
+		$data = $this->model->getBy('peminjaman', 'id_pinjam', $id)->row();
+
+		$this->model->delete('peminjaman', 'id_pinjam', $id);
+		$this->model->delete('cicilan', 'kode_pinjam', $data->kode_pinjam);
+
+		if ($this->db->affected_rows() > 0) {
+			$this->session->set_flashdata('ok', 'Hapus data sukses');
+			redirect('admin/pinjam');
+		} else {
+			$this->session->set_flashdata('error', 'Hapus data gagal');
+			redirect('admin/pinjam');
+		}
+	}
+
 	public function infoPinjam($id)
 	{
 		$data['user'] = $this->Auth_model->current_user();
