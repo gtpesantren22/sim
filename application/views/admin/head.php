@@ -142,7 +142,7 @@ use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Base;
                             <a href="<?= base_url('admin/spj'); ?>"><i class="bx bx-right-arrow-alt"></i>SPJ</a>
                         </li>
                         <li>
-                            <a href="<?= base_url('account/lain'); ?>"><i class="bx bx-right-arrow-alt"></i>Pengeluaran Lain</a>
+                            <a href="<?= base_url('admin/lain'); ?>"><i class="bx bx-right-arrow-alt"></i>Pengeluaran Lain</a>
                         </li>
                     </ul>
                 </li>
