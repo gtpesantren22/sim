@@ -204,7 +204,7 @@ use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Base;
                                                     <div class="notify bg-light-primary text-primary"><i class="bx bx-wallet"></i>
                                                     </div>
                                                     <div class="flex-grow-1">
-                                                        <h6 class="msg-name"><?= $data->kode_pengajuan ?><span class="msg-time float-end"><?= $data->at ?></span></h6>
+                                                        <h6 class="msg-name"><?= $data->kode_pengajuan ?><span class="msg-time float-end"><?= date('d-m-Y', strtotime($data->at)) ?></span></h6>
                                                         <p class="msg-info"><?= $lmb->nama ?></p>
                                                     </div>
                                                 </div>
