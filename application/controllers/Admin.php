@@ -43,7 +43,7 @@ class Admin extends CI_Controller
 		$nikmus = $this->model->getNikmusSum($this->tahun)->row();
 
 		$data['masuk'] = $bos->jml + $pembayaran->jml + $pesantren->jml;
-		$data['keluar'] = $kebijakan->jml + $realis->jml + $dekos->nominal + $nikmus->nom_kriteria + $nikmus->transport + $nikmus->sopir + $keluar->nominal;
+		$data['keluar'] = $kebijakan->jml + $realis->jml + $dekos->nominal + $nikmus->nom_kriteria + $nikmus->transport + $nikmus->sopir + $keluar->jml;
 
 		$data['lembaga'] = $this->model->getBy('lembaga', 'tahun', $this->tahun)->result();
 

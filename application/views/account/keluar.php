@@ -29,7 +29,7 @@
                                         <div class="d-flex align-items-center">
                                             <div>
                                                 <p class="mb-0 text-white">TOTAL PENGELURAN LAINNYA</p>
-                                                <h4 class="my-1 text-white"><?= rupiah($sumKeluar->nominal); ?></h4>
+                                                <h4 class="my-1 text-white"><?= rupiah($sumKeluar->jml); ?></h4>
                                             </div>
                                             <div class="text-white ms-auto font-35"><i class='bx bx-money'></i>
                                             </div>
