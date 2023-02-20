@@ -70,7 +70,7 @@ class Account extends CI_Controller
 		$data['pes'] = $this->model->getBy('pesantren', 'tahun', $this->tahun)->result();
 		$data['sumPes'] = $this->model->selectSum('pesantren', 'nominal', 'tahun', $this->tahun)->row();
 		$data['lembaga'] = $this->model->getBy('lembaga', 'tahun', $this->tahun)->result();
-		$data['tahun'] = $this->model->getAll('tahun')->result();
+		$data['tahunData'] = $this->model->getAll('tahun')->result();
 		$data['bidang'] = $this->model->getBy('bidang', 'tahun', $this->tahun)->result();
 		$data['user'] = $this->Auth_model->current_user();
 		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
@@ -162,7 +162,7 @@ class Account extends CI_Controller
 		$data['bos'] = $this->model->getBy('bos', 'tahun', $this->tahun)->result();
 		$data['sumBos'] = $this->model->selectSum('bos', 'nominal', 'tahun', $this->tahun)->row();
 		$data['lembaga'] = $this->model->getBy('lembaga', 'tahun', $this->tahun)->result();
-		$data['tahun'] = $this->model->getAll('tahun')->result();
+		$data['tahunData'] = $this->model->getAll('tahun')->result();
 		$data['bidang'] = $this->model->getBy('bidang', 'tahun', $this->tahun)->result();
 		$data['user'] = $this->Auth_model->current_user();
 		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
