@@ -141,6 +141,9 @@ use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Base;
                         <li>
                             <a href="<?= base_url('admin/spj'); ?>"><i class="bx bx-right-arrow-alt"></i>SPJ</a>
                         </li>
+                        <li>
+                            <a href="<?= base_url('account/lain'); ?>"><i class="bx bx-right-arrow-alt"></i>Pengeluaran Lain</a>
+                        </li>
                     </ul>
                 </li>
                 <li>
@@ -395,7 +398,7 @@ use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Base;
                             <?php } else { ?>
                                 <img src="<?= base_url('vertical/assets/uploads/profile/user-avatar.png'); ?>" class="user-img" alt="user avatar">
                             <?php } ?>
-                            
+
                             <div class="user-info ps-3">
                                 <p class="user-name mb-0"><?= $user->nama; ?></p>
                                 <p class="designattion mb-0"><?= $user->level; ?></p>

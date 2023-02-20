@@ -1677,4 +1677,53 @@ https://simkupaduka.ppdwk.com/';
 			}
 		}
 	}
+
+	public function lain()
+	{
+		$data['lembaga'] = $this->model->getBy2('lembaga', 'kode', $this->lembaga, 'tahun', $this->tahun)->row();
+		$data['user'] = $this->Auth_model->current_user();
+		$data['tahun'] = $this->tahun;
+		$data['keluar'] = $this->model->getBy('keluar', 'tahun', $this->tahun)->result();
+		$data['sumKeluar'] = $this->model->getBySum('keluar', 'tahun', $this->tahun, 'nominal')->row();
+		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
+
+		$this->load->view('admin/head', $data);
+		$this->load->view('admin/keluar', $data);
+		$this->load->view('admin/foot');
+	}
+
+	public function saveOut()
+	{
+		$data = [
+			'id_keluar' => $this->uuid->v4(),
+			'nominal' => rmRp($this->input->post('nominal', true)),
+			'tanggal' => $this->input->post('tanggal', true),
+			'pj' => $this->input->post('pj', true),
+			'ket' => $this->input->post('ket', true),
+			'tahun' => $this->tahun,
+			'kasir' => $this->user,
+			'at' => date('Y-m-d H:i:s')
+		];
+
+		$this->model->input('keluar', $data);
+		if ($this->db->affected_rows() > 0) {
+			$this->session->set_flashdata('ok', 'Input data sukses');
+			redirect('admin/lain');
+		} else {
+			$this->session->set_flashdata('error', 'Input data gagal');
+			redirect('admin/lain');
+		}
+	}
+
+	public function delLain($id)
+	{
+		$this->model->delete('keluar', 'id_keluar', $id);
+		if ($this->db->affected_rows() > 0) {
+			$this->session->set_flashdata('ok', 'Hapus data sukses');
+			redirect('admin/lain');
+		} else {
+			$this->session->set_flashdata('error', 'Hapus data gagal');
+			redirect('admin/lain');
+		}
+	}
 }
