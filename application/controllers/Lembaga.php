@@ -920,7 +920,7 @@ Terimakasih';
 		$pass_baru = password_hash($password, PASSWORD_DEFAULT);
 
 		if ($password == '' && $password2 = '') {
-			
+
 			$data = [
 				'nama' => strtoupper($nama),
 				'username' => $username
@@ -933,13 +933,12 @@ Terimakasih';
 				$this->session->set_flashdata('error', 'User akun tidak berhasil diperbarui');
 				redirect('lembaga/setting/');
 			}
-			
 		} else {
 			if ($password != $password2) {
 				$this->session->set_flashdata('error', 'Konfimasi password tidak sama');
 				redirect('lembaga/setting/');
 			} else {
-				
+
 				$data = [
 					'nama' => $nama,
 					'username' => $username,
@@ -953,7 +952,6 @@ Terimakasih';
 					$this->session->set_flashdata('error', 'User akun tidak berhasil diperbarui');
 					redirect('lembaga/setting/');
 				}
-				
 			}
 		}
 	}

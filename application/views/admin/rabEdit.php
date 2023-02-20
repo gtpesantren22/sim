@@ -18,8 +18,7 @@
             </div>
             <div class="ms-auto">
                 <div class="btn-group">
-                    <a href="<?= base_url('admin/rabDetail/' . $lembaga->kode); ?>" class="btn btn-warning btn-sm"><i
-                            class="bx bx-subdirectory-left"></i>
+                    <a href="<?= base_url('admin/rabDetail/' . $lembaga->kode); ?>" class="btn btn-warning btn-sm"><i class="bx bx-subdirectory-left"></i>
                         Kembali</a>
                 </div>
             </div>
@@ -69,11 +68,7 @@
                                             <td>Pembelajaan</td>
                                             <td>
                                                 <div class="progress" style="height:15px;">
-                                                    <div class="progress-bar progress-bar-striped progress-bar-animated"
-                                                        role="progressbar"
-                                                        aria-valuenow="<?= round(($rel->jml / $data->total) * 100, 0) ?>"
-                                                        aria-valuemin="0" aria-valuemax="100"
-                                                        style="width: <?= round(($rel->jml / $data->total) * 100, 0) ?>%">
+                                                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="<?= round(($rel->jml / $data->total) * 100, 0) ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= round(($rel->jml / $data->total) * 100, 0) ?>%">
                                                     </div>
                                                 </div>
                                             </td>
@@ -93,40 +88,62 @@
                             <div class="col-sm-6 invoice-col">
                                 <address>
                                     <?php if (($data->total - $rel->jml) > 0) { ?>
-                                    <form action="<?= base_url('admin/saveEditRab'); ?>" method="post">
-                                        <input type="hidden" name="id" value="<?= $data->id_rab; ?>">
-                                        <h4>Input pembelanjaan</h3>
-                                            <div class="table-responsive">
-                                                <table class="countries_list">
+                                        <form action="<?= base_url('admin/saveEditRab'); ?>" method="post">
+                                            <input type="hidden" name="id" value="<?= $data->id_rab; ?>">
+                                            <h4>Input pembelanjaan</h3>
+                                                <div class="table-responsive">
+                                                    <table class="countries_list">
 
-                                                    <tr>
-                                                        <th>Harga Satuan </th>
-                                                        <th> <input type="text" class="form-control" name="harga_satuan"
-                                                                value="<?= rupiah($data->harga_satuan); ?>" readonly>
-                                                        </th>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>Ganti Jumlah Satuan </th>
-                                                        <th> <input type="number" class="form-control" name="jml"
-                                                                required>
-                                                            <small class="text-danger">* Jumlah ini tidak boleh melebihi
-                                                                sisa</small>
-                                                        </th>
-                                                    </tr>
+                                                        <tr>
+                                                            <th>Harga Satuan </th>
+                                                            <th> <input type="text" class="form-control" name="harga_satuan" value="<?= rupiah($data->harga_satuan); ?>" readonly>
+                                                            </th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Ganti Jumlah Satuan </th>
+                                                            <th> <input type="number" class="form-control" name="jml" required>
+                                                                <small class="text-danger">* Jumlah ini tidak boleh melebihi
+                                                                    sisa</small>
+                                                            </th>
+                                                        </tr>
 
-                                                    <tr class="mt-3">
-                                                        <th></th>
-                                                        <th>
-                                                            <button class="btn btn-sm btn-success mt-3" type="submit"
-                                                                name="save"><i class="bx bx-save"></i> Simpan
-                                                                Data</button>
-                                                        </th>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                    </form>
+                                                        <tr class="mt-3">
+                                                            <th></th>
+                                                            <th>
+                                                                <button class="btn btn-sm btn-success mt-3" type="submit" name="save"><i class="bx bx-save"></i> Simpan
+                                                                    Data</button>
+                                                            </th>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                        </form>
                                     <?php } ?>
                                 </address>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="card bg-danger text-white">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-white"><i class="bx bx-info-circle"></i> Hati-hati fitur menggunakan ini</h5>
+                                        <?= form_open('admin/cairItem') ?>
+                                        <input type="hidden" name="kode" value="<?= $data->kode ?>">
+                                        <input type="hidden" name="sisa_jml" value="<?= ($data->total - $rel->jml) / $data->harga_satuan ?>">
+
+                                        <!-- <div class="form-group mb-3">
+                                            <label for="">Buat Kode Pengajuan</label>
+                                            <input type="text" name="kode_pengajuan" class="form-control" required>
+                                        </div> -->
+                                        <div class="form-group mb-3">
+                                            <label for="">Jml Akan Dicairkan</label>
+                                            <input type="number" name="vol" class="form-control" required>
+                                            <small>* Hati-hati jangan sampai melebihi dari sisa</small>
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <button class="btn btn-success" type="submit"><i class="bx bx-save"></i> Simpan</button>
+                                        </div>
+                                        <?= form_close() ?>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

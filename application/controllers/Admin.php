@@ -1611,4 +1611,70 @@ https://simkupaduka.ppdwk.com/';
 			}
 		}
 	}
+
+	public function cairItem()
+	{
+		$id = $this->uuid->v4();
+		$kode = $this->input->post('kode');
+		$vol = $this->input->post('vol');
+
+		$l = $this->model->getBy2('rab', 'kode', $kode, 'tahun', $this->tahun)->row();
+		$kd_rab = $l->kode;
+		$lembaga = $l->lembaga;
+		$bidang = $l->bidang;
+		$jenis = $l->jenis;
+		$tgl = date('Y-m-d');
+		$qty = $vol;
+		$pj = 'Manual';
+		$bulan = date('m');
+		$tahun = $this->tahun;
+		$nominal = $l->harga_satuan * $qty;
+		$nm_rab =  $l->nama;
+		$ket = $nm_rab . ' - @ ' . $qty . ' x ' . number_format($l->harga_satuan, 0, ',', '.');
+		$kd_pjn = 'Manual.' . $tgl;
+		$sisa_jml = $this->input->post('sisa_jml', true);
+
+		if ($jenis === 'A') {
+			$stas = 'barang';
+		} else {
+			$stas = 'tunai';
+		}
+
+		if ($qty > $sisa_jml) {
+			$this->session->set_flashdata('error', 'Maaf. Jumlah Pencairan anda melebihi dari yang tersisa');
+			redirect('admin/rabEdit/' . $l->id_rab);
+		} elseif ($qty < 1) {
+			$this->session->set_flashdata('error', 'Jumlah item 0. Jumlah item harus diisi');
+			redirect('admin/rabEdit/' . $l->id_rab);
+		} else {
+
+			$data = [
+				'id_realis' => $id,
+				'lembaga' => $lembaga,
+				'bidang' => $bidang,
+				'jenis' => $jenis,
+				'kode' => $kd_rab,
+				'vol' => $qty,
+				'nominal' => $nominal,
+				'tgl' => $tgl,
+				'pj' => $pj,
+				'bulan' => $bulan,
+				'tahun' => $tahun,
+				'ket' => $ket,
+				'kode_pengajuan' => $kd_pjn,
+				'nom_cair' => $nominal,
+				'nom_serap' => $nominal,
+				'stas' => $stas
+			];
+
+			$this->model->input('realis', $data);
+			if ($this->db->affected_rows() > 0) {
+				$this->session->set_flashdata('ok', 'Item pengajuan berhasil ditambahkan');
+				redirect('admin/rabEdit/' . $l->id_rab);
+			} else {
+				$this->session->set_flashdata('error', 'Item pengajuan tidak ditambahkan');
+				redirect('admin/rabEdit/' . $l->id_rab);
+			}
+		}
+	}
 }
