@@ -12,8 +12,7 @@
     <link rel="icon" href="<?= base_url('vertical/'); ?>assets/images/favicon-32x32.png" type="image/png" />
     <!--plugins-->
     <link href="<?= base_url('vertical/'); ?>assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
-    <link href="<?= base_url('vertical/'); ?>assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css"
-        rel="stylesheet" />
+    <link href="<?= base_url('vertical/'); ?>assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
     <link href="<?= base_url('vertical/'); ?>assets/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="<?= base_url('vertical/'); ?>assets/plugins/notifications/css/lobibox.min.css" />
     <!-- loader-->
@@ -42,8 +41,7 @@
                                 <div class="border p-4 rounded">
                                     <div class="text-center">
                                         <!-- <h4 class="">SIMKUPADUKA APP</h3> -->
-                                        <img src="<?= base_url('vertical/'); ?>assets/images/logo.png" width="180"
-                                            alt="" />
+                                        <img src="<?= base_url('vertical/'); ?>assets/images/logo.png" width="180" alt="" />
                                     </div>
                                     <div class="login-separater text-center mb-2"> <span>LOGIN AKUN</span>
                                         <hr />
@@ -52,18 +50,14 @@
                                         <form class="row g-3" method="post" action="<?= base_url('login/masuk'); ?>">
                                             <div class="col-12">
                                                 <label for="inputEmailAddress" class="form-label">Usename</label>
-                                                <input type="text" name="username" class="form-control"
-                                                    id="inputEmailAddress" placeholder="User Account">
+                                                <input type="text" name="username" class="form-control" id="inputEmailAddress" placeholder="User Account">
                                             </div>
                                             <div class="col-12">
                                                 <label for="inputChoosePassword" class="form-label">Enter
                                                     Password</label>
                                                 <div class="input-group" id="show_hide_password">
-                                                    <input type="password" name="password"
-                                                        class="form-control border-end-0" id="inputChoosePassword"
-                                                        placeholder="Enter Password">
-                                                    <a href="javascript:;" class="input-group-text bg-transparent"><i
-                                                            class='bx bx-hide'></i></a>
+                                                    <input type="password" name="password" class="form-control border-end-0" id="inputChoosePassword" placeholder="Enter Password">
+                                                    <a href="javascript:;" class="input-group-text bg-transparent"><i class='bx bx-hide'></i></a>
                                                 </div>
                                             </div>
                                             <div class="col-12">
@@ -72,25 +66,21 @@
                                                 <select name="tahun" class="form-control" id="" required>
                                                     <?php
                                                     foreach ($tahun as $a) { ?>
-                                                    <option value="<?= $a->nama_tahun ?>"><?= $a->nama_tahun ?></option>
+                                                        <option value="<?= $a->nama_tahun ?>"><?= $a->nama_tahun ?></option>
                                                     <?php } ?>
                                                 </select>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox"
-                                                        id="flexSwitchCheckChecked">
-                                                    <label class="form-check-label"
-                                                        for="flexSwitchCheckChecked">Remember Me</label>
+                                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
+                                                    <label class="form-check-label" for="flexSwitchCheckChecked">Remember Me</label>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6 text-end"> <a
-                                                    href="authentication-forgot-password.html">Daftar Akun</a>
+                                            <div class="col-md-6 text-end"> <a href="authentication-forgot-password.html">Daftar Akun</a>
                                             </div>
                                             <div class="col-12">
                                                 <div class="d-grid">
-                                                    <button type="submit" class="btn btn-primary"><i
-                                                            class="bx bxs-lock-open"></i>Sign in</button>
+                                                    <button type="submit" class="btn btn-primary"><i class="bx bxs-lock-open"></i>Sign in</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -119,20 +109,20 @@
     <script src="<?= base_url('vertical/'); ?>assets/sw/sweetalert2.all.min.js"></script>
     <script src="<?= base_url('vertical/'); ?>assets/plugins/notifications/js/my-notif.js"></script>
     <script>
-    $(document).ready(function() {
-        $("#show_hide_password a").on('click', function(event) {
-            event.preventDefault();
-            if ($('#show_hide_password input').attr("type") == "text") {
-                $('#show_hide_password input').attr('type', 'password');
-                $('#show_hide_password i').addClass("bx-hide");
-                $('#show_hide_password i').removeClass("bx-show");
-            } else if ($('#show_hide_password input').attr("type") == "password") {
-                $('#show_hide_password input').attr('type', 'text');
-                $('#show_hide_password i').removeClass("bx-hide");
-                $('#show_hide_password i').addClass("bx-show");
-            }
+        $(document).ready(function() {
+            $("#show_hide_password a").on('click', function(event) {
+                event.preventDefault();
+                if ($('#show_hide_password input').attr("type") == "text") {
+                    $('#show_hide_password input').attr('type', 'password');
+                    $('#show_hide_password i').addClass("bx-hide");
+                    $('#show_hide_password i').removeClass("bx-show");
+                } else if ($('#show_hide_password input').attr("type") == "password") {
+                    $('#show_hide_password input').attr('type', 'text');
+                    $('#show_hide_password i').removeClass("bx-hide");
+                    $('#show_hide_password i').addClass("bx-show");
+                }
+            });
         });
-    });
     </script>
     <!--app JS-->
     <script src="<?= base_url('vertical/'); ?>assets/js/app.js"></script>

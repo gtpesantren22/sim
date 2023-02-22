@@ -50,6 +50,7 @@ class Account extends CI_Controller
 
 		$data['lembaga'] = $this->model->getBy('lembaga', 'tahun', $this->tahun)->result();
 		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
+		$data['spjData'] = $this->db->query("SELECT * FROM spj WHERE stts = 1 OR stts = 2 AND tahun = '$this->tahun' ");
 
 		$this->load->view('account/head', $data);
 		$this->load->view('account/index', $data);
@@ -77,6 +78,7 @@ class Account extends CI_Controller
 		$data['bidang'] = $this->model->getBy('bidang', 'tahun', $this->tahun)->result();
 		$data['user'] = $this->Auth_model->current_user();
 		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
+		$data['spjData'] = $this->db->query("SELECT * FROM spj WHERE stts = 1 OR stts = 2 AND tahun = '$this->tahun' ");
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/masukPes', $data);
@@ -117,6 +119,7 @@ class Account extends CI_Controller
 		$data['bidang'] = $this->model->getBy('bidang', 'tahun', $this->tahun)->result();
 		$data['user'] = $this->Auth_model->current_user();
 		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
+		$data['spjData'] = $this->db->query("SELECT * FROM spj WHERE stts = 1 OR stts = 2 AND tahun = '$this->tahun' ");
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/editPes', $data);
@@ -169,6 +172,7 @@ class Account extends CI_Controller
 		$data['bidang'] = $this->model->getBy('bidang', 'tahun', $this->tahun)->result();
 		$data['user'] = $this->Auth_model->current_user();
 		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
+		$data['spjData'] = $this->db->query("SELECT * FROM spj WHERE stts = 1 OR stts = 2 AND tahun = '$this->tahun' ");
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/masukBos', $data);
@@ -209,6 +213,7 @@ class Account extends CI_Controller
 		$data['bidang'] = $this->model->getBy('bidang', 'tahun', $this->tahun)->result();
 		$data['user'] = $this->Auth_model->current_user();
 		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
+		$data['spjData'] = $this->db->query("SELECT * FROM spj WHERE stts = 1 OR stts = 2 AND tahun = '$this->tahun' ");
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/editBos', $data);
@@ -259,6 +264,7 @@ class Account extends CI_Controller
 		$data['bidang'] = $this->model->getBy('bidang', 'tahun', $this->tahun)->result();
 		$data['user'] = $this->Auth_model->current_user();
 		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
+		$data['spjData'] = $this->db->query("SELECT * FROM spj WHERE stts = 1 OR stts = 2 AND tahun = '$this->tahun' ");
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/masukBp', $data);
@@ -271,6 +277,7 @@ class Account extends CI_Controller
 		// $data['sumBp'] = $this->model->selectSum('pembayaran', 'nominal', 'tahun', $this->tahun)->row();
 		$data['user'] = $this->Auth_model->current_user();
 		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
+		$data['spjData'] = $this->db->query("SELECT * FROM spj WHERE stts = 1 OR stts = 2 AND tahun = '$this->tahun' ");
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/rab', $data);
@@ -287,6 +294,7 @@ class Account extends CI_Controller
 		$data['sumD'] = $this->model->getTotalRabJenis('D', $kode, $this->tahun)->row();
 		$data['user'] = $this->Auth_model->current_user();
 		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
+		$data['spjData'] = $this->db->query("SELECT * FROM spj WHERE stts = 1 OR stts = 2 AND tahun = '$this->tahun' ");
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/rabDetail', $data);
@@ -300,6 +308,7 @@ class Account extends CI_Controller
 		$data['rel'] = $this->model->getBySum('realis', 'kode', $data['data']->kode, 'nominal')->row();
 		$data['user'] = $this->Auth_model->current_user();
 		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
+		$data['spjData'] = $this->db->query("SELECT * FROM spj WHERE stts = 1 OR stts = 2 AND tahun = '$this->tahun' ");
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/rabEdit', $data);
@@ -371,6 +380,7 @@ class Account extends CI_Controller
 		$data['user'] = $this->Auth_model->current_user();
 		$data['tahun'] = $this->tahun;
 		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
+		$data['spjData'] = $this->db->query("SELECT * FROM spj WHERE stts = 1 OR stts = 2 AND tahun = '$this->tahun' ");
 
 		$this->load->view('account/head', $data);
 		$this->load->view('account/kbj', $data);
@@ -422,6 +432,7 @@ class Account extends CI_Controller
 		$data['data'] = $this->model->getBy2('pak', 'status', 'disetujui', 'tahun', $this->tahun)->result();
 		$data['user'] = $this->Auth_model->current_user();
 		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
+		$data['spjData'] = $this->db->query("SELECT * FROM spj WHERE stts = 1 OR stts = 2 AND tahun = '$this->tahun' ");
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/pak', $data);
@@ -437,6 +448,7 @@ class Account extends CI_Controller
 		$data['rabnewSum'] = $this->model->selectSum('rab_sm', 'total', 'lembaga', $data['data']->lembaga)->row();
 		$data['user'] = $this->Auth_model->current_user();
 		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
+		$data['spjData'] = $this->db->query("SELECT * FROM spj WHERE stts = 1 OR stts = 2 AND tahun = '$this->tahun' ");
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/pakDetail', $data);
@@ -537,6 +549,7 @@ class Account extends CI_Controller
 		$data['tahun_ajaran'] = $this->tahun;
 		$data['user'] = $this->Auth_model->current_user();
 		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
+		$data['spjData'] = $this->db->query("SELECT * FROM spj WHERE stts = 1 OR stts = 2 AND tahun = '$this->tahun' ");
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/data', $data);
@@ -562,6 +575,7 @@ class Account extends CI_Controller
 		$data['rabA'] = $this->model->getBy2('rab', 'lembaga', $lembaga, 'tahun', $this->tahun)->result();
 		$data['user'] = $this->Auth_model->current_user();
 		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
+		$data['spjData'] = $this->db->query("SELECT * FROM spj WHERE stts = 1 OR stts = 2 AND tahun = '$this->tahun' ");
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/realDetail', $data);
@@ -577,6 +591,7 @@ class Account extends CI_Controller
 		$data['relData'] = $this->model->getBy('realis', 'kode', $kode)->result();
 		$data['user'] = $this->Auth_model->current_user();
 		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
+		$data['spjData'] = $this->db->query("SELECT * FROM spj WHERE stts = 1 OR stts = 2 AND tahun = '$this->tahun' ");
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/cekRab', $data);
@@ -590,6 +605,7 @@ class Account extends CI_Controller
 		$data['tahun'] = $this->tahun;
 		$data['user'] = $this->Auth_model->current_user();
 		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
+		$data['spjData'] = $this->db->query("SELECT * FROM spj WHERE stts = 1 OR stts = 2 AND tahun = '$this->tahun' ");
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/pengajuan', $data);
@@ -638,6 +654,7 @@ class Account extends CI_Controller
 		$data['nomD'] = $this->model->getBySum2('real_sm', 'kode_pengajuan', $kode, 'jenis', 'D', 'nominal')->row();
 		$data['user'] = $this->Auth_model->current_user();
 		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
+		$data['spjData'] = $this->db->query("SELECT * FROM spj WHERE stts = 1 OR stts = 2 AND tahun = '$this->tahun' ");
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/pengajuanDetail', $data);
@@ -802,6 +819,7 @@ Terimakasih';
 		$data['tahun'] = $this->tahun;
 		$data['user'] = $this->Auth_model->current_user();
 		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
+		$data['spjData'] = $this->db->query("SELECT * FROM spj WHERE stts = 1 OR stts = 2 AND tahun = '$this->tahun' ");
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/spj', $data);
@@ -977,6 +995,7 @@ https://simkupaduka.ppdwk.com/';
 
 		$data['user'] = $this->Auth_model->current_user();
 		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
+		$data['spjData'] = $this->db->query("SELECT * FROM spj WHERE stts = 1 OR stts = 2 AND tahun = '$this->tahun' ");
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/disp', $data);
@@ -989,6 +1008,7 @@ https://simkupaduka.ppdwk.com/';
 		$data['data'] = $this->model->getBy('info', 'tahun', $this->tahun)->result();
 		$data['user'] = $this->Auth_model->current_user();
 		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
+		$data['spjData'] = $this->db->query("SELECT * FROM spj WHERE stts = 1 OR stts = 2 AND tahun = '$this->tahun' ");
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/info', $data);
@@ -1002,6 +1022,7 @@ https://simkupaduka.ppdwk.com/';
 
 		$data['user'] = $this->Auth_model->current_user();
 		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
+		$data['spjData'] = $this->db->query("SELECT * FROM spj WHERE stts = 1 OR stts = 2 AND tahun = '$this->tahun' ");
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/infoAdd', $data);
@@ -1039,6 +1060,7 @@ https://simkupaduka.ppdwk.com/';
 
 		$data['user'] = $this->Auth_model->current_user();
 		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
+		$data['spjData'] = $this->db->query("SELECT * FROM spj WHERE stts = 1 OR stts = 2 AND tahun = '$this->tahun' ");
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/infoEdit', $data);
@@ -1088,6 +1110,7 @@ https://simkupaduka.ppdwk.com/';
 		$data['tahun'] = $this->tahun;
 		$data['user'] = $this->Auth_model->current_user();
 		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
+		$data['spjData'] = $this->db->query("SELECT * FROM spj WHERE stts = 1 OR stts = 2 AND tahun = '$this->tahun' ");
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/history', $data);
@@ -1111,6 +1134,7 @@ https://simkupaduka.ppdwk.com/';
 		$data['cair'] = $this->model->getBy('pencairan', 'kode_pengajuan', $kode)->result();
 		$data['user'] = $this->Auth_model->current_user();
 		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
+		$data['spjData'] = $this->db->query("SELECT * FROM spj WHERE stts = 1 OR stts = 2 AND tahun = '$this->tahun' ");
 		$data['tahun'] = $this->tahun;
 		$this->load->view('account/head', $data);
 		$this->load->view('account/historyDtl', $data);
@@ -1150,6 +1174,7 @@ https://simkupaduka.ppdwk.com/';
 		$data['user'] = $this->Auth_model->current_user();
 		$data['tahun'] = $this->tahun;
 		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
+		$data['spjData'] = $this->db->query("SELECT * FROM spj WHERE stts = 1 OR stts = 2 AND tahun = '$this->tahun' ");
 
 		$this->load->view('account/head', $data);
 		$this->load->view('account/setting', $data);
@@ -1270,6 +1295,7 @@ https://simkupaduka.ppdwk.com/';
 		$data['keluar'] = $this->model->getBy('keluar', 'tahun', $this->tahun)->result();
 		$data['sumKeluar'] = $this->model->getBySum('keluar', 'tahun', $this->tahun, 'nominal')->row();
 		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
+		$data['spjData'] = $this->db->query("SELECT * FROM spj WHERE stts = 1 OR stts = 2 AND tahun = '$this->tahun' ");
 
 		$this->load->view('account/head', $data);
 		$this->load->view('account/keluar', $data);
@@ -1320,10 +1346,11 @@ https://simkupaduka.ppdwk.com/';
 		$data['sumPinjam'] = $this->model->getBySum('peminjaman', 'tahun', $this->tahun, 'nominal')->row();
 		$data['sumCicil'] = $this->model->getBySum('cicilan', 'tahun', $this->tahun, 'nominal')->row();
 		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
+		$data['spjData'] = $this->db->query("SELECT * FROM spj WHERE stts = 1 OR stts = 2 AND tahun = '$this->tahun' ");
 
-		$this->load->view('admin/head', $data);
-		$this->load->view('admin/pinjam', $data);
-		$this->load->view('admin/foot');
+		$this->load->view('account/head', $data);
+		$this->load->view('account/pinjam', $data);
+		$this->load->view('account/foot');
 	}
 
 	public function savePinjam()
@@ -1342,10 +1369,10 @@ https://simkupaduka.ppdwk.com/';
 		$this->model->input('peminjaman', $data);
 		if ($this->db->affected_rows() > 0) {
 			$this->session->set_flashdata('ok', 'Input data sukses');
-			redirect('admin/pinjam');
+			redirect('account/pinjam');
 		} else {
 			$this->session->set_flashdata('error', 'Input data gagal');
-			redirect('admin/pinjam');
+			redirect('account/pinjam');
 		}
 	}
 
@@ -1358,10 +1385,10 @@ https://simkupaduka.ppdwk.com/';
 
 		if ($this->db->affected_rows() > 0) {
 			$this->session->set_flashdata('ok', 'Hapus data sukses');
-			redirect('admin/pinjam');
+			redirect('account/pinjam');
 		} else {
 			$this->session->set_flashdata('error', 'Hapus data gagal');
-			redirect('admin/pinjam');
+			redirect('account/pinjam');
 		}
 	}
 
@@ -1371,6 +1398,7 @@ https://simkupaduka.ppdwk.com/';
 		$data['tahun'] = $this->tahun;
 		$data['lembaga'] = $this->model->getBy2('lembaga', 'kode', $this->lembaga, 'tahun', $this->tahun)->row();
 		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
+		$data['spjData'] = $this->db->query("SELECT * FROM spj WHERE stts = 1 OR stts = 2 AND tahun = '$this->tahun' ");
 
 		$data['dataPinjam'] = $this->model->getBy('peminjaman', 'id_pinjam', $id)->row();
 		$data['cicil'] = $this->model->getBy('cicilan', 'kode_pinjam', $data['dataPinjam']->kode_pinjam)->result();
@@ -1378,9 +1406,9 @@ https://simkupaduka.ppdwk.com/';
 
 		$data['sumCicil'] = $this->model->getBySum('cicilan', 'kode_pinjam', $data['dataPinjam']->kode_pinjam, 'nominal')->row();
 
-		$this->load->view('admin/head', $data);
-		$this->load->view('admin/infoPinjam', $data);
-		$this->load->view('admin/foot');
+		$this->load->view('account/head', $data);
+		$this->load->view('account/infoPinjam', $data);
+		$this->load->view('account/foot');
 	}
 
 	public function addCicil()
@@ -1399,10 +1427,10 @@ https://simkupaduka.ppdwk.com/';
 		$this->model->input('cicilan', $data);
 		if ($this->db->affected_rows() > 0) {
 			$this->session->set_flashdata('ok', 'Input data sukses');
-			redirect('admin/infoPinjam/' . $dataPinjam->id_pinjam);
+			redirect('account/infoPinjam/' . $dataPinjam->id_pinjam);
 		} else {
 			$this->session->set_flashdata('error', 'Input data gagal');
-			redirect('admin/infoPinjam/' . $dataPinjam->id_pinjam);
+			redirect('account/infoPinjam/' . $dataPinjam->id_pinjam);
 		}
 	}
 
@@ -1414,10 +1442,10 @@ https://simkupaduka.ppdwk.com/';
 		$this->model->delete('cicilan', 'id_cicilan', $id);
 		if ($this->db->affected_rows() > 0) {
 			$this->session->set_flashdata('ok', 'Hapus data sukses');
-			redirect('admin/infoPinjam/' . $dataPinjam->id_pinjam);
+			redirect('account/infoPinjam/' . $dataPinjam->id_pinjam);
 		} else {
 			$this->session->set_flashdata('error', 'Hapus data gagal');
-			redirect('admin/infoPinjam/' . $dataPinjam->id_pinjam);
+			redirect('account/infoPinjam/' . $dataPinjam->id_pinjam);
 		}
 	}
 }

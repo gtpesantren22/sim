@@ -1175,7 +1175,7 @@ Lembaga : ' . $nm_lm . '
 Kode Pengajuan : ' . $kode . '
 Pada : ' . $at . '
 
-*_Hard copy SPJ dan sisa belanja anggaran telah disetor kepada SUB BAGIAN ACCOUNTING. Untuk pengajuan berikutnya sudah bisa dilakukan._*
+*_Hard copy SPJ dan sisa belanja anggaran telah disetor kepada SUB BAGIAN ING. Untuk pengajuan berikutnya sudah bisa dilakukan._*
 
 Terimakasih
 https://simkupaduka.ppdwk.com/';

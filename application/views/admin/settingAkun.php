@@ -47,20 +47,25 @@
                                     <label for="inputPassword3">Lembaga</label>
 
                                     <input type="text" class="form-control" value="<?= $lembaga->nama ?>" disabled required>
-
                                 </div>
                                 <hr>
                                 <div class="form-group mb-2">
                                     <label for="inputPassword3">Password baru</label>
 
-                                    <input type="password" class="form-control" name="newpass" placeholder="Password Baru">
-
+                                    <!-- <input type="password" class="form-control" name="newpass" placeholder="Password Baru"> -->
+                                    <div class="input-group" id="show_hide_password">
+                                        <input type="password" name="newpass" class="form-control border-end-0" id="inputChoosePassword" placeholder="Enter Password">
+                                        <a href="javascript:;" class="input-group-text bg-transparent"><i class='bx bx-hide'></i></a>
+                                    </div>
                                 </div>
                                 <div class="form-group mb-2">
                                     <label for="inputPassword3">Confirm password</label>
 
-                                    <input type="password" class="form-control" name="confir_newpass" placeholder="Konfirmasi Password Baru">
-
+                                    <!-- <input type="password" class="form-control" name="confir_newpass" placeholder="Konfirmasi Password Baru"> -->
+                                    <div class="input-group" id="show_hide_password2">
+                                        <input type="password" name="confir_newpass" class="form-control border-end-0" id="inputChoosePassword" placeholder="Enter Password">
+                                        <a href="javascript:;" class="input-group-text bg-transparent"><i class='bx bx-hide'></i></a>
+                                    </div>
                                 </div>
                             </div><!-- /.box-body -->
                             <div class="box-footer">

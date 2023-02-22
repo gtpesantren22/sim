@@ -217,21 +217,34 @@ use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Base;
                                 </div>
                             </li>
                             <li class="nav-item dropdown dropdown-large">
-                                <a class="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class='bx bx-comment'></i>
+                                <a class="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> <span class="alert-count"><?= $spjData->num_rows() ?></span>
+                                    <i class='bx bx-message-detail'></i>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end">
                                     <a href="javascript:;">
                                         <div class="msg-header">
-                                            <p class="msg-header-title">Messages</p>
-                                            <p class="msg-header-clear ms-auto">Marks all as read</p>
+                                            <p class="msg-header-title">Pengajuan SPJ</p>
+                                            <!-- <p class="msg-header-clear ms-auto">Marks all as read</p> -->
                                         </div>
                                     </a>
                                     <div class="header-message-list">
-
+                                        <?php foreach ($spjData->result() as $data) :
+                                            $lmb = $this->db->query("SELECT * FROM lembaga WHERE kode = '$data->lembaga' AND tahun = '$tahun' ")->row();
+                                        ?>
+                                            <a class="dropdown-item" href="<?= base_url('account/spj') ?>">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="notify bg-light-primary text-primary"><i class="bx bx-notepad"></i>
+                                                    </div>
+                                                    <div class="flex-grow-1">
+                                                        <h6 class="msg-name">SPJ - <?= $data->kode_pengajuan ?><span class="msg-time float-end"><?= $data->tgl_upload ?></span></h6>
+                                                        <p class="msg-info"><?= $lmb->nama ?></p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        <?php endforeach; ?>
                                     </div>
-                                    <a href="javascript:;">
-                                        <div class="text-center msg-footer">View All Messages</div>
+                                    <a href="<?= base_url('account/spj') ?>">
+                                        <div class="text-center msg-footer">Lihat semua SPJ</div>
                                     </a>
                                 </div>
                             </li>
