@@ -51,6 +51,9 @@ class Login extends CI_Controller
             } elseif ($user->level === 'lembaga') {
                 $this->session->set_flashdata('ok', 'Login Berhasil, Selamat Datang di Aplikasi SIMKUPADUKA!');
                 redirect('lembaga');
+            } elseif ($user->level === 'kepala') {
+                $this->session->set_flashdata('ok', 'Login Berhasil, Selamat Datang di Aplikasi SIMKUPADUKA!');
+                redirect('kepala');
             } else {
                 echo "
             <script>

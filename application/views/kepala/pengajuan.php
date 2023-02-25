@@ -3,13 +3,13 @@
     <div class="page-content">
         <!--breadcrumb-->
         <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-            <div class="breadcrumb-title pe-3">History Pengajuan</div>
+            <div class="breadcrumb-title pe-3">Data Pengajuan Lembaga</div>
             <div class="ps-3">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0 p-0">
-                        <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-history"></i></a>
+                        <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-wallet"></i></a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">History</li>
+                        <li class="breadcrumb-item active" aria-current="page">Realisasi</li>
                     </ol>
                 </nav>
             </div>
@@ -20,7 +20,7 @@
                 <div class="card radius-10">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="example2" class="table table-striped table-bordered" style="width:100%">
+                            <table id="example" class="table table-striped table-bordered" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -72,8 +72,8 @@
                                                 <?php } ?>
                                             </td>
                                             <td><?= rupiah($kfe) ?></td>
-                                            <td><a href="<?= base_url('admin/historyDtl/' . $a->kode_pengajuan) ?>"><button class="btn btn-primary btn-sm"><i class="bx bx-search"></i>Lihat
-                                                        Detail</button></a></td>
+                                            <td><a href="<?= base_url('kepala/pengajuanDtl/' . $a->kode_pengajuan) ?>"><button class="btn btn-primary btn-sm"><i class="bx bx-search"></i> Cek &
+                                                        Verifikasi</button></a></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>

@@ -145,8 +145,8 @@
                     label: 'Realisasi',
                     data: [
                         <?php foreach ($lembaga as $dt) {
-                            $rab = $this->db->query("SELECT IFNULL(SUM(qty), 0) as jml FROM rab WHERE tahun = '$tahun' AND lembaga = '$dt->kode' ")->row();
-                            $pakai = $this->db->query("SELECT IFNULL(SUM(vol), 0) as jml FROM realis WHERE tahun = '$tahun' AND lembaga = '$dt->kode' ")->row();
+                            $rab = $this->db->query("SELECT IFNULL(SUM(total), 0) as jml FROM rab WHERE tahun = '$tahun' AND lembaga = '$dt->kode' ")->row();
+                            $pakai = $this->db->query("SELECT IFNULL(SUM(nominal), 0) as jml FROM realis WHERE tahun = '$tahun' AND lembaga = '$dt->kode' ")->row();
                             if ($rab->jml == 0) {
                                 $prsn = 0;
                             } else {
