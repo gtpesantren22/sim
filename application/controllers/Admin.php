@@ -48,6 +48,8 @@ class Admin extends CI_Controller
 		$data['keluar'] = $kebijakan->jml + $realis->jml + $dekos->nominal + $nikmus->nom_kriteria + $nikmus->transport + $nikmus->sopir + $keluar->jml + $sumPinjam->jml;
 
 		$data['lembaga'] = $this->model->getBy('lembaga', 'tahun', $this->tahun)->result();
+		$data['saldo'] = $this->model->getAll('saldo')->result();
+
 
 		$this->load->view('admin/head', $data);
 		$this->load->view('admin/index', $data);
@@ -1836,6 +1838,23 @@ https://simkupaduka.ppdwk.com/';
 		} else {
 			$this->session->set_flashdata('error', 'Hapus data gagal');
 			redirect('admin/infoPinjam/' . $dataPinjam->id_pinjam);
+		}
+	}
+
+	public function editSaldo()
+	{
+		$saldo = [
+			'nominal' => rmRp($this->input->post('nominal', true)),
+			'last' => date('Y-m-d H:i:s')
+		];
+
+		$this->db->update('saldo', $saldo);
+		if ($this->db->affected_rows() > 0) {
+			$this->session->set_flashdata('ok', 'Saldo sudah diperbarui');
+			redirect('admin');
+		} else {
+			$this->session->set_flashdata('error', 'Hapus data gagal');
+			redirect('admin');
 		}
 	}
 }

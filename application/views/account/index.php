@@ -4,7 +4,7 @@
 <!--start page wrapper -->
 <div class="page-wrapper">
     <div class="page-content">
-        <div class="row row-cols-3 row-cols-md-3 row-cols-xl-12">
+        <div class="row ">
             <div class="col">
                 <div class="card radius-10 border-start border-0 border-3 border-info">
                     <div class="card-body">
@@ -54,6 +54,36 @@
             </div>
         </div>
         <!--end row-->
+
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-2">
+            <!-- <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <div>
+                            <h5 class="card-title">Special title treatment</h5>
+                        </div>
+                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p> <a href="javascript:;" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div> -->
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <div>
+                            <h5 class="card-title">Saldo Bank</h5>
+                        </div>
+                        <div class="col">
+                            <div class="p-0 border border-3 border-success text-center text-danger rounded bg-light">
+                                <?php foreach ($saldo as $data) : ?>
+                                    <h2><?= rupiah($data->nominal) ?></h2>
+                                    Last Update : <i class="bx bx-calendar"></i><?= date('d-M-Y', strtotime($data->last)) ?> <i class="bx bx-time"></i><?= date('H:i:s', strtotime($data->last)) ?>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="row">
             <div class="col-12 col-lg-12">

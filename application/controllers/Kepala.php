@@ -48,6 +48,7 @@ class Kepala extends CI_Controller
 		$data['keluar'] = $kebijakan->jml + $realis->jml + $dekos->nominal + $nikmus->nom_kriteria + $nikmus->transport + $nikmus->sopir + $keluar->jml + $sumPinjam->jml;
 
 		$data['lembaga'] = $this->model->getBy('lembaga', 'tahun', $this->tahun)->result();
+		$data['saldo'] = $this->model->getAll('saldo')->result();
 
 		$this->load->view('kepala/head', $data);
 		$this->load->view('kepala/index', $data);
