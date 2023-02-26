@@ -218,6 +218,21 @@
         });
     });
 </script>
+
+<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+<script>
+    window.OneSignal = window.OneSignal || [];
+    OneSignal.push(function() {
+        OneSignal.init({
+            appId: "89772c00-acb3-44c0-b189-cee68f98acce",
+            safari_web_id: "web.onesignal.auto.1afb9025-a2b0-4a54-8c00-23b218b2b39b",
+            notifyButton: {
+                enable: true,
+            },
+        });
+    });
+</script>
+
 <!--app JS-->
 <script src="<?= base_url('vertical/'); ?>assets/js/app.js"></script>
 </body>
