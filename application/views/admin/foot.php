@@ -219,7 +219,8 @@
     });
 </script>
 
-<script src="<?= base_url('vertical/assets/js/OneSignalSDKWorker.js') ?>" async=""></script>
+<!-- <script src="<?= base_url('vertical/assets/js/OneSignalSDKWorker.js') ?>" async=""></script> -->
+<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
 <script>
     window.OneSignal = window.OneSignal || [];
     OneSignal.push(function() {
