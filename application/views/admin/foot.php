@@ -219,19 +219,29 @@
     });
 </script>
 
-<!-- <script src="<?= base_url('vertical/assets/js/OneSignalSDKWorker.js') ?>" async=""></script> -->
-<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
 <script>
-    window.OneSignal = window.OneSignal || [];
-    OneSignal.push(function() {
-        OneSignal.init({
-            appId: "89772c00-acb3-44c0-b189-cee68f98acce",
-            safari_web_id: "web.onesignal.auto.1afb9025-a2b0-4a54-8c00-23b218b2b39b",
-            notifyButton: {
-                enable: true,
-            },
+    $(document).ready(function() {
+        //$("#search_results").slideUp();
+        $("#button_find").click(function(event) {
+            event.preventDefault();
+            //search_ajax_way();
+            ajax_search();
         });
     });
+
+    function ajax_search() {
+
+        // var judul = $("#search_query").val();
+        $.ajax({
+            url: "<?= base_url('admin/setor') ?>",
+            // data: "judul=" + judul,
+            success: function(data) {
+                // jika data sukses diambil dari server, tampilkan di <select id=kota>
+                $("#display_results").html(data);
+            }
+        });
+
+    }
 </script>
 
 <!--app JS-->

@@ -306,6 +306,13 @@ class AdminModel extends CI_Model
         return $this->db2->get();
     }
 
+    public function getSetor($tahun)
+    {
+        $this->db2->where('tahun', $tahun);
+        $this->db2->from('setor');
+        return $this->db2->get();
+    }
+
     public function getNikmusSum($tahun)
     {
         $this->db5->select_sum('nom_kriteria', 'nom_kriteria');

@@ -39,13 +39,13 @@ class Admin extends CI_Controller
 		$kebijakan = $this->model->getBySum('kebijakan', 'tahun', $this->tahun, 'nominal')->row();
 		$realis = $this->model->getBySum('realis', 'tahun', $this->tahun, 'nom_serap')->row();
 		$keluar = $this->model->getBySum('keluar', 'tahun', $this->tahun, 'nominal')->row();
-		$dekos = $this->model->getDekosSum($this->tahun)->row();
-		$nikmus = $this->model->getNikmusSum($this->tahun)->row();
+		$data['dekos'] = $this->model->getDekosSum($this->tahun)->row();
+		$data['nikmus'] = $this->model->getNikmusSum($this->tahun)->row();
 		$sumPinjam = $this->model->getBySum('peminjaman', 'tahun', $this->tahun, 'nominal')->row();
 		$sumCicil = $this->model->getBySum('cicilan', 'tahun', $this->tahun, 'nominal')->row();
 
 		$data['masuk'] = $bos->jml + $pembayaran->jml + $pesantren->jml + $sumCicil->jml;
-		$data['keluar'] = $kebijakan->jml + $realis->jml + $dekos->nominal + $nikmus->nom_kriteria + $nikmus->transport + $nikmus->sopir + $keluar->jml + $sumPinjam->jml;
+		$data['keluar'] = $kebijakan->jml + $realis->jml + $data['dekos']->nominal + $data['nikmus']->nom_kriteria + $data['nikmus']->transport + $data['nikmus']->sopir + $keluar->jml + $sumPinjam->jml;
 
 		$data['lembaga'] = $this->model->getBy('lembaga', 'tahun', $this->tahun)->result();
 		$data['saldo'] = $this->model->getAll('saldo')->result();
@@ -1856,5 +1856,12 @@ https://simkupaduka.ppdwk.com/';
 			$this->session->set_flashdata('error', 'Hapus data gagal');
 			redirect('admin');
 		}
+	}
+
+	public function setor()
+	{
+		$data['bulan'] = $this->bulan;
+		$data['list'] = $this->model->getSetor($this->tahun)->result();
+		$this->load->view('admin/setor', $data);
 	}
 }

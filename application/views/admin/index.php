@@ -55,7 +55,7 @@
         </div>
         <!--end row-->
 
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-2">
+        <div class="row">
             <!-- <div class="col">
                 <div class="card">
                     <div class="card-body">
@@ -66,7 +66,7 @@
                     </div>
                 </div>
             </div> -->
-            <div class="col">
+            <div class="col-md-5">
                 <div class="card">
                     <div class="card-body">
                         <div>
@@ -85,6 +85,51 @@
                                 <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Simpan</button>
                             </div>
                             <?= form_close() ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div>
+                            <h5 class="card-title">Realisasi Nikmus</h5>
+                        </div>
+                        <div class="col">
+                            <div class="p-1 border border-1 border-success rounded bg-light">
+                                <strong>Pagu Anggaran</strong><br>
+                                <strong><?= rupiah(72390000) ?></strong>
+                            </div>
+                            <div class="p-1 border border-1 border-warning rounded bg-light">
+                                <strong>Terpakai</strong><br>
+                                <?php $dipakai = $nikmus->nom_kriteria + $nikmus->sopir + $nikmus->transport ?>
+                                <strong><?= rupiah($dipakai) ?> (<?= round(($dipakai / 72390000) * 100, 1) ?>%)</strong>
+                            </div>
+                            <div class="p-1 border border-1 border-info rounded bg-light">
+                                <strong>Sisa</strong><br>
+                                <strong><?= rupiah(72390000 - $dipakai) ?> (<?= round(((72390000 - $dipakai) / 72390000) * 100, 1) ?>%)</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div>
+                            <h5 class="card-title">Setoran Dekosan</h5>
+                        </div>
+                        <div class="col">
+                            <div class="card radius-10 border-start border-0 border-3 border-info">
+                                <div class="card-body">
+                                    <p class="mb-0 text-secondary">Total Setoran</p>
+                                    <h5 class="my-1 text-info"><?= rupiah($dekos->nominal) ?></h5>
+                                </div>
+                            </div>
+                            <button class="btn btn-block btn-primary" type="button" id="button_find" data-bs-toggle="modal" data-bs-target="#addLembaga">Lihat Rincian</button>
+
                         </div>
                     </div>
                 </div>
@@ -150,6 +195,25 @@
     </div>
 </div>
 <!--end page wrapper -->
+
+<div class="modal fade" id="addLembaga" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">List Setoran Dekosan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div id="display_results"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <!-- <button type="submit" class="btn btn-primary"><i class="bx bx-save"></i> Simpan Data</button> -->
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="<?= base_url('vertical/'); ?>assets/js/jquery.min.js"></script>
 <script src="<?= base_url('vertical/'); ?>assets/plugins/chartjs/js/Chart.min.js"></script>
