@@ -19,7 +19,7 @@
                     <td><?= $a->dari ?></td>
                     <td><?= $bulan[$a->bulan] ?></td>
                     <td><?= rupiah($a->nominal) ?></td>
-                    <td><?= $a->tgl ?></td>
+                    <td><?= date('d-M-Y', strtotime($a->tgl)) ?></td>
                     <td><?= $a->penyetor ?></td>
                 </tr>
             <?php endforeach; ?>

@@ -310,6 +310,7 @@ class AdminModel extends CI_Model
     {
         $this->db2->where('tahun', $tahun);
         $this->db2->from('setor');
+        $this->db2->order_by('bulan', 'ASC');
         return $this->db2->get();
     }
 
