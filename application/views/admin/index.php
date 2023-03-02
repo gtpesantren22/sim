@@ -97,16 +97,16 @@
                             <h5 class="card-title">Realisasi Nikmus</h5>
                         </div>
                         <div class="col">
-                            <div class="p-1 border border-1 border-success rounded bg-light">
+                            <div class="p-1 border border-1 text-center border-success rounded bg-light">
                                 <strong>Pagu Anggaran</strong><br>
                                 <strong><?= rupiah(72390000) ?></strong>
                             </div>
-                            <div class="p-1 border border-1 border-warning rounded bg-light">
+                            <div class="p-1 border border-1 text-center border-warning rounded bg-light">
                                 <strong>Terpakai</strong><br>
                                 <?php $dipakai = $nikmus->nom_kriteria + $nikmus->sopir + $nikmus->transport ?>
                                 <strong><?= rupiah($dipakai) ?> (<?= round(($dipakai / 72390000) * 100, 1) ?>%)</strong>
                             </div>
-                            <div class="p-1 border border-1 border-info rounded bg-light">
+                            <div class="p-1 border border-1 text-center border-info rounded bg-light">
                                 <strong>Sisa</strong><br>
                                 <strong><?= rupiah(72390000 - $dipakai) ?> (<?= round(((72390000 - $dipakai) / 72390000) * 100, 1) ?>%)</strong>
                             </div>

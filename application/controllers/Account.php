@@ -39,14 +39,14 @@ class Account extends CI_Controller
 		$kebijakan = $this->model->getBySum('kebijakan', 'tahun', $this->tahun, 'nominal')->row();
 		$realis = $this->model->getBySum('realis', 'tahun', $this->tahun, 'nom_serap')->row();
 		$keluar = $this->model->getBySum('keluar', 'tahun', $this->tahun, 'nominal')->row();
-		$dekos = $this->model->getDekosSum($this->tahun)->row();
-		$nikmus = $this->model->getNikmusSum($this->tahun)->row();
+		$data['dekos'] = $this->model->getDekosSum($this->tahun)->row();
+		$data['nikmus'] = $this->model->getNikmusSum($this->tahun)->row();
 
 		$sumPinjam = $this->model->getBySum('peminjaman', 'tahun', $this->tahun, 'nominal')->row();
 		$sumCicil = $this->model->getBySum('cicilan', 'tahun', $this->tahun, 'nominal')->row();
 
 		$data['masuk'] = $bos->jml + $pembayaran->jml + $pesantren->jml + $sumCicil->jml;
-		$data['keluar'] = $kebijakan->jml + $realis->jml + $dekos->nominal + $nikmus->nom_kriteria + $nikmus->transport + $nikmus->sopir + $keluar->jml + $sumPinjam->jml;
+		$data['keluar'] = $kebijakan->jml + $realis->jml + $data['dekos']->nominal + $data['nikmus']->nom_kriteria + $data['nikmus']->transport + $data['nikmus']->sopir + $keluar->jml + $sumPinjam->jml;
 
 		$data['lembaga'] = $this->model->getBy('lembaga', 'tahun', $this->tahun)->result();
 		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
@@ -739,10 +739,10 @@ Terimakasih';
 		$this->model->update('pengajuan', $data2, 'kode_pengajuan', $kode);
 
 		if ($this->db->affected_rows() > 0) {
-			// kirim_group($this->apiKey, '120363040973404347@g.us', $psn);
-			// kirim_group($this->apiKey, '120363042148360147@g.us', $psn);
+			kirim_group($this->apiKey, '120363040973404347@g.us', $psn);
+			kirim_group($this->apiKey, '120363042148360147@g.us', $psn);
 			// kirim_person($this->apiKey, '082264061060', $psn);
-			kirim_person($this->apiKey, '085236924510', $psn);
+			// kirim_person($this->apiKey, '085236924510', $psn);
 
 			$this->session->set_flashdata('ok', 'Pengajuan berhasil diverval');
 			redirect('account/pengajuanDtl/' . $pjData->kode_pengajuan);
@@ -801,10 +801,10 @@ Terimakasih';
 		$this->model->update('pengajuan', $data2, 'kode_pengajuan', $kode);
 
 		if ($this->db->affected_rows() > 0) {
-			// kirim_group($this->apiKey, '120363040973404347@g.us', $psn);
-			// kirim_group($this->apiKey, '120363042148360147@g.us', $psn);
+			kirim_group($this->apiKey, '120363040973404347@g.us', $psn);
+			kirim_group($this->apiKey, '120363042148360147@g.us', $psn);
 			// kirim_person($this->apiKey, '082264061060', $psn);
-			kirim_person($this->apiKey, '085236924510', $psn);
+			// kirim_person($this->apiKey, '085236924510', $psn);
 
 			$this->session->set_flashdata('ok', 'Pengajuan berhasil ditolak');
 			redirect('account/pengajuanDtl/' . $pjData->kode_pengajuan);
@@ -863,10 +863,10 @@ Terimakasih';
 		$this->model->update('pengajuan', $data2, 'kode_pengajuan', $kode);
 
 		if ($this->db->affected_rows() > 0) {
-			// kirim_group($this->apiKey, '120363040973404347@g.us', $psn);
-			// kirim_group($this->apiKey, '120363042148360147@g.us', $psn);
-			// kirim_person($this->apiKey, $hp, $psn);
-			kirim_person($this->apiKey, '085236924510', $psn);
+			kirim_group($this->apiKey, '120363040973404347@g.us', $psn);
+			kirim_group($this->apiKey, '120363042148360147@g.us', $psn);
+			kirim_person($this->apiKey, $hp, $psn);
+			// kirim_person($this->apiKey, '085236924510', $psn);
 
 			$this->session->set_flashdata('ok', 'SPJ berhasil ditolak');
 			redirect('account/spj');
@@ -911,10 +911,10 @@ Terimakasih';
 		$this->model->update('pengajuan', $data2, 'kode_pengajuan', $kode);
 
 		if ($this->db->affected_rows() > 0) {
-			// kirim_group($this->apiKey, '120363040973404347@g.us', $psn);
-			// kirim_group($this->apiKey, '120363042148360147@g.us', $psn);
-			// kirim_person($this->apiKey, $hp, $psn);
-			kirim_person($this->apiKey, '085236924510', $psn);
+			kirim_group($this->apiKey, '120363040973404347@g.us', $psn);
+			kirim_group($this->apiKey, '120363042148360147@g.us', $psn);
+			kirim_person($this->apiKey, $hp, $psn);
+			// kirim_person($this->apiKey, '085236924510', $psn);
 
 			$this->session->set_flashdata('ok', 'SPJ berhasil disetujui');
 			redirect('account/spj');
@@ -974,10 +974,10 @@ https://simkupaduka.ppdwk.com/';
 		$this->model->input('real_sisa', $data3);
 
 		if ($this->db->affected_rows() > 0) {
-			// kirim_group($this->apiKey, '120363040973404347@g.us', $psn);
-			// kirim_group($this->apiKey, '120363042148360147@g.us', $psn);
-			// kirim_person($this->apiKey, $hp, $psn);
-			kirim_person($this->apiKey, '085236924510', $psn);
+			kirim_group($this->apiKey, '120363040973404347@g.us', $psn);
+			kirim_group($this->apiKey, '120363042148360147@g.us', $psn);
+			kirim_person($this->apiKey, $hp, $psn);
+			// kirim_person($this->apiKey, '085236924510', $psn);
 
 			$this->session->set_flashdata('ok', 'SPJ berhasil disetujui');
 			redirect('account/spj');
@@ -1448,6 +1448,41 @@ https://simkupaduka.ppdwk.com/';
 		} else {
 			$this->session->set_flashdata('error', 'Hapus data gagal');
 			redirect('account/infoPinjam/' . $dataPinjam->id_pinjam);
+		}
+	}
+
+	public function setor()
+	{
+		$data['bulan'] = $this->bulan;
+		$data['list'] = $this->model->getSetor($this->tahun)->result();
+		$this->load->view('account/setor', $data);
+	}
+
+	public function sisa()
+	{
+		$data['user'] = $this->Auth_model->current_user();
+		$data['tahun'] = $this->tahun;
+		$data['bulan'] = $this->bulan;
+		$data['sumSisa'] = $this->model->selectSum('real_sisa', 'sisa', 'tahun', $this->tahun)->row();
+		$data['sisa'] = $this->model->getSisaOrder($this->tahun)->result();
+		// $data['lembaga'] = $this->model->getBy('lembaga', 'tahun', $this->tahun)->result();
+		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
+		$data['spjData'] = $this->db->query("SELECT * FROM spj WHERE stts = 1 OR stts = 2 AND tahun = '$this->tahun' ");
+
+		$this->load->view('account/head', $data);
+		$this->load->view('account/masuksisa', $data);
+		$this->load->view('account/foot');
+	}
+
+	public function delSisa($id)
+	{
+		$this->model->delete('real_sisa', 'id_sisa', $id);
+		if ($this->db->affected_rows() > 0) {
+			$this->session->set_flashdata('ok', 'Saldo sudah dihapus');
+			redirect('account/sisa');
+		} else {
+			$this->session->set_flashdata('error', 'Hapus data gagal');
+			redirect('account/sisa');
 		}
 	}
 }

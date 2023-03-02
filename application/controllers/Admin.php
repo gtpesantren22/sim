@@ -966,10 +966,10 @@ Terimakasih';
 		$this->model->update('pengajuan', $data2, 'kode_pengajuan', $kode);
 
 		if ($this->db->affected_rows() > 0) {
-			// kirim_group($this->apiKey, '120363040973404347@g.us', $psn);
-			// kirim_group($this->apiKey, '120363042148360147@g.us', $psn);
+			kirim_group($this->apiKey, '120363040973404347@g.us', $psn);
+			kirim_group($this->apiKey, '120363042148360147@g.us', $psn);
 			// kirim_person($this->apiKey, '082264061060', $psn);
-			kirim_person($this->apiKey, '085236924510', $psn);
+			// kirim_person($this->apiKey, '085236924510', $psn);
 
 			$this->session->set_flashdata('ok', 'Pengajuan berhasil diverval');
 			redirect('admin/pengajuanDtl/' . $pjData->kode_pengajuan);
@@ -1028,10 +1028,10 @@ Terimakasih';
 		$this->model->update('pengajuan', $data2, 'kode_pengajuan', $kode);
 
 		if ($this->db->affected_rows() > 0) {
-			// kirim_group($this->apiKey, '120363040973404347@g.us', $psn);
-			// kirim_group($this->apiKey, '120363042148360147@g.us', $psn);
+			kirim_group($this->apiKey, '120363040973404347@g.us', $psn);
+			kirim_group($this->apiKey, '120363042148360147@g.us', $psn);
 			// kirim_person($this->apiKey, '082264061060', $psn);
-			kirim_person($this->apiKey, '085236924510', $psn);
+			// kirim_person($this->apiKey, '085236924510', $psn);
 
 			$this->session->set_flashdata('ok', 'Pengajuan berhasil ditolak');
 			redirect('admin/pengajuanDtl/' . $pjData->kode_pengajuan);
@@ -1088,10 +1088,10 @@ Terimakasih';
 		$this->model->update('pengajuan', $data2, 'kode_pengajuan', $kode);
 
 		if ($this->db->affected_rows() > 0) {
-			// kirim_group($this->apiKey, '120363040973404347@g.us', $psn);
-			// kirim_group($this->apiKey, '120363042148360147@g.us', $psn);
-			// kirim_person($this->apiKey, $hp, $psn);
-			kirim_person($this->apiKey, '085236924510', $psn);
+			kirim_group($this->apiKey, '120363040973404347@g.us', $psn);
+			kirim_group($this->apiKey, '120363042148360147@g.us', $psn);
+			kirim_person($this->apiKey, $hp, $psn);
+			// kirim_person($this->apiKey, '085236924510', $psn);
 
 			$this->session->set_flashdata('ok', 'SPJ berhasil ditolak');
 			redirect('admin/spj');
@@ -1136,10 +1136,10 @@ Terimakasih';
 		$this->model->update('pengajuan', $data2, 'kode_pengajuan', $kode);
 
 		if ($this->db->affected_rows() > 0) {
-			// kirim_group($this->apiKey, '120363040973404347@g.us', $psn);
-			// kirim_group($this->apiKey, '120363042148360147@g.us', $psn);
-			// kirim_person($this->apiKey, $hp, $psn);
-			kirim_person($this->apiKey, '085236924510', $psn);
+			kirim_group($this->apiKey, '120363040973404347@g.us', $psn);
+			kirim_group($this->apiKey, '120363042148360147@g.us', $psn);
+			kirim_person($this->apiKey, $hp, $psn);
+			// kirim_person($this->apiKey, '085236924510', $psn);
 
 			$this->session->set_flashdata('ok', 'SPJ berhasil disetujui');
 			redirect('admin/spj');
@@ -1199,10 +1199,10 @@ https://simkupaduka.ppdwk.com/';
 		$this->model->input('real_sisa', $data3);
 
 		if ($this->db->affected_rows() > 0) {
-			// kirim_group($this->apiKey, '120363040973404347@g.us', $psn);
-			// kirim_group($this->apiKey, '120363042148360147@g.us', $psn);
-			// kirim_person($this->apiKey, $hp, $psn);
-			kirim_person($this->apiKey, '085236924510', $psn);
+			kirim_group($this->apiKey, '120363040973404347@g.us', $psn);
+			kirim_group($this->apiKey, '120363042148360147@g.us', $psn);
+			kirim_person($this->apiKey, $hp, $psn);
+			// kirim_person($this->apiKey, '085236924510', $psn);
 
 			$this->session->set_flashdata('ok', 'SPJ berhasil disetujui');
 			redirect('admin/spj');
@@ -1848,8 +1848,18 @@ https://simkupaduka.ppdwk.com/';
 			'last' => date('Y-m-d H:i:s')
 		];
 
+		$psn = '*Update Saldo Rek. Pesantren*
+
+Nominal : RP. ' . $this->input->post('nominal', true) . '
+Tgl Update : ' . date('Y-m-d H:i:s') . '
+Updater : ' . $this->user . '
+
+*Terimkasih*';
+
 		$this->db->update('saldo', $saldo);
 		if ($this->db->affected_rows() > 0) {
+			kirim_person($this->apiKey, '082264061060', $psn);
+			kirim_person($this->apiKey, '085236924510', $psn);
 			$this->session->set_flashdata('ok', 'Saldo sudah diperbarui');
 			redirect('admin');
 		} else {
@@ -1863,5 +1873,30 @@ https://simkupaduka.ppdwk.com/';
 		$data['bulan'] = $this->bulan;
 		$data['list'] = $this->model->getSetor($this->tahun)->result();
 		$this->load->view('admin/setor', $data);
+	}
+
+	public function sisa()
+	{
+		$data['user'] = $this->Auth_model->current_user();
+		$data['tahun'] = $this->tahun;
+		$data['bulan'] = $this->bulan;
+		$data['sumSisa'] = $this->model->selectSum('real_sisa', 'sisa', 'tahun', $this->tahun)->row();
+		$data['sisa'] = $this->model->getSisaOrder($this->tahun)->result();
+
+		$this->load->view('admin/head', $data);
+		$this->load->view('admin/masuksisa', $data);
+		$this->load->view('admin/foot');
+	}
+
+	public function delSisa($id)
+	{
+		$this->model->delete('real_sisa', 'id_sisa', $id);
+		if ($this->db->affected_rows() > 0) {
+			$this->session->set_flashdata('ok', 'Saldo sudah dihapus');
+			redirect('admin/sisa');
+		} else {
+			$this->session->set_flashdata('error', 'Hapus data gagal');
+			redirect('admin/sisa');
+		}
 	}
 }

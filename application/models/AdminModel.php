@@ -323,4 +323,15 @@ class AdminModel extends CI_Model
         $this->db5->from('pengajuan');
         return $this->db5->get();
     }
+
+    public function getSisaOrder($tahun)
+    {
+        $this->db->where('real_sisa.tahun', $tahun);
+        $this->db->where('lembaga.tahun', $tahun);
+        $this->db->from('real_sisa');
+        $this->db->join('pengajuan', 'ON real_sisa.kode_pengajuan=pengajuan.kode_pengajuan');
+        $this->db->join('lembaga', 'ON pengajuan.lembaga=lembaga.kode');
+        $this->db->order_by('real_sisa.tgl_setor', 'DESC');
+        return $this->db->get();
+    }
 }

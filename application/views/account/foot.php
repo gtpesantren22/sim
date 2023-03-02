@@ -126,65 +126,87 @@
 <script src="<?= base_url('vertical/'); ?>assets/plugins/datetimepicker/js/picker.time.js"></script>
 <script src="<?= base_url('vertical/'); ?>assets/plugins/datetimepicker/js/picker.date.js"></script>
 <script src="<?= base_url('vertical/'); ?>assets/plugins/bootstrap-material-datetimepicker/js/moment.min.js"></script>
-<script
-    src="<?= base_url('vertical/'); ?>assets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.min.js">
+<script src="<?= base_url('vertical/'); ?>assets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.min.js">
 </script>
 <!--notification js -->
 <script src="<?= base_url('vertical/'); ?>assets/plugins/notifications/js/lobibox.min.js"></script>
 <script src="<?= base_url('vertical/'); ?>assets/plugins/notifications/js/notifications.min.js"></script>
 <script src="<?= base_url('vertical/'); ?>assets/sw/sweetalert2.all.min.js"></script>
 <script src="<?= base_url('vertical/'); ?>assets/plugins/notifications/js/my-notif.js"></script>
-<script src='https://cdn.tiny.cloud/1/vdqx2klew412up5bcbpwivg1th6nrh3murc6maz8bukgos4v/tinymce/5/tinymce.min.js'
-    referrerpolicy="origin">
+<script src='https://cdn.tiny.cloud/1/vdqx2klew412up5bcbpwivg1th6nrh3murc6maz8bukgos4v/tinymce/5/tinymce.min.js' referrerpolicy="origin">
 </script>
 <script>
-$(document).ready(function() {
-    $('#example').DataTable();
-    $('#example3').DataTable();
+    $(document).ready(function() {
+        $('#example').DataTable();
+        $('#example3').DataTable();
 
-});
-</script>
-
-<script>
-$(document).ready(function() {
-    var table = $('#example2').DataTable({
-        lengthChange: false,
-        buttons: ['copy', 'excel', 'pdf', 'print']
     });
+</script>
 
-    table.buttons().container()
-        .appendTo('#example2_wrapper .col-md-6:eq(0)');
-});
+<script>
+    $(document).ready(function() {
+        var table = $('#example2').DataTable({
+            lengthChange: false,
+            buttons: ['copy', 'excel', 'pdf', 'print']
+        });
+
+        table.buttons().container()
+            .appendTo('#example2_wrapper .col-md-6:eq(0)');
+    });
 </script>
 <script>
-tinymce.init({
-    selector: '#mytextarea'
-});
+    tinymce.init({
+        selector: '#mytextarea'
+    });
 </script>
 <script type="text/javascript">
-$(document).ready(function() {
+    $(document).ready(function() {
 
-    // Format mata uang.
-    $('.uang').mask('000.000.000.000', {
-        reverse: true
-    });
+        // Format mata uang.
+        $('.uang').mask('000.000.000.000', {
+            reverse: true
+        });
 
-})
+    })
 </script>
 <script>
-$(function() {
+    $(function() {
 
-    $('#date').bootstrapMaterialDatePicker({
-        time: false
+        $('#date').bootstrapMaterialDatePicker({
+            time: false
+        });
+        $('#date2').bootstrapMaterialDatePicker({
+            time: false
+        });
+        $('#date-time').bootstrapMaterialDatePicker({
+            format: 'YYYY-MM-DD HH:mm'
+        });
+
     });
-    $('#date2').bootstrapMaterialDatePicker({
-        time: false
-    });
-    $('#date-time').bootstrapMaterialDatePicker({
-        format: 'YYYY-MM-DD HH:mm'
+</script>
+<script>
+    $(document).ready(function() {
+        //$("#search_results").slideUp();
+        $("#button_find").click(function(event) {
+            event.preventDefault();
+            //search_ajax_way();
+            ajax_search();
+        });
     });
 
-});
+    function ajax_search() {
+
+        // var judul = $("#search_query").val();
+        $.ajax({
+            url: "<?= base_url('account/setor') ?>",
+            // data: "judul=" + judul,
+            success: function(data) {
+                // jika data sukses diambil dari server, tampilkan di <select id=kota>
+                $("#display_results").html(data);
+            }
+        });
+
+    }
 </script>
 <!--app JS-->
 <script src="<?= base_url('vertical/'); ?>assets/js/app.js"></script>

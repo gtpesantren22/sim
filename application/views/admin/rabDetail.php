@@ -56,8 +56,7 @@
                                         Umum
                                         <span><?= rupiah($sumD->total); ?></span>
                                     </li>
-                                    <li class=" list-group-item d-flex justify-content-between align-items-center active"
-                                        aria-current="true">TOTAL RAB <span">
+                                    <li class=" list-group-item d-flex justify-content-between align-items-center active" aria-current="true">TOTAL RAB <span">
                                             <?= rupiah($sumA->total + $sumB->total + $sumC->total + $sumD->total); ?></span>
                                     </li>
                                 </ul>
@@ -73,6 +72,7 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Kode</th>
+                                        <th>Jenis</th>
                                         <th>Nama Barang</th>
                                         <th>Rencana Waktu</th>
                                         <th>QTY</th>
@@ -86,23 +86,26 @@
                                     <?php
                                     $no = 1;
                                     foreach ($data as $a) : ?>
-                                    <tr>
-                                        <td><?= $no++ ?></td>
-                                        <td><?= $a->kode ?></td>
-                                        <td><?= $a->nama ?></td>
-                                        <td><?= $a->rencana ?></td>
-                                        <td><?= $a->qty . ' ' . $a->satuan ?></td>
-                                        <td><?= rupiah($a->harga_satuan) ?></td>
-                                        <td><?= rupiah($a->total) ?></td>
-                                        <!-- <td><?= round($rls->vol / $a->qty * 100, 1); ?>%</td> -->
-                                        <td>
-                                            <a class="tombol-hapus"
-                                                href="<?= base_url('admin/rabDel/') . $a->id_rab; ?>"><i
-                                                    class="bx bx-trash text-danger"> </i></a>
-                                            <a href="<?= base_url('admin/rabEdit/') . $a->id_rab; ?>"><i
-                                                    class="bx bx-edit text-warning"> </i></a>
-                                        </td>
-                                    </tr>
+                                        <tr>
+                                            <td><?= $no++ ?></td>
+                                            <td><?= $a->kode ?></td>
+                                            <td><?php
+                                                if ($a->jenis == 'A') echo 'A. Belanja Barang';
+                                                if ($a->jenis == 'B') echo 'B. Langganan & Jasa';
+                                                if ($a->jenis == 'C') echo 'C. Belanja Kegiatan';
+                                                if ($a->jenis == 'D') echo 'D. Umum';
+                                                ?></td>
+                                            <td><?= $a->nama ?></td>
+                                            <td><?= $a->rencana ?></td>
+                                            <td><?= $a->qty . ' ' . $a->satuan ?></td>
+                                            <td><?= rupiah($a->harga_satuan) ?></td>
+                                            <td><?= rupiah($a->total) ?></td>
+                                            <!-- <td><?= round($rls->vol / $a->qty * 100, 1); ?>%</td> -->
+                                            <td>
+                                                <a class="tombol-hapus" href="<?= base_url('admin/rabDel/') . $a->id_rab; ?>"><i class="bx bx-trash text-danger"> </i></a>
+                                                <a href="<?= base_url('admin/rabEdit/') . $a->id_rab; ?>"><i class="bx bx-edit text-warning"> </i></a>
+                                            </td>
+                                        </tr>
                                     <?php endforeach; ?>
                                 </tbody>
                                 <tfoot>
