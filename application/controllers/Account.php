@@ -1470,7 +1470,7 @@ https://simkupaduka.ppdwk.com/';
 		$data['spjData'] = $this->db->query("SELECT * FROM spj WHERE stts = 1 OR stts = 2 AND tahun = '$this->tahun' ");
 
 		$this->load->view('account/head', $data);
-		$this->load->view('account/masuksisa', $data);
+		$this->load->view('account/masukSisa', $data);
 		$this->load->view('account/foot');
 	}
 

@@ -1884,7 +1884,7 @@ Updater : ' . $this->user . '
 		$data['sisa'] = $this->model->getSisaOrder($this->tahun)->result();
 
 		$this->load->view('admin/head', $data);
-		$this->load->view('admin/masuksisa', $data);
+		$this->load->view('admin/masukSisa', $data);
 		$this->load->view('admin/foot');
 	}
 
