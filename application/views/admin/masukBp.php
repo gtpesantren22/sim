@@ -52,14 +52,14 @@
                                     <?php
                                     $no = 1;
                                     foreach ($data as $ls_jns) : ?>
-                                    <tr>
-                                        <td><?= $no++; ?></td>
-                                        <td><?= $ls_jns->nama; ?></td>
-                                        <td><?= $ls_jns->tgl; ?></td>
-                                        <td><?= rupiah($ls_jns->nominal); ?></td>
-                                        <td><?= $ls_jns->tahun; ?></td>
-                                        <td><?= $ls_jns->kasir; ?></td>
-                                    </tr>
+                                        <tr>
+                                            <td><?= $no++; ?></td>
+                                            <td><?= $ls_jns->nama; ?></td>
+                                            <td><?= $ls_jns->tgl; ?></td>
+                                            <td><?= rupiah($ls_jns->nominal); ?></td>
+                                            <td><?= $ls_jns->tahun; ?></td>
+                                            <td><?= $ls_jns->kasir; ?></td>
+                                        </tr>
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>

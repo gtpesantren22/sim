@@ -18,8 +18,7 @@
             </div>
             <div class="ms-auto">
                 <div class="btn-group">
-                    <a href="<?= base_url('admin/pak'); ?>" class="btn btn-light btn-sm"><i
-                            class="bx bx-subdirectory-left"></i>
+                    <a href="<?= base_url('admin/pak'); ?>" class="btn btn-light btn-sm"><i class="bx bx-subdirectory-left"></i>
                         Kembali</a>
                 </div>
             </div>
@@ -43,20 +42,14 @@
                         </div>
                     </div>
                     <div class="col">
-                        <a href="<?= base_url('admin/rabDelSnc/' . $data->kode_pak) ?>"
-                            class="btn btn-danger btn-sm mt-2 tbl-confirm"
-                            value="Mensinkronkan RAB yang akan dihapus"><i class="bx bx-sync"></i>Sinkron RAB
+                        <a href="<?= base_url('admin/rabDelSnc/' . $data->kode_pak) ?>" class="btn btn-danger btn-sm mt-2 tbl-confirm" value="Mensinkronkan RAB yang akan dihapus"><i class="bx bx-sync"></i>Sinkron RAB
                             yang
                             dihapus</a>
-                        <a href="<?= base_url('admin/rabEditSnc/' . $data->kode_pak); ?>"
-                            class="btn btn-warning btn-sm mt-2 tbl-confirm"
-                            value="Mensinkronkan RAB yang akan diupdate"><i class="bx bx-recycle"></i>Sinkron
+                        <a href="<?= base_url('admin/rabEditSnc/' . $data->kode_pak); ?>" class="btn btn-warning btn-sm mt-2 tbl-confirm" value="Mensinkronkan RAB yang akan diupdate"><i class="bx bx-recycle"></i>Sinkron
                             RAB
                             yang
                             diedit</a>
-                        <a href="<?= base_url('admin/rabUploadSnc/' . $data->kode_pak) ?>"
-                            class="btn btn-success btn-sm mt-2 tbl-confirm"
-                            value="Mengupload RAB baru yang sudah dibuat"><i class="bx bx-cloud-upload"></i>Upload
+                        <a href="<?= base_url('admin/rabUploadSnc/' . $data->kode_pak) ?>" class="btn btn-success btn-sm mt-2 tbl-confirm" value="Mengupload RAB baru yang sudah dibuat"><i class="bx bx-cloud-upload"></i>Upload
                             RAB
                             baru</a>
                     </div>
@@ -78,23 +71,25 @@
                                         <th>Harga Satuan</th>
                                         <th>Total</th>
                                         <th>Ket</th>
+                                        <th>Snc</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
                                     $no = 1;
                                     foreach ($rpak as $r1) : ?>
-                                    <tr>
-                                        <td><?= $no++; ?></td>
-                                        <td><?= $r1->kode_rab ?></td>
-                                        <td><?= $r1->nm ?></td>
-                                        <td><?= $r1->qty ?></td>
-                                        <td><?= rupiah($r1->harga_satuan) ?></td>
-                                        <td><?= rupiah($r1->total) ?></td>
-                                        <td class="text-success">
-                                            <?= $r1->ket == 'hapus' ? "<span class='badge bg-danger btn-rounded'>hapus</span>" : "<span class='badge bg-success btn-rounded'>edit</span>" ?>
-                                        </td>
-                                    </tr>
+                                        <tr>
+                                            <td><?= $no++; ?></td>
+                                            <td><?= $r1->kode_rab ?></td>
+                                            <td><?= $r1->nm ?></td>
+                                            <td><?= $r1->qty ?></td>
+                                            <td><?= rupiah($r1->harga_satuan) ?></td>
+                                            <td><?= rupiah($r1->total) ?></td>
+                                            <td class="text-success">
+                                                <?= $r1->ket == 'hapus' ? "<span class='badge bg-danger btn-rounded'>hapus</span>" : "<span class='badge bg-success btn-rounded'>edit</span>" ?>
+                                            </td>
+                                            <td><?= $r1->snc ?></td>
+                                        </tr>
                                     <?php endforeach; ?>
                                 </tbody>
                                 <tfoot>
@@ -125,21 +120,23 @@
                                         <th>Satuan</th>
                                         <th>Harga Satuan</th>
                                         <th>Total</th>
+                                        <th>Snc</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
                                     $no = 1;
                                     foreach ($rabnew as $r2) : ?>
-                                    <tr>
-                                        <td><?= $no++; ?></td>
-                                        <td><?= $r2->kode ?></td>
-                                        <td><?= $r2->nama ?></td>
-                                        <td><?= $r2->qty ?></td>
-                                        <td><?= $r2->satuan ?></td>
-                                        <td><?= rupiah($r2->harga_satuan) ?></td>
-                                        <td><?= rupiah($r2->total) ?></td>
-                                    </tr>
+                                        <tr>
+                                            <td><?= $no++; ?></td>
+                                            <td><?= $r2->kode ?></td>
+                                            <td><?= $r2->nama ?></td>
+                                            <td><?= $r2->qty ?></td>
+                                            <td><?= $r2->satuan ?></td>
+                                            <td><?= rupiah($r2->harga_satuan) ?></td>
+                                            <td><?= rupiah($r2->total) ?></td>
+                                            <td><?= $r2->snc ?></td>
+                                        </tr>
                                     <?php endforeach; ?>
                                 </tbody>
                                 <tfoot>
