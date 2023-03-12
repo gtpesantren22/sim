@@ -175,4 +175,9 @@ class KasirModel extends CI_Model
         $this->db->where('tahun', $tahun);
         return $this->db->get();
     }
+
+    public function getAll($table)
+    {
+        return $this->db->get($table);
+    }
 }

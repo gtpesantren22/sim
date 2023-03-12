@@ -21,6 +21,11 @@ class LembagaModel extends CI_Model
         $this->db->insert($tbl, $data);
     }
 
+    public function getAll($table)
+    {
+        return $this->db->get($table);
+    }
+
     public function update($table, $data, $where, $dtwhere)
     {
         $this->db->where($where, $dtwhere);
