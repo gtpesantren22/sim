@@ -268,7 +268,7 @@ class AdminModel extends CI_Model
         $this->db->where('spj.tahun', $tahun);
         $this->db->where('pengajuan.tahun', $tahun);
         $this->db->where('lembaga.tahun', $tahun);
-        $this->db->order_by('pengajuan.tgl_upload', 'DESC');
+        $this->db->order_by('spj.tgl_upload', 'DESC');
         return $this->db->get();
     }
 
