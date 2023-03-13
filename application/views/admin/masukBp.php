@@ -39,19 +39,28 @@
                         <div class="table-responsive">
                             <table id="example" class="table table-striped table-bordered" style="width:100%">
                                 <thead>
-                                    <tr>
+                                    <!-- <tr>
                                         <th>No</th>
                                         <th>Nama</th>
                                         <th>Tanggal Bayar</th>
                                         <th>Nominal</th>
                                         <th>Tahun Ajaran</th>
                                         <th>Penerima</th>
+                                    </tr> -->
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Bulan</th>
+                                        <th>Tanggungan</th>
+                                        <th>Bayar</th>
+                                        <th>%</th>
+                                        <th>Kurang</th>
+                                        <th>%</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php
-                                    $no = 1;
-                                    foreach ($data as $ls_jns) : ?>
+                                    <!-- <?php
+                                            $no = 1;
+                                            foreach ($data as $ls_jns) : ?>
                                         <tr>
                                             <td><?= $no++; ?></td>
                                             <td><?= $ls_jns->nama; ?></td>
@@ -59,6 +68,19 @@
                                             <td><?= rupiah($ls_jns->nominal); ?></td>
                                             <td><?= $ls_jns->tahun; ?></td>
                                             <td><?= $ls_jns->kasir; ?></td>
+                                        </tr>
+                                    <?php endforeach; ?> -->
+                                    <?php
+                                    $no = 1;
+                                    foreach ($jml_tangg as $ls_jns) : ?>
+                                        <tr>
+                                            <td><?= $ls_jns['bulan']; ?></td>
+                                            <td><?= $bulan_cal[$ls_jns['bulan']]; ?></td>
+                                            <td><?= rupiah($ls_jns['tangg']); ?></td>
+                                            <td><?= rupiah($ls_jns['bayar']); ?></td>
+                                            <td><?= round($ls_jns['bayar_prsn'], 1); ?> %</td>
+                                            <td><?= rupiah($ls_jns['kurang']); ?></td>
+                                            <td><?= round($ls_jns['kurang_prsn'], 1); ?> %</td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>

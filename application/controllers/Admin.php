@@ -453,6 +453,25 @@ class Admin extends CI_Controller
 		$data['bidang'] = $this->model->getBy('bidang', 'tahun', $this->tahun)->result();
 		$data['user'] = $this->Auth_model->current_user();
 		$data['tahun'] = $this->tahun;
+		$data['bulan_cal'] = $this->bulan;
+
+		for ($i = 1; $i <= 12; $i++) {
+			$i !== 5 && $i !== 6 ? $field = 'ju_ap' : $field = 'me_ju';
+
+			$tangg_perbulan = $this->model->getBySum('tangg', 'tahun', $this->tahun, $field)->row();
+			$bayar_perbulan = $this->model->getBySum2('pembayaran', 'tahun', $this->tahun, 'bulan', $i, 'nominal')->row();
+			$jml_tangg[] = array(
+				'bulan' => $i,
+				'tangg' => $tangg_perbulan->jml,
+				'bayar' => $bayar_perbulan->jml,
+				'bayar_prsn' => $bayar_perbulan->jml / $tangg_perbulan->jml * 100,
+				'kurang' => $tangg_perbulan->jml - $bayar_perbulan->jml,
+				'kurang_prsn' => ($tangg_perbulan->jml - $bayar_perbulan->jml) / $tangg_perbulan->jml * 100,
+			);
+		}
+
+		$data['jml_tangg'] = $jml_tangg;
+
 		$this->load->view('admin/head', $data);
 		$this->load->view('admin/masukBp', $data);
 		$this->load->view('admin/foot');
@@ -1860,6 +1879,7 @@ Updater : ' . $this->user . '
 		if ($this->db->affected_rows() > 0) {
 			kirim_person($this->apiKey, '082264061060', $psn);
 			kirim_person($this->apiKey, '085236924510', $psn);
+			kirim_person($this->apiKey, '085258222376', $psn);
 			$this->session->set_flashdata('ok', 'Saldo sudah diperbarui');
 			redirect('admin');
 		} else {
