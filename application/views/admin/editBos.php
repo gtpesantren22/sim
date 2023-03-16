@@ -39,8 +39,7 @@
                                     <div class="card-body">
                                         <div class="d-flex align-items-center">
                                             <div class="text-white ms-auto font-35">
-                                                <button class="btn btn-primary" data-bs-toggle="modal"
-                                                    data-bs-target="#addPes"><i class="bx bx-plus-circle"></i>
+                                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPes"><i class="bx bx-plus-circle"></i>
                                                     Tambah</button>
                                             </div>
                                         </div>
@@ -58,47 +57,41 @@
                                     <option value=""> -pilih lembaga- </option>
                                     <?php
                                     foreach ($lembaga as $a) { ?>
-                                    <option <?= $a->kode == $pes->lembaga ? 'selected' : '' ?> value="<?= $a->kode ?>">
-                                        <?= $a->kode ?>.
-                                        <?= $a->nama ?></option>
+                                        <option <?= $a->kode == $pes->lembaga ? 'selected' : '' ?> value="<?= $a->kode ?>">
+                                            <?= $a->kode ?>.
+                                            <?= $a->nama ?></option>
                                     <?php } ?>
                                 </select>
                             </div>
                             <div class="form-group mb-2">
                                 <label for="">Uraian</label>
-                                <input type="text" name="uraian" class="form-control" required
-                                    value="<?= $pes->uraian; ?>">
+                                <input type="text" name="uraian" class="form-control" required value="<?= $pes->uraian; ?>">
                             </div>
                             <div class="form-group mb-2">
                                 <label for="">Periode</label>
-                                <input type="text" name="periode" class="form-control" required
-                                    value="<?= $pes->periode; ?>">
+                                <input type="text" name="periode" class="form-control" required value="<?= $pes->periode; ?>">
                             </div>
                             <div class="form-group mb-2">
                                 <label for="">Nominal</label>
-                                <input type="text" name="nominal" class="form-control uang" required
-                                    value="<?= $pes->nominal; ?>">
+                                <input type="text" name="nominal" class="form-control uang" required value="<?= $pes->nominal; ?>">
                             </div>
                             <div class="form-group mb-2">
                                 <label for="">Tahan Pelajaran</label>
                                 <select name="tahun" class="form-control" id="" required>
                                     <option value=""> -pilih tahun- </option>
                                     <?php
-                                    foreach ($tahun as $a) { ?>
-                                    <option <?= $a->nama_tahun == $pes->tahun ? 'selected' : '' ?>
-                                        value="<?= $a->nama_tahun ?>"><?= $a->nama_tahun ?></option>
+                                    foreach ($tahunData as $a) { ?>
+                                        <option <?= $a->nama_tahun == $pes->tahun ? 'selected' : '' ?> value="<?= $a->nama_tahun ?>"><?= $a->nama_tahun ?></option>
                                     <?php } ?>
                                 </select>
                             </div>
                             <div class="form-group mb-2">
                                 <label for="">Tanggal Setor</label>
-                                <input type="text" name="tgl_setor" id="date" class="form-control" required
-                                    value="<?= $pes->tgl_setor; ?>">
+                                <input type="text" name="tgl_setor" id="date" class="form-control" required value="<?= $pes->tgl_setor; ?>">
                             </div>
                             <div class="form-group mb-2">
                                 <label for="">Penerima</label>
-                                <input type="text" name="kasir" class="form-control" required
-                                    value="<?= $pes->kasir; ?>">
+                                <input type="text" name="kasir" class="form-control" required value="<?= $pes->kasir; ?>">
                             </div>
                         </div>
                         <div class="modal-footer">
