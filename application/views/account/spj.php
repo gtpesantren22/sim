@@ -79,8 +79,8 @@
                                             <td><?= rupiah($jml->jml_cair) ?></td>
                                             <td><?= rupiah($jml->jml_serap) ?></td>
                                             <td>
-                                                <a href="<?= '../institution/spj_file/' . $a->file_spj ?>"><i class="bx bx-download"></i>Unduh</a>
-                                                <a href="<?= '../institution/spj_file/' . $a->file_spj ?>"><i class="bx bx-show-alt"></i>Lihat</a>
+                                                <a href="<?= '../institution/spj_file/' . $a->file_spj ?>"><i class="bx bx-download"></i>Unduh</a> |
+                                                <a href="<?= base_url('account/viewSpj/') . $a->kode_pengajuan ?>"><i class="bx bx-show-alt"></i>Lihat</a>
                                             </td>
                                             <td>
                                                 <?php if ($a->stts == 1) { ?>

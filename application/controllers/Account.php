@@ -4,6 +4,7 @@ require 'vendor/autoload.php';
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use \Mpdf\Mpdf;
 
 class Account extends CI_Controller
 {
@@ -922,6 +923,21 @@ Terimakasih';
 			$this->session->set_flashdata('error', 'SPJ tidak bisa disetujui');
 			redirect('account/spj');
 		}
+	}
+
+	public function viewSpj($kode)
+	{
+		$data['bulan'] = $this->bulan;
+		$data['tahun'] = $this->tahun;
+		$data['user'] = $this->Auth_model->current_user();
+		$data['tahun'] = $this->tahun;
+		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
+		$data['spjData'] = $this->db->query("SELECT * FROM spj WHERE stts = 1 OR stts = 2 AND tahun = '$this->tahun' ");
+
+		$data['spj'] = $this->model->getBy('spj', 'kode_pengajuan', $kode)->row();
+		$this->load->view('account/head', $data);
+		$this->load->view('account/viewSpj', $data);
+		$this->load->view('account/foot');
 	}
 
 	public function uploadSisa()
