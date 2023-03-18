@@ -178,6 +178,9 @@
         $('#date2').bootstrapMaterialDatePicker({
             time: false
         });
+        $('#date3').bootstrapMaterialDatePicker({
+            time: false
+        });
         $('#date-time').bootstrapMaterialDatePicker({
             format: 'YYYY-MM-DD HH:mm'
         });

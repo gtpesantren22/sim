@@ -201,7 +201,11 @@ use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Base;
                         <div class="menu-title">Cetak Laporan</div>
                     </a>
                     <ul>
-                        <li> <a href="#"><i class="bx bx-right-arrow-alt"></i>Tutup Kas</a>
+                        <li>
+                            <a href="<?= base_url('admin/mutasi') ?>"><i class="bx bx-right-arrow-alt"></i>Santri Mutasi</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="bx bx-right-arrow-alt"></i>Tutup Kas</a>
                         </li>
                         <li>
                             <a href="#"><i class="bx bx-right-arrow-alt"></i>BA Pem. Kas</a>
