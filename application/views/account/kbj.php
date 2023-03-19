@@ -18,8 +18,7 @@
             </div>
             <div class="ms-auto">
                 <div class="btn-group">
-                    <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal"><i class="bx bx-plus-circle"></i> Input Data Baru</button>
+                    <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="bx bx-plus-circle"></i> Input Data Baru</button>
                 </div>
             </div>
         </div>
@@ -34,8 +33,7 @@
                                 <h4 class="my-1 text-danger"><?= rupiah(50000000); ?></h4>
                                 <p class="mb-0 font-13">Total limit RAB Kebijakan</p>
                             </div>
-                            <div class="widgets-icons-2 rounded-circle bg-gradient-bloody text-white ms-auto"><i
-                                    class='bx bxs-wallet'></i>
+                            <div class="widgets-icons-2 rounded-circle bg-gradient-bloody text-white ms-auto"><i class='bx bxs-wallet'></i>
                             </div>
                         </div>
                     </div>
@@ -50,8 +48,7 @@
                                 <h4 class="my-1 text-info"><?= rupiah($pakai->jml); ?></h4>
                                 <p class="mb-0 font-13">Nominal Pemaikaian RAB KEbijakan</p>
                             </div>
-                            <div class="widgets-icons-2 rounded-circle bg-gradient-scooter text-white ms-auto"><i
-                                    class='bx bxs-cart'></i>
+                            <div class="widgets-icons-2 rounded-circle bg-gradient-scooter text-white ms-auto"><i class='bx bxs-cart'></i>
                             </div>
                         </div>
                     </div>
@@ -66,8 +63,7 @@
                                 <h4 class="my-1 text-success"><?= rupiah(50000000 - $pakai->jml); ?></h4>
                                 <p class="mb-0 font-13">Sisa Dana Kebijakan</p>
                             </div>
-                            <div class="widgets-icons-2 rounded-circle bg-gradient-ohhappiness text-white ms-auto"><i
-                                    class='bx bxs-bar-chart-alt-2'></i>
+                            <div class="widgets-icons-2 rounded-circle bg-gradient-ohhappiness text-white ms-auto"><i class='bx bxs-bar-chart-alt-2'></i>
                             </div>
                         </div>
                     </div>
@@ -97,19 +93,18 @@
                                     <?php
                                     $no = 1;
                                     foreach ($data as $a) : ?>
-                                    <tr>
-                                        <td><?= $no++ ?></td>
-                                        <td><?= $a->kode_kbj ?></td>
-                                        <td><?= $a->nama ?></td>
-                                        <td><?= $a->tgl ?></td>
-                                        <td><?= rupiah($a->nominal) ?></td>
-                                        <td><?= $a->ket ?></td>
-                                        <td>
-                                            <a class="tombol-hapus" href="<?= 'delKbj/' . $a->id_kebijakan; ?>"><span
-                                                    class="bx bx-trash text-danger">Hapus</span></a>
-                                            <!-- <a href="#" class="tbl-confirm" value="Isi dari text">Coba</a> -->
-                                        </td>
-                                    </tr>
+                                        <tr>
+                                            <td><?= $no++ ?></td>
+                                            <td><?= $a->kode_kbj ?></td>
+                                            <td><?= $a->nama ?></td>
+                                            <td><?= $a->tgl ?></td>
+                                            <td><?= rupiah($a->nominal) ?></td>
+                                            <td><?= $a->ket ?></td>
+                                            <td>
+                                                <a class="tombol-hapus" href="<?= 'delKbj/' . $a->id_kebijakan; ?>"><span class="bx bx-trash text-danger">Hapus</span></a>
+                                                <!-- <a href="#" class="tbl-confirm" value="Isi dari text">Coba</a> -->
+                                            </td>
+                                        </tr>
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>
@@ -138,8 +133,8 @@
                         <option value=""> -pilih lembaga- </option>
                         <?php
                         foreach ($lembaga as $a) { ?>
-                        <option value="<?= $a->kode ?>"><?= $a->kode ?>.
-                            <?= $a->nama ?></option>
+                            <option value="<?= $a->kode ?>"><?= $a->kode ?>.
+                                <?= $a->nama ?></option>
                         <?php } ?>
                     </select>
                 </div>
@@ -149,8 +144,8 @@
                         <option value=""> -pilih bidang- </option>
                         <?php
                         foreach ($bidang as $a) { ?>
-                        <option value="<?= $a->kode ?>"><?= $a->kode ?>.
-                            <?= $a->nama ?></option>
+                            <option value="<?= $a->kode ?>"><?= $a->kode ?>.
+                                <?= $a->nama ?></option>
                         <?php } ?>
                     </select>
                 </div>
@@ -185,8 +180,8 @@
                     <select name="tahun" class="form-control" id="" required>
                         <option value=""> -pilih tahun- </option>
                         <?php
-                        foreach ($tahun as $a) { ?>
-                        <option value="<?= $a->nama_tahun ?>"><?= $a->nama_tahun ?></option>
+                        foreach ($tahunData as $a) { ?>
+                            <option value="<?= $a->nama_tahun ?>"><?= $a->nama_tahun ?></option>
                         <?php } ?>
                     </select>
                 </div>
