@@ -1919,4 +1919,55 @@ Updater : ' . $this->user . '
 			redirect('admin/sisa');
 		}
 	}
+
+	public function mutasi()
+	{
+	}
+
+	public function honor()
+	{
+		$data['user'] = $this->Auth_model->current_user();
+		$data['tahun'] = $this->tahun;
+		$data['bulan'] = $this->bulan;
+		$data['data'] = $this->model->getBy('kas', 'tahun', $this->tahun)->result();
+
+		$this->load->view('admin/head', $data);
+		$this->load->view('admin/kembaliHonor', $data);
+		$this->load->view('admin/foot');
+	}
+
+	public function saveHonorBack()
+	{
+		$data = [
+			'id_kas' => $this->uuid->v4(),
+			'uraian' => $this->input->post('uraian'),
+			'tgl' => $this->input->post('tgl'),
+			'nominal' => rmRp($this->input->post('nominal')),
+			'penyetor' => $this->input->post('penyetor'),
+			'ket' => $this->input->post('ket'),
+			'tahun' => $this->tahun,
+			'at' => date('Y-m-d H:i:s'),
+		];
+
+		$this->model->input('kas', $data);
+		if ($this->db->affected_rows() > 0) {
+			$this->session->set_flashdata('ok', 'Data berhasil ditambahkan');
+			redirect('admin/honor');
+		} else {
+			$this->session->set_flashdata('error', 'Data gagal ditambahkan');
+			redirect('admin/honor');
+		}
+	}
+
+	public function delHonor($id)
+	{
+		$this->model->delete('kas', 'id_kas', $id);
+		if ($this->db->affected_rows() > 0) {
+			$this->session->set_flashdata('ok', 'Kas sudah dihapus');
+			redirect('admin/honor');
+		} else {
+			$this->session->set_flashdata('error', 'Hapus data gagal');
+			redirect('admin/honor');
+		}
+	}
 }

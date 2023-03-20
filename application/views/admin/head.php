@@ -188,6 +188,13 @@ use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Base;
                     </a>
                 </li>
                 <li>
+                    <a href="<?= base_url('admin/honor'); ?>">
+                        <div class="parent-icon"><i class='bx bx-message-detail'></i>
+                        </div>
+                        <div class="menu-title">Pengembalian Honor</div>
+                    </a>
+                </li>
+                <li>
                     <a href="<?= base_url('admin/history'); ?>">
                         <div class="parent-icon"><i class='bx bx-history'></i>
                         </div>
