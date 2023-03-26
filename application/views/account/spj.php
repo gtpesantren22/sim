@@ -126,7 +126,7 @@
                                                                             <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Tanggal disetujui <span class="required">*</span>
                                                                             </label>
                                                                             <div class="col-md-6 col-sm-6 ">
-                                                                                <input type="text" id="date" required="required" name="tgl" class="form-control ">
+                                                                                <input type="text" id="" required="required" name="tgl" class="form-control dateFormat">
                                                                             </div>
                                                                         </div>
                                                                         <div class="item form-group">
@@ -188,7 +188,7 @@
                                                                             <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Tanggal penolakan <span class="required">*</span>
                                                                             </label>
                                                                             <div class="col-md-6 col-sm-6 ">
-                                                                                <input type="text" id="date2" required="required" name="tgl" class="form-control ">
+                                                                                <input type="text" id="" required="required" name="tgl" class="form-control dateFormat">
                                                                             </div>
                                                                         </div>
                                                                         <div class="item form-group">
@@ -267,7 +267,7 @@
                                                                             <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Tanggal setor <span class="required">*</span>
                                                                             </label>
                                                                             <div class="col-md-6 col-sm-6 ">
-                                                                                <input type="text" id="date3" required="required" name="tgl_setor" class="form-control">
+                                                                                <input type="text" id="" required="required" name="tgl_setor" class="form-control dateFormat">
                                                                             </div>
                                                                         </div>
                                                                         <div class="item form-group">

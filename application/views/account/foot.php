@@ -178,7 +178,7 @@
         $('#date2').bootstrapMaterialDatePicker({
             time: false
         });
-        $('#date3').bootstrapMaterialDatePicker({
+        $('.dateFormat').bootstrapMaterialDatePicker({
             time: false
         });
         $('#date-time').bootstrapMaterialDatePicker({
