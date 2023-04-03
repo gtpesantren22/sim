@@ -706,4 +706,62 @@ Terimakasih';
         $this->load->view('kasir/rekap', $data);
         $this->load->view('kasir/foot');
     }
+
+    public function dispen()
+    {
+        $data['lembaga'] = $this->model->getBy2('lembaga', 'kode', $this->lembaga, 'tahun', $this->tahun)->row();
+        $data['user'] = $this->Auth_model->current_user();
+        $data['tahun'] = $this->tahun;
+        $data['bulan'] = $this->bulan;
+        $data['data'] = $this->model->getByJoin('dispensasi', 'tb_santri', 'nis', 'nis', 'dispensasi.tahun', $this->tahun)->result();
+
+        $this->load->view('kasir/head', $data);
+        $this->load->view('kasir/dispen', $data);
+        $this->load->view('kasir/foot');
+    }
+
+    public function dispenAdd()
+    {
+        $data['lembaga'] = $this->model->getBy2('lembaga', 'kode', $this->lembaga, 'tahun', $this->tahun)->row();
+        $data['user'] = $this->Auth_model->current_user();
+        $data['tahun'] = $this->tahun;
+        $data['bulan'] = $this->bulan;
+        $data['santri'] = $this->model->getBy('tb_santri', 'aktif', 'Y')->result();
+
+        $this->load->view('kasir/head', $data);
+        $this->load->view('kasir/dispenAdd', $data);
+        $this->load->view('kasir/foot');
+    }
+
+    public function saveDispen()
+    {
+        $nis = $this->input->post('nis', true);
+        $sandal = rmRp($this->input->post('sandal', true));
+        $lomba = rmRp($this->input->post('lomba', true));
+        $wilayah = rmRp($this->input->post('wilayah', true));
+
+        $tangg = $this->db->query("SELECT ((ju_ap * 8) + (me_ju * 2)) AS tgnApr FROM tangg WHERE nis = '$nis' ")->row();
+        $masuk = $this->db->query("SELECT SUM(nominal) AS byr FROM pembayaran WHERE nis = '$nis' ")->row();
+        $bp = $tangg->tgnApr < $masuk->byr ? 0 : $tangg->tgnApr - $masuk->byr;
+
+        $data = [
+            'id_dispensasi' => $this->uuid->v4(),
+            'nis' => $nis,
+            'bp' => $bp,
+            'sandal' => $sandal,
+            'lomba' => $lomba,
+            'wilayah' => $wilayah,
+            'tahun' => $this->tahun,
+        ];
+
+        $this->model->input('dispensasi', $data);
+
+        if ($this->db->affected_rows() > 0) {
+            $this->session->set_flashdata('ok', 'Data berhasil diinput');
+            redirect('kasir/dispen');
+        } else {
+            $this->session->set_flashdata('error', 'Data tidak berhasil diinput');
+            redirect('kasir/dispen');
+        }
+    }
 }
