@@ -740,6 +740,7 @@ Terimakasih';
         $lomba = rmRp($this->input->post('lomba', true));
         $wilayah = rmRp($this->input->post('wilayah', true));
 
+        $cek = $this->db->query("SELECT * FROM dispensasi WHERE nis = '$nis' ")->num_rows();
         $tangg = $this->db->query("SELECT ((ju_ap * 8) + (me_ju * 2)) AS tgnApr FROM tangg WHERE nis = '$nis' ")->row();
         $masuk = $this->db->query("SELECT SUM(nominal) AS byr FROM pembayaran WHERE nis = '$nis' ")->row();
         $bp = $tangg->tgnApr < $masuk->byr ? 0 : $tangg->tgnApr - $masuk->byr;
@@ -754,13 +755,30 @@ Terimakasih';
             'tahun' => $this->tahun,
         ];
 
-        $this->model->input('dispensasi', $data);
+        if ($cek > 0) {
+            $this->session->set_flashdata('error', 'Maaf data sudah ada');
+            redirect('kasir/dispenAdd');
+        } else {
+            $this->model->input('dispensasi', $data);
 
+            if ($this->db->affected_rows() > 0) {
+                $this->session->set_flashdata('ok', 'Data berhasil diinput');
+                redirect('kasir/dispen');
+            } else {
+                $this->session->set_flashdata('error', 'Data tidak berhasil diinput');
+                redirect('kasir/dispen');
+            }
+        }
+    }
+
+    public function delDispen($id)
+    {
+        $this->model->delete('dispensasi', 'id_dispensasi', $id);
         if ($this->db->affected_rows() > 0) {
-            $this->session->set_flashdata('ok', 'Data berhasil diinput');
+            $this->session->set_flashdata('ok', 'Data berhasil dihapus');
             redirect('kasir/dispen');
         } else {
-            $this->session->set_flashdata('error', 'Data tidak berhasil diinput');
+            $this->session->set_flashdata('error', 'Data tidak berhasil dihapus');
             redirect('kasir/dispen');
         }
     }

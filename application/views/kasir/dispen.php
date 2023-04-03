@@ -52,7 +52,7 @@
                                             <td><?= rupiah($ls_jns->lomba); ?></td>
                                             <td><?= rupiah($ls_jns->wilayah); ?></td>
                                             <td>
-                                                <a href="<?= base_url('kasir/delDispen/' . $ls_jns->nis) ?>" class="btn btn-danger btn-sm tombol-hapus">Hapus</a>
+                                                <a href="<?= base_url('kasir/delDispen/' . $ls_jns->id_dispensasi) ?>" class="btn btn-danger btn-sm tombol-hapus">Hapus</a>
                                             </td>
                                         </tr>
                                         <!-- Modal -->
