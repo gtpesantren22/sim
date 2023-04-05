@@ -782,4 +782,31 @@ Terimakasih';
             redirect('kasir/dispen');
         }
     }
+
+    public function cetakDispen($nis)
+    {
+        $data['lembaga'] = $this->model->getBy2('lembaga', 'kode', $this->lembaga, 'tahun', $this->tahun)->row();
+        $data['user'] = $this->Auth_model->current_user();
+        $data['tahun'] = $this->tahun;
+        $data['bulan'] = $this->bulan;
+        $data['santri'] = $this->model->getBy2('tb_santri', 'nis', $nis, 'aktif', 'Y')->row();
+        $data['dispn'] = $this->model->getBy2('dispensasi', 'nis', $nis, 'tahun', $this->tahun)->row();
+
+        $this->load->view('kasir/head', $data);
+        $this->load->view('kasir/cetakDispen', $data);
+        $this->load->view('kasir/foot');
+    }
+
+    public function printDispen()
+    {
+        $nis = $this->input->post('nis', true);
+        $data['santri'] = $this->model->getBy2('tb_santri', 'nis', $nis, 'aktif', 'Y')->row();
+        $data['dispn'] = $this->model->getBy2('dispensasi', 'nis', $nis, 'tahun', $this->tahun)->row();
+
+        $data['bp'] = rmRp($this->input->post('bp', true));
+        $data['bayar'] = rmRp($this->input->post('bayar', true));
+        $data['janji'] = ($this->input->post('janji', true));
+
+        $this->load->view('kasir/printDispen', $data);
+    }
 }

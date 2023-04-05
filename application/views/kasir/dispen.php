@@ -53,6 +53,7 @@
                                             <td><?= rupiah($ls_jns->wilayah); ?></td>
                                             <td>
                                                 <a href="<?= base_url('kasir/delDispen/' . $ls_jns->id_dispensasi) ?>" class="btn btn-danger btn-sm tombol-hapus">Hapus</a>
+                                                <button onclick="window.location='<?= base_url('kasir/cetakDispen/' . $ls_jns->nis) ?>'" class="btn btn-primary btn-sm">Cetak</button>
                                             </td>
                                         </tr>
                                         <!-- Modal -->
