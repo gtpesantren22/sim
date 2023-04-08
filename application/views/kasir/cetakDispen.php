@@ -74,6 +74,12 @@
                                     </div>
                                 </div>
                                 <div class="form-group mb-2">
+                                    <label for="inputPassword3">Tgl Bayar</label>
+                                    <div class="input-group"> <span class="input-group-text" id="basic-addon1">Rp.</span>
+                                        <input type="text" class="form-control dateFormat" id="" name="tgl_bayar" required>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-2">
                                     <label for="inputPassword3">Perjanjian Pelunasan</label>
                                     <div class="input-group"> <span class="input-group-text" id="basic-addon1"><i class="bx bx-calendar"></i></span>
                                         <select name="janji" id="" class="form-control single-select" required>

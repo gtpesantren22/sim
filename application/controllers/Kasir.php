@@ -807,6 +807,19 @@ Terimakasih';
         $data['bayar'] = rmRp($this->input->post('bayar', true));
         $data['janji'] = ($this->input->post('janji', true));
 
-        $this->load->view('kasir/printDispen', $data);
+        $datas = [
+            'bayar' => $data['bayar'],
+            'tgl_bayar' => date('Y-m-d'),
+            'janji' => $data['janji'],
+        ];
+
+        $this->model->update('dispensasi', $datas, 'nis', $nis);
+
+        if ($this->db->affected_rows() > 0) {
+            $this->load->view('kasir/printDispen', $data);
+        } else {
+            $this->session->set_flashdata('error', 'Data tidak berhasil disipan');
+            redirect('kasir/dispen');
+        }
     }
 }
