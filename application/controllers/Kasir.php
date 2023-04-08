@@ -805,7 +805,7 @@ Terimakasih';
 
         $data['bp'] = rmRp($this->input->post('bp', true));
         $data['bayar'] = rmRp($this->input->post('bayar', true));
-        $data['janji'] = ($this->input->post('janji', true));
+        $data['janji'] = $this->input->post('janji', true);
 
         $datas = [
             'bayar' => $data['bayar'],
