@@ -25,7 +25,7 @@
                 <div class="card radius-10">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="example" class="table table-striped table-bordered" style="width:100%">
+                            <table id="example2" class="table table-striped table-bordered" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -34,6 +34,9 @@
                                         <th>Sandal</th>
                                         <th>Tind. Lomba</th>
                                         <th>Tind. Wilayah</th>
+                                        <th>Total</th>
+                                        <th>Bayar</th>
+                                        <th>Perjanjian</th>
                                         <th>#</th>
                                     </tr>
                                 </thead>
@@ -51,6 +54,9 @@
                                             <td><?= rupiah($ls_jns->sandal); ?></td>
                                             <td><?= rupiah($ls_jns->lomba); ?></td>
                                             <td><?= rupiah($ls_jns->wilayah); ?></td>
+                                            <td><?= rupiah($ls_jns->bp + $ls_jns->sandal + $ls_jns->lomba + $ls_jns->wilayah); ?></td>
+                                            <td><?= rupiah($ls_jns->bayar); ?></td>
+                                            <td><?= $bulan[$ls_jns->janji]; ?></td>
                                             <td>
                                                 <a href="<?= base_url('kasir/delDispen/' . $ls_jns->id_dispensasi) ?>" class="btn btn-danger btn-sm tombol-hapus">Hapus</a>
                                                 <button onclick="window.location='<?= base_url('kasir/cetakDispen/' . $ls_jns->nis) ?>'" class="btn btn-primary btn-sm">Cetak</button>

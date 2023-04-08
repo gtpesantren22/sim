@@ -153,8 +153,8 @@
 <script>
     $(document).ready(function() {
         var table = $('#example2').DataTable({
-            lengthChange: false,
-            buttons: ['copy', 'excel', 'pdf', 'print']
+            lengthChange: true,
+            buttons: ['copy', 'excel', 'pdf', 'print'],
         });
 
         table.buttons().container()
