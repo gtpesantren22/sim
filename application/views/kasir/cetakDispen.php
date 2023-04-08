@@ -70,13 +70,13 @@
                                 <div class="form-group mb-2">
                                     <label for="inputPassword3">Bayar</label>
                                     <div class="input-group"> <span class="input-group-text" id="basic-addon1">Rp.</span>
-                                        <input type="text" class="form-control uang" id="" name="bayar" required>
+                                        <input type="text" class="form-control uang" id="" name="bayar" required value="<?= $dispn->bayar ?>">
                                     </div>
                                 </div>
                                 <div class="form-group mb-2">
                                     <label for="inputPassword3">Tgl Bayar</label>
                                     <div class="input-group"> <span class="input-group-text" id="basic-addon1">Rp.</span>
-                                        <input type="text" class="form-control dateFormat" id="" name="tgl_bayar" required>
+                                        <input type="text" class="form-control dateFormat" id="" name="tgl_bayar" required value="<?= $dispn->tgl_bayar ?>">
                                     </div>
                                 </div>
                                 <div class="form-group mb-2">
@@ -84,9 +84,9 @@
                                     <div class="input-group"> <span class="input-group-text" id="basic-addon1"><i class="bx bx-calendar"></i></span>
                                         <select name="janji" id="" class="form-control single-select" required>
                                             <option value=""> -pilih- </option>
-                                            <?php foreach ($bulan as $sn) : ?>
-                                                <option value="<?= $sn ?>"><?= $sn ?></option>
-                                            <?php endforeach; ?>
+                                            <?php for ($i = 1; $i <= 12; $i++) : ?>
+                                                <option value="<?= $i ?>"><?= $bulan[$i] ?></option>
+                                            <?php endfor; ?>
                                         </select>
                                     </div>
                                 </div>

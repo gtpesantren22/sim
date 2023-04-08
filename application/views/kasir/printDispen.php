@@ -1,3 +1,6 @@
+<?php
+$bulan = ['', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+?>
 <!DOCTYPE html>
 <html>
 
@@ -118,7 +121,7 @@
             </tr>
         </table>
         <p>
-            Adapun sisa tanggungan kami tersebut diatas, Saya berjanji akan melunasi tanggungan tersebut pada <b>Bulan <?= $janji ?></b> dengan tambahan BP Bulan Berjalan.
+            Adapun sisa tanggungan kami tersebut diatas, Saya berjanji akan melunasi tanggungan tersebut pada <b>Bulan <?= $bulan[$janji] ?></b> dengan tambahan BP Bulan Berjalan.
         </p>
         <p>
             Saya bersedia dipanggil oleh Bendahara pesantren jika melebihi batas waktu yang saya janjikan.
