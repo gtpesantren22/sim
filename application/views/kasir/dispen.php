@@ -58,8 +58,19 @@
                                             <td><?= rupiah($ls_jns->bayar); ?></td>
                                             <td><?= $bulan[$ls_jns->janji]; ?></td>
                                             <td>
-                                                <a href="<?= base_url('kasir/delDispen/' . $ls_jns->id_dispensasi) ?>" class="btn btn-danger btn-sm tombol-hapus">Hapus</a>
-                                                <button onclick="window.location='<?= base_url('kasir/cetakDispen/' . $ls_jns->nis) ?>'" class="btn btn-primary btn-sm">Cetak</button>
+                                                <!-- <a href="<?= base_url('kasir/delDispen/' . $ls_jns->id_dispensasi) ?>" class="btn btn-danger btn-sm tombol-hapus">Hapus</a> -->
+                                                <!-- <button onclick="window.location='<?= base_url('kasir/cetakDispen/' . $ls_jns->nis) ?>'" class="btn btn-primary btn-sm">Cetak</button> -->
+                                                <div class="dropdown">
+                                                    <button class="btn btn-primary dropdown-toggle btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">Act</button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a class="dropdown-item tombol-hapus" href="<?= base_url('kasir/delDispen/' . $ls_jns->id_dispensasi) ?>">Hapus</a>
+                                                        </li>
+                                                        <li><a class="dropdown-item" href="<?= base_url('kasir/cetakDispen/' . $ls_jns->nis) ?>">Cetak</a>
+                                                        </li>
+                                                        <li><a class="dropdown-item" href="<?= base_url('kasir/ifoDispen/' . $ls_jns->nis) ?>">Pesan</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                             </td>
                                         </tr>
                                         <!-- Modal -->

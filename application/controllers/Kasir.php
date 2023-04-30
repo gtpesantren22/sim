@@ -822,4 +822,25 @@ Terimakasih';
             redirect('kasir/dispen');
         }
     }
+
+    public function ifoDispen($nis)
+    {
+        $santri = $this->model->getBy('tb_santri', 'nis', $nis)->row();
+        $dspn = $this->model->getBy('dispensasi', 'nis', $nis)->row();
+        $tgn = $dspn->bp + $dspn->sandal + $dspn->wilayah + $dspn->lomba;
+        $bln = $this->bulan;
+
+        $pesan = '*Notifikasi Tagihan Perjanjian Pembayaran*
+Yth *' . $santri->nama . '*, 
+Dengan ini kami sampaikan Anda memiliki Tagihan Perjanjian Pembayaran di PP DARUL LUGHAH WAL KAROMAH sebesar *' . rupiah($tgn - $dspn->bayar) . '* 
+dengan perjanjian pelunasan pada *Bulan ' . $bln[$dspn->janji] . '*
+
+Terima kasih. 
+
+Bendahara Pesantren 
+
+_Jika sudah melakukan pelunasan abaikan pesan ini_';
+
+        kirim_person($this->apiKey, $santri->hp, $pesan);
+    }
 }
