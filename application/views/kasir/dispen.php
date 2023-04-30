@@ -67,7 +67,7 @@
                                                         </li>
                                                         <li><a class="dropdown-item" href="<?= base_url('kasir/cetakDispen/' . $ls_jns->nis) ?>">Cetak</a>
                                                         </li>
-                                                        <li><a class="dropdown-item" href="<?= base_url('kasir/ifoDispen/' . $ls_jns->nis) ?>">Pesan</a>
+                                                        <li><a class="dropdown-item" href="<?= base_url('kasir/ifoDispen/' . $ls_jns->nis) ?>" target="_blank">Pesan</a>
                                                         </li>
                                                     </ul>
                                                 </div>
