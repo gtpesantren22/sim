@@ -547,7 +547,7 @@ Terimakasih';
     
 Nama : ' . $dts->nama . '
 Alamat : ' . $dts->desa . '-' . $dts->kec . '-' . $dts->kab . '
-Sekolah : ' . $dts->t_formal . '
+Sekolah : ' . $dts->k_formal . ' ' . $dts->t_formal . '
 Tgl Mutasi : ' .  $mutasi->tgl_mutasi . '
 
 *_telah diverifikasi oleh BENDAHARA PESANTREN. Untuk selanjutnya surat mutasi sudah bisa diterbitkan oleh SEKRETARIAT_*
