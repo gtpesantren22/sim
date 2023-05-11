@@ -724,7 +724,7 @@ class Account extends CI_Controller
 		}
 
 		$psn = '
-*INFORMASI PERMOHONAN PERSETUJUAN* ' . $rt . '
+*INFORMASI PENCAIRAN PENGAJUAN* ' . $rt . '
 
 pengajuan dari :
 
@@ -733,7 +733,7 @@ Kode Pengajuan : ' . $kode . '
 Nominal : ' . rupiah($total->jml) . '
 *Telah di Verifikasi dan Validasi Oleh Sub Bagian Accounting pada ' . date('Y-m-d') . '*
 
-*_dimohon kepada KEPALA PESANTREN untuk segera mengecek dan menyetujui nya di https://simkupaduka.ppdwk.com/_*
+*_Pengajuan sudah bisa dicairkan. Dimohon kepada KPA Lembaga Terkait untuk menghubungi Admin Pencairan._*
 Terimakasih';
 
 		$this->model->input('verifikasi', $data);
