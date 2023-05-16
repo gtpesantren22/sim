@@ -854,7 +854,7 @@ Terimakasih';
 	public function ajukanPAK($kode)
 	{
 		$data = [
-			'status' => 'ajukan'
+			'status' => 'proses'
 		];
 
 		$lm = $this->model->getBy2('lembaga', 'kode', $this->lembaga, 'tahun', $this->tahun)->row();

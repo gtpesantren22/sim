@@ -452,97 +452,86 @@ class Account extends CI_Controller
 		$data['user'] = $this->Auth_model->current_user();
 		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
 		$data['spjData'] = $this->db->query("SELECT * FROM spj WHERE stts = 1 OR stts = 2 AND tahun = '$this->tahun' ");
+		$data['lembaga'] = $this->model->getBy2('lembaga', 'kode', $data['data']->lembaga, 'tahun', $this->tahun)->row();
 		$data['tahun'] = $this->tahun;
+
 		$this->load->view('account/head', $data);
 		$this->load->view('account/pakDetail', $data);
 		$this->load->view('account/foot');
 	}
 
-	public function rabDelSnc($kode)
+	public function tolakPAK()
 	{
-		$data = $this->model->getBy2('pak_detail', 'kode_pak', $kode, 'ket', 'hapus', 'snc', 'belum')->result();
-		foreach ($data as $r) {
-			$kdrab = $r->kode_rab;
-			$up = ['snc' => 'sudah'];
+		$kode = $this->input->post('kode', true);
+		$lembaga = $this->input->post('lembaga', true);
+		$pesan = $this->input->post('pesan', true);
+		$tgl = $this->input->post('tgl', true);
 
-			$this->model->update('pak_detail', $up, 'kode_rab', $r->kode_rab);
-			$this->model->delete('rab', 'kode', $kdrab);
-		}
+		$data2 = ['status' => 'ditolak'];
+
+		$psn = '*INFORMASI PENOLAKAN PAK*
+
+pengajuan dari :
+    
+Lembaga : ' . $lembaga . '
+Kode PAK : ' . $kode . '
+*DITOLAK Oleh Sub Bagian Accounting pada ' . $tgl . '*
+dengan catatan : _*' . $pesan . '*_
+
+*_dimohon kepada KPA lembaga terkait untuk segera melakukan revisi sesuai dengan catatan yang ada di https://simkupaduka.ppdwk.com/_*
+
+Terimakasih';
+
+		$this->model->update('pak', $data2, 'kode_pak', $kode);
+
 		if ($this->db->affected_rows() > 0) {
-			$this->session->set_flashdata('ok', 'RAB PAK berhasil dihapus');
+			kirim_group($this->apiKey, '120363040973404347@g.us', $psn);
+			kirim_group($this->apiKey, '120363042148360147@g.us', $psn);
+			kirim_person($this->apiKey, '085235583647', $psn);
+			// kirim_person($this->apiKey, '085236924510', $psn);
+
+			$this->session->set_flashdata('ok', 'Pengajuan PAK berhasil ditolak');
 			redirect('account/pakDetail/' . $kode);
 		} else {
-			$this->session->set_flashdata('error', 'RAB PAK tidak bisa dihapus');
+			$this->session->set_flashdata('error', 'Pengajuan PAK tidak bisa ditolak');
 			redirect('account/pakDetail/' . $kode);
 		}
 	}
 
-	public function rabEditSnc($kode)
+	public function setujuiPAK($kode)
 	{
-		$data = $this->model->getBy3('pak_detail', 'kode_pak',  $kode, 'ket', 'edit', 'snc', 'belum')->result();
-		foreach ($data as $r) {
-			$kdrab = $r->kode_rab;
-			$rab = $this->model->getBy('rab', 'kode', $kdrab)->row();
+		$data = $this->model->getBy('pak', 'kode_pak', $kode)->row();
+		$lembaga = $this->model->getBy('lembaga', 'kode', $data->lembaga)->row();
 
-			$qtyAjuan = $rab->qty - $r->qty;
-			$data1 = [
-				'qty' => $qtyAjuan,
-				'total' => $qtyAjuan * $rab->harga_satuan
-			];
-			$up = ['snc' => 'sudah'];
+		$tgl = date('d M Y');
 
-			$this->model->update('pak_detail', $up, 'kode_rab', $r->kode_rab);
-			$this->model->update('rab', $data1, 'kode', $kdrab);
-		}
+		$data2 = ['status' => 'disetujui'];
+
+		$psn = '*INFORMASI PERSETUJUAN PAK*
+
+pengajuan dari :
+    
+Lembaga : ' . $lembaga->nama . '
+Kode PAK : ' . $kode . '
+*DISETUJUI Oleh Sub Bagian Accounting pada ' . $tgl . '*
+
+*_PAK akan segera di Upload oleh Bendahara. Selanjutnya RAB baru akan bisa digunakan_*
+
+Terimakasih';
+
+		$this->model->update('pak', $data2, 'kode_pak', $kode);
+
 		if ($this->db->affected_rows() > 0) {
-			$this->session->set_flashdata('ok', 'RAB PAK berhasil disinkron');
+			kirim_group($this->apiKey, '120363040973404347@g.us', $psn);
+			kirim_group($this->apiKey, '120363042148360147@g.us', $psn);
+			kirim_person($this->apiKey, '085235583647', $psn);
+			// kirim_person($this->apiKey, '085236924510', $psn);
+
+			$this->session->set_flashdata('ok', 'Pengajuan PAK berhasil disetujui');
 			redirect('account/pakDetail/' . $kode);
 		} else {
-			$this->session->set_flashdata('error', 'RAB PAK tidak bisa disinkron/Sudah disinkron');
+			$this->session->set_flashdata('error', 'Pengajuan PAK tidak bisa disetujui');
 			redirect('account/pakDetail/' . $kode);
-		}
-	}
-
-	public function rabUploadSnc($kode)
-	{
-		$sql = $this->model->getBy2('rab_sm', 'kode_pak',  $kode, 'snc', 'belum');
-		$data = $sql->result();
-		$cek = $sql->num_rows();
-
-		if ($cek < 1) {
-			$this->session->set_flashdata('error', 'Maaf. Tidak ada RAB yang akan diuload / RAB sudah disinkronkan');
-			redirect('account/pakDetail/' . $kode);
-		} else {
-			foreach ($data as $key) {
-				$ins = [
-					'id_rab' => $key->id_rab,
-					'lembaga' => $key->lembaga,
-					'bidang' => $key->bidang,
-					'jenis' => $key->jenis,
-					'kode' => $key->kode,
-					'nama' => $key->nama,
-					'rencana' => $key->rencana,
-					'qty' => $key->qty,
-					'satuan' => $key->satuan,
-					'harga_satuan' => $key->harga_satuan,
-					'total' => $key->total,
-					'tahun' => $key->tahun,
-					'at' => $key->at
-				];
-
-				$up = ['snc' => 'sudah'];
-
-				$this->model->input('rab', $ins);
-				$this->model->update('rab_sm', $up, 'id_rab', $key->id_rab);
-			}
-
-			if ($this->db->affected_rows() > 0) {
-				$this->session->set_flashdata('ok', 'Upload RAB Lembaga Berhasil');
-				redirect('account/pakDetail/' . $kode);
-			} else {
-				$this->session->set_flashdata('error', 'Upload RAB Lembaga Gagal');
-				redirect('account/pakDetail/' . $kode);
-			}
 		}
 	}
 

@@ -18,8 +18,7 @@
             </div>
             <div class="ms-auto">
                 <div class="btn-group">
-                    <a href="<?= base_url('account/pak'); ?>" class="btn btn-light btn-sm"><i
-                            class="bx bx-subdirectory-left"></i>
+                    <a href="<?= base_url('account/pak'); ?>" class="btn btn-light btn-sm"><i class="bx bx-subdirectory-left"></i>
                         Kembali</a>
                 </div>
             </div>
@@ -43,22 +42,12 @@
                         </div>
                     </div>
                     <div class="col">
-                        <a href="<?= base_url('account/rabDelSnc/' . $data->kode_pak) ?>"
-                            class="btn btn-danger btn-sm mt-2 tbl-confirm"
-                            value="Mensinkronkan RAB yang akan dihapus"><i class="bx bx-sync"></i>Sinkron RAB
-                            yang
-                            dihapus</a>
-                        <a href="<?= base_url('account/rabEditSnc/' . $data->kode_pak); ?>"
-                            class="btn btn-warning btn-sm mt-2 tbl-confirm"
-                            value="Mensinkronkan RAB yang akan diupdate"><i class="bx bx-recycle"></i>Sinkron
-                            RAB
-                            yang
-                            diedit</a>
-                        <a href="<?= base_url('account/rabUploadSnc/' . $data->kode_pak) ?>"
-                            class="btn btn-success btn-sm mt-2 tbl-confirm"
-                            value="Mengupload RAB baru yang sudah dibuat"><i class="bx bx-cloud-upload"></i>Upload
-                            RAB
-                            baru</a>
+                        <?php if ($data->status === 'proses') { ?>
+                            <a href="<?= base_url('account/setujuiPAK/' . $data->kode_pak) ?>" class="btn btn-success btn-sm mt-2 tbl-confirm" value="PAK akan disetujui dan akan dilanjutkan proses sinkronisasi"><i class="bx bx-check-circle"></i>Setujui PAK</a>
+                            <button data-bs-toggle="modal" data-bs-target="#ex_tolak" class="btn btn-danger btn-sm mt-2"><i class="bx bx-x-circle"></i>Tolak PAK</button>
+                        <?php } else { ?>
+                            PAK masih dalam proses input
+                        <?php } ?>
                     </div>
                 </div>
                 <div class="card radius-10">
@@ -84,17 +73,17 @@
                                     <?php
                                     $no = 1;
                                     foreach ($rpak as $r1) : ?>
-                                    <tr>
-                                        <td><?= $no++; ?></td>
-                                        <td><?= $r1->kode_rab ?></td>
-                                        <td><?= $r1->nm ?></td>
-                                        <td><?= $r1->qty ?></td>
-                                        <td><?= rupiah($r1->harga_satuan) ?></td>
-                                        <td><?= rupiah($r1->total) ?></td>
-                                        <td class="text-success">
-                                            <?= $r1->ket == 'hapus' ? "<span class='badge bg-danger btn-rounded'>hapus</span>" : "<span class='badge bg-success btn-rounded'>edit</span>" ?>
-                                        </td>
-                                    </tr>
+                                        <tr>
+                                            <td><?= $no++; ?></td>
+                                            <td><?= $r1->kode_rab ?></td>
+                                            <td><?= $r1->nm ?></td>
+                                            <td><?= $r1->qty ?></td>
+                                            <td><?= rupiah($r1->harga_satuan) ?></td>
+                                            <td><?= rupiah($r1->total) ?></td>
+                                            <td class="text-success">
+                                                <?= $r1->ket == 'hapus' ? "<span class='badge bg-danger btn-rounded'>hapus</span>" : "<span class='badge bg-success btn-rounded'>edit</span>" ?>
+                                            </td>
+                                        </tr>
                                     <?php endforeach; ?>
                                 </tbody>
                                 <tfoot>
@@ -131,15 +120,15 @@
                                     <?php
                                     $no = 1;
                                     foreach ($rabnew as $r2) : ?>
-                                    <tr>
-                                        <td><?= $no++; ?></td>
-                                        <td><?= $r2->kode ?></td>
-                                        <td><?= $r2->nama ?></td>
-                                        <td><?= $r2->qty ?></td>
-                                        <td><?= $r2->satuan ?></td>
-                                        <td><?= rupiah($r2->harga_satuan) ?></td>
-                                        <td><?= rupiah($r2->total) ?></td>
-                                    </tr>
+                                        <tr>
+                                            <td><?= $no++; ?></td>
+                                            <td><?= $r2->kode ?></td>
+                                            <td><?= $r2->nama ?></td>
+                                            <td><?= $r2->qty ?></td>
+                                            <td><?= $r2->satuan ?></td>
+                                            <td><?= rupiah($r2->harga_satuan) ?></td>
+                                            <td><?= rupiah($r2->total) ?></td>
+                                        </tr>
                                     <?php endforeach; ?>
                                 </tbody>
                                 <tfoot>
@@ -158,3 +147,52 @@
     </div>
 </div>
 <!--end page wrapper -->
+
+<div class="modal fade" id="ex_tolak" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Tolak PAK</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="<?= base_url('account/tolakPAK'); ?>" method="post">
+                <div class="modal-body">
+                    <input type="hidden" name="kode" value="<?= $data->kode_pak; ?>">
+                    <div class="form-group mb-2">
+                        <label class="" for="first-name">Nama Lembaga <span class="required">*</span>
+                        </label>
+                        <div class="">
+                            <input type="text" id="" name="lembaga" required="required" value="<?= $lembaga->nama ?>" class="form-control" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label class="" for="first-name">Tanggal Penolakan
+                            <span class="required">*</span>
+                        </label>
+                        <div class="">
+                            <input type="text" id="date-time" name="tgl" required="required" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label class="" for="first-name">Catatan <span class="required">*</span>
+                        </label>
+                        <div class="">
+                            <textarea name="pesan" required="required" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label class="" for="first-name">Verifikator <span class="required">*</span>
+                        </label>
+                        <div class="">
+                            <input type="text" id="" name="user" required="required" value="<?= $user->nama ?>" class="form-control" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-danger">Kirim Penolakan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
