@@ -204,7 +204,7 @@ use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Base;
                                                     <div class="notify bg-light-primary text-primary"><i class="bx bx-wallet"></i>
                                                     </div>
                                                     <div class="flex-grow-1">
-                                                        <h6 class="msg-name"><?= $data->kode_pengajuan ?><span class="msg-time float-end"><?= date('d-m-Y', strtotime($data->at)) ?></span></h6>
+                                                        <h6 class="msg-name"><?= $data->kode_pengajuan ?><span class="msg-time float-end"><?= date('d-m-Y H:i', strtotime($data->at)) ?></span></h6>
                                                         <p class="msg-info"><?= $lmb->nama ?></p>
                                                     </div>
                                                 </div>
@@ -231,7 +231,7 @@ use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Base;
                                         <?php foreach ($spjData->result() as $data) :
                                             $lmb = $this->db->query("SELECT * FROM lembaga WHERE kode = '$data->lembaga' AND tahun = '$tahun' ")->row();
                                         ?>
-                                            <a class="dropdown-item" href="<?= base_url('account/spj') ?>">
+                                            <a class="dropdown-item" href="<?= base_url('account/viewSpj/' . $data->kode_pengajuan) ?>">
                                                 <div class="d-flex align-items-center">
                                                     <div class="notify bg-light-primary text-primary"><i class="bx bx-notepad"></i>
                                                     </div>
