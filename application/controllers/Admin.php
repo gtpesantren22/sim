@@ -806,8 +806,6 @@ class Admin extends CI_Controller
 		$data = $this->model->getBy('pak', 'kode_pak', $kode)->row();
 		$lembaga = $this->model->getBy('lembaga', 'kode', $data->lembaga)->row();
 
-		$tgl = date('d M Y');
-
 		$data2 = ['status' => 'selesai'];
 
 		$psn = '*INFORMASI PAK*
@@ -830,10 +828,10 @@ Terimakasih';
 			// kirim_person($this->apiKey, '085236924510', $psn);
 
 			$this->session->set_flashdata('ok', 'Pengajuan PAK berhasil disetujui');
-			redirect('admin/pakDetail/' . $kode);
+			redirect('admin/pak');
 		} else {
 			$this->session->set_flashdata('error', 'Pengajuan PAK tidak bisa disetujui');
-			redirect('admin/pakDetail/' . $kode);
+			redirect('admin/pak');
 		}
 	}
 
