@@ -52,6 +52,7 @@
                         <a href="<?= base_url('admin/rabUploadSnc/' . $data->kode_pak) ?>" class="btn btn-success btn-sm mt-2 tbl-confirm" value="Mengupload RAB baru yang sudah dibuat"><i class="bx bx-cloud-upload"></i>Upload
                             RAB
                             baru</a>
+                        <a href="<?= base_url('admin/pakDone/' . $data->kode_pak) ?>" class="btn btn-primary btn-sm mt-2 tbl-confirm" value="PAK akan diselesaikan. Silahkan cek ulang sinkronisasi sebelum diselesaikan"><i class="bx bx-check-circle"></i>Selesaikan</a>
                     </div>
                 </div>
                 <div class="card radius-10">

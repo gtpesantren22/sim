@@ -801,6 +801,42 @@ class Admin extends CI_Controller
 		}
 	}
 
+	public function pakDone($kode)
+	{
+		$data = $this->model->getBy('pak', 'kode_pak', $kode)->row();
+		$lembaga = $this->model->getBy('lembaga', 'kode', $data->lembaga)->row();
+
+		$tgl = date('d M Y');
+
+		$data2 = ['status' => 'selesai'];
+
+		$psn = '*INFORMASI PAK*
+
+pengajuan dari :
+    
+Lembaga : ' . $lembaga->nama . '
+Kode PAK : ' . $kode . '
+*_PAK telah selesai disinkronisasi. Selanjutnya RAB baru sudah bisa digunakan_*
+
+Terimakasih';
+
+		$this->model->update('pak', $data2, 'kode_pak', $kode);
+
+		if ($this->db->affected_rows() > 0) {
+			kirim_group($this->apiKey, '120363040973404347@g.us', $psn);
+			kirim_group($this->apiKey, '120363042148360147@g.us', $psn);
+			kirim_person($this->apiKey, $lembaga->hp, $psn);
+			kirim_person($this->apiKey, $lembaga->hp_kep, $psn);
+			// kirim_person($this->apiKey, '085236924510', $psn);
+
+			$this->session->set_flashdata('ok', 'Pengajuan PAK berhasil disetujui');
+			redirect('admin/pakDetail/' . $kode);
+		} else {
+			$this->session->set_flashdata('error', 'Pengajuan PAK tidak bisa disetujui');
+			redirect('admin/pakDetail/' . $kode);
+		}
+	}
+
 	public function realis()
 	{
 		$data['data'] = $this->model->getBy('lembaga', 'tahun', $this->tahun)->result();
