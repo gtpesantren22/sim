@@ -52,6 +52,7 @@ class Account extends CI_Controller
 		$data['lembaga'] = $this->model->getBy('lembaga', 'tahun', $this->tahun)->result();
 		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
 		$data['spjData'] = $this->db->query("SELECT * FROM spj WHERE stts = 1 OR stts = 2 AND tahun = '$this->tahun' ");
+		$data['pakData'] = $this->model->getBy2('pak', 'tahun', $this->tahun, 'status', 'proses');
 
 		$data['saldo'] = $this->model->getAll('saldo')->result();
 

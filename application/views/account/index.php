@@ -189,6 +189,38 @@
 </div>
 <!--end page wrapper -->
 
+<div class="modal fade modalInfo" id="exampleWarningModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-warning">
+            <div class="modal-header border-dark">
+                <h5 class="modal-title text-dark"><i class="bx bx-error"></i> Informasi Tugas Saya</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-dark">
+                <p>Beberapa tugas menunggu</p>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                        <h6 class="mb-0"><i class="bx bx-task"></i> VerVal Pengajuan</h6>
+                        <span class="text-secondary"><?= $pjnData->num_rows() ?> data</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                        <h6 class="mb-0"><i class="bx bx-file"></i> VerVal SPJ</h6>
+                        <span class="text-secondary"><?= $spjData->num_rows() ?> data</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                        <h6 class="mb-0"><i class="bx bx-add-to-queue"></i> VerVal PAK</h6>
+                        <span class="text-secondary"><?= $pakData->num_rows() ?> data</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer border-dark">
+                <!-- <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button> -->
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Ok. Siap Laksanakan!</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="addLembaga" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -277,5 +309,13 @@
             }
         });
 
+    });
+
+    // Saat halaman dimuat
+    $(document).ready(function() {
+        // Tampilkan modal
+        <?php if ($pjnData->num_rows() > 0 || $spjData->num_rows() > 0 || $pakData->num_rows() > 0) { ?>
+            $('.modalInfo').modal('show');
+        <?php } ?>
     });
 </script>
