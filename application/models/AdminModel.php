@@ -337,4 +337,14 @@ class AdminModel extends CI_Model
         $this->db->order_by('real_sisa.tgl_setor', 'DESC');
         return $this->db->get();
     }
+
+    public function getRabByDppk($lembaga, $tahun)
+    {
+        $this->db->select('*');
+        $this->db->from('rab_sm24');
+        $this->db->where('lembaga', $lembaga);
+        $this->db->where('tahun', $tahun);
+        $this->db->group_by('kode_pak');
+        return $this->db->get();
+    }
 }

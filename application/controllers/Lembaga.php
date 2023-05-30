@@ -5,6 +5,7 @@ require 'vendor/autoload.php';
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
+
 class Lembaga extends CI_Controller
 {
 	function __construct()
@@ -1010,6 +1011,272 @@ Terimakasih';
 				$this->session->set_flashdata('error', 'Upload foto sukses');
 				redirect('lembaga/setting');
 			}
+		}
+	}
+
+	public function rab24()
+	{
+		$data['user'] = $this->Auth_model->current_user();
+		$data['tahun'] = $this->tahun;
+		$data['lembaga'] = $this->model->getBy2('lembaga', 'kode', $this->lembaga, 'tahun', $this->tahun)->row();
+		$data['dppk'] = $this->model->getBy2('dppk', 'lembaga', $this->lembaga, 'tahun', $this->tahun)->result();
+		$data['rab24Total'] = $this->model->getBySum2('rab_sm24', 'lembaga', $this->lembaga, 'tahun', $this->tahun, 'total');
+		$data['bidang'] = $this->model->getBy('bidang', 'tahun', $this->tahun)->result();
+
+		$data['data'] = $this->model->getBy2('rab_sm24', 'lembaga', $this->lembaga, 'tahun', $this->tahun)->result();
+		$data['cekData'] = $this->db->query("SELECT * FROM rab_list WHERE lembaga = '$this->lembaga' AND tahun = '$this->tahun' AND status = 'disetujui' OR status = 'selesai' OR status = 'proses' ")->num_rows();
+
+		$dppk = $this->model->getRabByDppk($this->lembaga, $this->tahun)->result();
+		$data['rab'] = array();
+		foreach ($dppk as $dts) :
+			$dppk = $dts->kode_pak;
+			$dppkData = $this->model->getBy('dppk', 'id_dppk', $dppk)->row(); // Mengambil data dari tabel DPPK
+			$dataDppk = $this->model->getBy('rab_sm24', 'kode_pak', $dppk);
+
+			$list = $dataDppk->result();
+			$totalItem = count($list);
+
+			foreach ($list as &$item) {
+				$item->nama_dppk = $dppkData->program;
+			}
+
+			$data['rab'][$dppk] = $list;
+		// $data['rab'][$dppk]['total_item'] = $totalItem;
+		endforeach;
+
+
+		$this->load->view('lembaga/head', $data);
+		$this->load->view('lembaga/rab24', $data);
+		$this->load->view('lembaga/foot');
+	}
+
+	public function addRab24()
+	{
+		$dppk = $this->input->post('dppk', true);
+
+		$dt_rab = $this->db->query("SELECT SUM(total) AS tt FROM rab_sm24 WHERE lembaga = '$this->lembaga' AND tahun = '$this->tahun' ")->row();
+		// $dt_pak = $this->db->query("SELECT SUM(total) AS tt FROM pak_detail WHERE kode_pak = '$kode_pak' AND tahun = '$this->tahun' ")->row();
+		$total = $this->input->post('qty') * rmRp($this->input->post('harga_satuan', true));
+
+		$data = $this->db->query("SELECT max(substring(kode, -3)) as maxKode FROM rab_sm24 WHERE lembaga = '$this->lembaga' AND tahun = '$this->tahun' AND kode_pak = '$dppk' ")->row();
+		$kodeBarang = $data->maxKode;
+		$noUrut = (int) substr($kodeBarang, 0, 3);
+		$noUrut++;
+		$kodeBarang = sprintf("%03s", $noUrut);
+
+		$data = [
+			'id_rab' => $this->uuid->v4(),
+			'lembaga' => $this->lembaga,
+			'jenis' => $this->input->post('jenis', true),
+			'bidang' => $this->input->post('bidang', true),
+			'kode' => $this->lembaga . '.' . $this->input->post('bidang', true) .  '.' . $this->input->post('jenis', true) . '.' . $dppk . '-' . $kodeBarang,
+			'nama' => $this->input->post('nama', true),
+			'rencana' => $this->input->post('rencana', true),
+			'qty' => $this->input->post('qty', true),
+			'satuan' => $this->input->post('satuan', true),
+			'total' => $total,
+			'harga_satuan' => rmRp($this->input->post('harga_satuan', true)),
+			'tahun' => $this->input->post('tahun', true),
+			'at' => date('Y-m-d H:i'),
+			'snc' => 'belum',
+			'kode_pak' => $dppk,
+		];
+
+		$pak = $this->input->post('pagu', true);
+		$rb = $dt_rab->tt;
+		$ttl = $rb + $total;
+
+		if ($pak >= $ttl) {
+			$this->model->input('rab_sm24', $data);
+			if ($this->db->affected_rows() > 0) {
+				$this->session->set_flashdata('ok', 'Item berhasil ditambahkan');
+				redirect('lembaga/rab24');
+			} else {
+				$this->session->set_flashdata('error', 'Item tidak ditambahkan');
+				redirect('lembaga/rab24');
+			}
+		} else {
+			$this->session->set_flashdata('error', 'Maaf. Pagu tidak mencukupi');
+			redirect('lembaga/rab24');
+		}
+	}
+
+	public function delRabSm24($kd_rab)
+	{
+		// $kd_pak = $this->uri->segment(3);
+
+		$this->model->delete('rab_sm24', 'id_rab', $kd_rab);
+		if ($this->db->affected_rows() > 0) {
+			$this->session->set_flashdata('ok', 'Item berhasil dihapus');
+			redirect('lembaga/rab24');
+		} else {
+			$this->session->set_flashdata('error', 'Item tidak dihapus');
+			redirect('lembaga/rab24');
+		}
+	}
+
+	public function downRabTmp()
+	{
+		force_download('vertical/assets/templates/Template_Upload_RAB_24.xls', NULL);
+	}
+
+
+	public function process_upload()
+	{
+		// Load library dan helper
+		$this->load->helper('file');
+
+		// Konfigurasi upload file
+		$config['upload_path'] = 'vertical/assets/uploads/'; // Direktori penyimpanan file
+		$config['allowed_types'] = 'xls|xlsx'; // Jenis file yang diizinkan
+		$config['max_size'] = 10240; // Ukuran maksimum file (dalam kilobytes)
+
+		// Memuat library upload
+		$this->load->library('upload', $config);
+
+		if (!$this->upload->do_upload('uploadFile')) {
+			// Jika upload gagal, tampilkan pesan error
+			$error = $this->upload->display_errors();
+			echo $error;
+		} else {
+			// Jika upload berhasil, dapatkan informasi file
+			$data = $this->upload->data();
+			$file_path = $data['full_path'];
+			// Load file Excel menggunakan library PHPExcel
+			$reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+			$objPHPExcel = $reader->load($file_path);
+
+			// Mendapatkan data dari worksheet pertama
+			$worksheet = $objPHPExcel->getActiveSheet();
+			$highestRow = $worksheet->getHighestDataRow();
+			$highestColumn = $worksheet->getHighestColumn();
+
+			// echo $highestRow;
+
+			// Mulai dari baris kedua (untuk melewati header)
+			for ($row = 5; $row <= $highestRow; $row++) {
+				$data = [
+					'id_rab' => $this->uuid->v4(),
+					'lembaga' => $worksheet->getCell('B' . $row)->getValue(),
+					'bidang' => $worksheet->getCell('C' . $row)->getValue(),
+					'jenis' => $worksheet->getCell('D' . $row)->getValue(),
+					'kode' => '-',
+					'nama' => $worksheet->getCell('E' . $row)->getValue(),
+					'rencana' => $worksheet->getCell('F' . $row)->getValue(),
+					'qty' => $worksheet->getCell('G' . $row)->getValue(),
+					'satuan' => $worksheet->getCell('H' . $row)->getValue(),
+					'total' => $worksheet->getCell('G' . $row)->getValue() * $worksheet->getCell('I' . $row)->getValue(),
+					'harga_satuan' => $worksheet->getCell('I' . $row)->getValue(),
+					'tahun' => $worksheet->getCell('J' . $row)->getValue(),
+					'at' => date('Y-m-d H:i'),
+					'snc' => 'belum',
+					'kode_pak' => $worksheet->getCell('K' . $row)->getValue(),
+				];
+
+				$this->model->input('rab_sm24', $data);
+			}
+
+			// Hapus file setelah selesai mengimpor
+
+			delete_files($file_path);
+
+			// Tampilkan pesan sukses atau lakukan redirect ke halaman lain
+			$this->session->set_flashdata('ok', 'Upload Selesai');
+			redirect('lembaga/rab24');
+		}
+	}
+
+
+	public function upload_config($path)
+	{
+		if (!is_dir($path))
+			mkdir($path, 0777, TRUE);
+		$config['upload_path'] 		= './' . $path;
+		$config['allowed_types'] 	= 'csv|CSV|xlsx|XLSX|xls|XLS';
+		$config['max_filename']	 	= '255';
+		$config['encrypt_name'] 	= TRUE;
+		$config['max_size'] 		= 4096;
+		$this->load->library('upload', $config);
+	}
+
+	public function kosongiRab()
+	{
+		$this->model->delete2('rab_sm24', 'lembaga', $this->lembaga, 'tahun', $this->tahun);
+		if ($this->db->affected_rows() > 0) {
+			$this->session->set_flashdata('ok', 'RAB sudah dikosongi');
+			redirect('lembaga/rab24');
+		} else {
+			$this->session->set_flashdata('error', 'RAB sudah dikosongi');
+			redirect('lembaga/rab24');
+		}
+	}
+
+	public function dppk()
+	{
+		$data['bulan'] = $this->bulan;
+		$data['list'] = $this->model->getBy2('dppk', 'lembaga', $this->lembaga, 'tahun', $this->tahun)->result();
+		$this->load->view('lembaga/dppk', $data);
+	}
+
+	public function realisKode($kode)
+	{
+		$data = $this->model->getBy2('rab_sm24', 'kode_pak', $kode, 'lembaga', $this->lembaga)->result();
+
+		foreach ($data as $item) :
+			$dataKode = $this->db->query("SELECT max(substring(kode, -3)) as maxKode FROM rab_sm24 WHERE kode_pak = '$item->kode_pak' ")->row();
+			$kodeBarang = $dataKode->maxKode;
+			$noUrut = (int) substr($kodeBarang, 0, 3);
+			$noUrut++;
+
+			$kodeBarang = $item->lembaga . '.' . $item->bidang . '.' . $item->jenis . '.' . $item->kode_pak . '-' . sprintf("%03s", $noUrut);
+			$nis = htmlspecialchars($kodeBarang);
+
+			$updt = ['kode' => $nis];
+			$this->model->update('rab_sm24', $updt, 'id_rab', $item->id_rab);
+
+		// echo sprintf("%03s", $noUrut) . '<br>';
+		endforeach;
+		redirect('lembaga/rab24');
+	}
+
+	public function ajukanRab24()
+	{
+		$cek = $this->model->getBy2('rab_list', 'lembaga', $this->lembaga, 'tahun', $this->tahun)->num_rows();
+		$lm = $this->model->getBy2('lembaga', 'kode', $this->lembaga, 'tahun', $this->tahun)->row();
+		$data = [
+			'lembaga' => $this->lembaga,
+			'tahun' => $this->tahun,
+			'at' => date('Y-m-d H:i'),
+			'status' => 'proses',
+		];
+
+		if ($cek > 0) {
+			$this->model->update2('rab_list', $data, 'lembaga', $this->lembaga, 'tahun', $this->tahun);
+		} else {
+			$this->model->input('rab_list', $data);
+		}
+
+		$psn = '*INFORMASI PERMOHONAN VERIFIKASI* ' . $rt . '
+
+Ada pengajuan RAB Tahun Ajaran 23/24  :
+    
+Lembaga : ' . $lm->nama . '
+Tahun : ' . $this->tahun . '
+Pada : ' .  date('Y-m-d H:i') . '
+
+*_dimohon kepada SUB BAG ACCOUNTING untuk segera mengecek nya di https://simkupaduka.ppdwk.com/_*
+Terimakasih';
+
+		if ($this->db->affected_rows() > 0) {
+			$this->session->set_flashdata('ok', 'RAB berhasil di ajukan');
+			kirim_group($this->apiKey, '120363040973404347@g.us', $psn);
+			kirim_group($this->apiKey, '120363042148360147@g.us', $psn);
+			// kirim_person($this->apiKey, '082302301003', $psn);
+			// kirim_person($this->apiKey, '085236924510', $psn);
+			redirect('lembaga/rab24');
+		} else {
+			$this->session->set_flashdata('error', 'RAB gagal di ajukan');
+			redirect('lembaga/rab24');
 		}
 	}
 }

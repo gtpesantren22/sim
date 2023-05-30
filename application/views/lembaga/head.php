@@ -124,6 +124,13 @@ use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Base;
                         <div class="menu-title">Pengaturan</div>
                     </a>
                 </li>
+                <li>
+                    <a href="<?= base_url('lembaga/rab24'); ?>">
+                        <div class="parent-icon"><i class='bx bx-data'></i>
+                        </div>
+                        <div class="menu-title">RAB 23/24 <span class="badge bg-danger">sementara</span></div>
+                    </a>
+                </li>
 
             </ul>
             <!--end navigation-->
@@ -296,7 +303,7 @@ use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Base;
                             <?php } else { ?>
                                 <img src="<?= base_url('vertical/assets/uploads/profile/user-avatar.png'); ?>" class="user-img" alt="user avatar">
                             <?php } ?>
-                            
+
                             <div class="user-info ps-3">
                                 <p class="user-name mb-0"><?= $user->nama; ?></p>
                                 <p class="designattion mb-0"><?= $user->level; ?></p>

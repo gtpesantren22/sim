@@ -159,7 +159,13 @@ use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Base;
                         <div class="menu-title">History Pengajuan</div>
                     </a>
                 </li>
-
+                <li>
+                    <a href="<?= base_url('account/rab24'); ?>">
+                        <div class="parent-icon"><i class='bx bx-data'></i>
+                        </div>
+                        <div class="menu-title">RAB 23/24 <span class="badge bg-danger">sementara</span></div>
+                    </a>
+                </li>
             </ul>
             <!--end navigation-->
         </div>

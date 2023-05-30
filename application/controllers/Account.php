@@ -1486,4 +1486,129 @@ https://simkupaduka.ppdwk.com/';
 			redirect('account/sisa');
 		}
 	}
+
+	public function rab24()
+	{
+		$data['lembaga'] = $this->model->getBy2('lembaga', 'kode', $lembaga, 'tahun', $this->tahun)->row();
+		$data['user'] = $this->Auth_model->current_user();
+		$data['tahun'] = $this->tahun;
+		$data['sumKeluar'] = $this->model->getBySum('keluar', 'tahun', $this->tahun, 'nominal')->row();
+		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
+		$data['spjData'] = $this->db->query("SELECT * FROM spj WHERE stts = 1 OR stts = 2 AND tahun = '$this->tahun' ");
+
+		$data['data'] = $this->db->query("SELECT * FROM rab_list JOIN lembaga ON lembaga.kode=rab_list.lembaga WHERE rab_list.tahun = '$this->tahun' AND lembaga.tahun = '$this->tahun'  AND rab_list.status = 'proses' ")->result();
+
+		$this->load->view('account/head', $data);
+		$this->load->view('account/rab24', $data);
+		$this->load->view('account/foot');
+	}
+
+	public function rab24detail($lembaga)
+	{
+		$data['lembaga'] = $this->model->getBy2('lembaga', 'kode', $this->lembaga, 'tahun', $this->tahun)->row();
+		$data['user'] = $this->Auth_model->current_user();
+		$data['tahun'] = $this->tahun;
+		$data['sumKeluar'] = $this->model->getBySum('keluar', 'tahun', $this->tahun, 'nominal')->row();
+		$data['pjnData'] = $this->model->getBy2('pengajuan', 'tahun', $this->tahun, 'verval', 0);
+		$data['spjData'] = $this->db->query("SELECT * FROM spj WHERE stts = 1 OR stts = 2 AND tahun = '$this->tahun' ");
+
+		$data['lembaga'] = $this->model->getBy2('lembaga', 'kode', $lembaga, 'tahun', $this->tahun)->row();
+		$data['dppk'] = $this->model->getBy2('dppk', 'lembaga', $lembaga, 'tahun', $this->tahun)->result();
+		$data['rab24Total'] = $this->model->getBySum2('rab_sm24', 'lembaga', $lembaga, 'tahun', $this->tahun, 'total');
+		$data['bidang'] = $this->model->getBy('bidang', 'tahun', $this->tahun)->result();
+
+		$data['data'] = $this->model->getBy2('rab_sm24', 'lembaga', $lembaga, 'tahun', $this->tahun)->result();
+		$data['cekData'] = $this->db->query("SELECT * FROM rab_list WHERE lembaga = '$lembaga' AND tahun = '$this->tahun' AND status = 'disetujui' OR status = 'selesai' OR status = 'proses' ")->num_rows();
+
+		$dppk = $this->model->getRabByDppk($lembaga, $this->tahun)->result();
+		$data['rab'] = array();
+		foreach ($dppk as $dts) :
+			$dppk = $dts->kode_pak;
+			$dppkData = $this->model->getBy('dppk', 'id_dppk', $dppk)->row(); // Mengambil data dari tabel DPPK
+			$dataDppk = $this->model->getBy('rab_sm24', 'kode_pak', $dppk);
+
+			$list = $dataDppk->result();
+			$totalItem = count($list);
+
+			foreach ($list as &$item) {
+				$item->nama_dppk = $dppkData->program;
+			}
+
+			$data['rab'][$dppk] = $list;
+		// $data['rab'][$dppk]['total_item'] = $totalItem;
+		endforeach;
+
+		$this->load->view('account/head', $data);
+		$this->load->view('account/rab24detail', $data);
+		$this->load->view('account/foot');
+	}
+
+	public function stujuiRab24($lembaga)
+	{
+		$data = ['status' => 'disetujui'];
+		$lm = $this->model->getBy2('lembaga', 'kode', $lembaga, 'tahun', $this->tahun)->row();
+
+		$this->model->update('rab_list', $data, 'lembaga', $lembaga);
+
+		$psn = '*INFORMASI VERIFIKASI RAB 23/24*
+
+Ada pengajuan RAB Tahun Ajaran 23/24  :
+    
+Lembaga : ' . $lm->nama . '
+Tahun : ' . $this->tahun . '
+Pada : ' .  date('Y-m-d H:i') . '
+
+*_RAB sudah disetujui. Selanjutnya akan di upload oleh Admin bendahara di https://simkupaduka.ppdwk.com/_*
+Terimakasih';
+
+		if ($this->db->affected_rows() > 0) {
+			$this->session->set_flashdata('ok', 'RAB sudah di setujui');
+			kirim_group($this->apiKey, '120363040973404347@g.us', $psn);
+			kirim_group($this->apiKey, '120363042148360147@g.us', $psn);
+			// kirim_person($this->apiKey, '082302301003', $psn);
+			// kirim_person($this->apiKey, '085236924510', $psn);
+			redirect('account/rab24');
+		} else {
+			$this->session->set_flashdata('error', 'Hapus data gagal');
+			redirect('account/rab24');
+		}
+	}
+
+	public function tolakRab24()
+	{
+		$kode = $this->input->post('kode', true);
+		$lembaga = $this->input->post('lembaga', true);
+		$pesan = $this->input->post('pesan', true);
+		$tgl = $this->input->post('tgl', true);
+
+		$data2 = ['status' => 'ditolak'];
+
+		$psn = '*INFORMASI PENOLAKAN RAB 23/24*
+
+pengajuan dari :
+    
+Lembaga : ' . $lembaga . '
+Kode PAK : ' . $kode . '
+*DITOLAK Oleh Sub Bagian Accounting pada ' . $tgl . '*
+dengan catatan : _*' . $pesan . '*_
+
+*_dimohon kepada KPA lembaga terkait untuk segera melakukan revisi sesuai dengan catatan yang ada di https://simkupaduka.ppdwk.com/_*
+
+Terimakasih';
+
+		$this->model->update('rab_list', $data2, 'lembaga', $kode);
+
+		if ($this->db->affected_rows() > 0) {
+			// kirim_group($this->apiKey, '120363040973404347@g.us', $psn);
+			// kirim_group($this->apiKey, '120363042148360147@g.us', $psn);
+			// kirim_person($this->apiKey, '085235583647', $psn);
+			kirim_person($this->apiKey, '085236924510', $psn);
+
+			$this->session->set_flashdata('ok', 'Pengajuan RAB berhasil ditolak');
+			redirect('account/rab24');
+		} else {
+			$this->session->set_flashdata('error', 'Pengajuan RAB tidak bisa ditolak');
+			redirect('account/rab24');
+		}
+	}
 }

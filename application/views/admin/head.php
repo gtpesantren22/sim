@@ -124,6 +124,12 @@ use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Base;
                         <li>
                             <a href="<?= base_url('admin/pak'); ?>"><i class="bx bx-right-arrow-alt"></i>PAK</a>
                         </li>
+                        <li>
+                            <a href="<?= base_url('admin/dppk'); ?>"><i class="bx bx-right-arrow-alt"></i>DPPK</a>
+                        </li>
+                        <li>
+                            <a href="<?= base_url('admin/rab24'); ?>"><i class="bx bx-right-arrow-alt"></i>RAB 23/24 <span class="badge bg-danger"> sementara</span></a>
+                        </li>
                     </ul>
                 </li>
                 <li>

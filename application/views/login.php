@@ -22,29 +22,38 @@
     <link href="<?= base_url('vertical/'); ?>assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="<?= base_url('vertical/'); ?>assets/css/bootstrap-extended.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-    <link href="<?= base_url('vertical/'); ?>assets/css/app.css" rel="stylesheet">
+    <link href="<?= base_url('vertical/'); ?>assets/css/app2.css" rel="stylesheet" type="text/css">
     <link href="<?= base_url('vertical/'); ?>assets/css/icons.css" rel="stylesheet">
     <title>SIMKUPADUKA - Login Page</title>
 </head>
 
 <body class="bg-login">
     <!--wrapper-->
+
     <div class="wrapper">
-        <div class="section-authentication-signin d-flex align-items-center justify-content-center my-5 my-lg-0">
-            <div class="container-fluid">
-                <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-3">
-                    <div class="col mx-auto">
-                        <div class="mb-4 text-center">
-                        </div>
-                        <div class="card">
+        <div class="section-authentication-cover">
+            <div class="">
+                <div class="row g-0">
+
+                    <div class="col-12 col-xl-7 col-xxl-8 auth-cover-left align-items-center justify-content-center d-none d-xl-flex">
+
+                        <div class="card shadow-none bg-transparent shadow-none rounded-0 mb-0">
                             <div class="card-body">
-                                <div class="border p-4 rounded">
-                                    <div class="text-center">
-                                        <!-- <h4 class="">SIMKUPADUKA APP</h3> -->
+                                <img src="https://codervent.com/rocker/demo/vertical/assets/images/login-images/login-cover.svg" class="img-fluid auth-img-cover-login" width="650" alt="" />
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-12 col-xl-5 col-xxl-4 auth-cover-right align-items-center justify-content-center">
+                        <div class="card rounded-0 m-3 shadow-none bg-transparent mb-0">
+                            <div class="card-body p-sm-5">
+                                <div class="">
+                                    <div class="mb-3 text-center">
                                         <img src="<?= base_url('vertical/'); ?>assets/images/logo.png" width="180" alt="" />
                                     </div>
-                                    <div class="login-separater text-center mb-2"> <span>LOGIN AKUN</span>
-                                        <hr />
+                                    <div class="text-center mb-4">
+                                        <p class="mb-0">Please log in to your account</p>
                                     </div>
                                     <div class="form-body">
                                         <form class="row g-3" method="post" action="<?= base_url('login/masuk'); ?>">
@@ -85,10 +94,15 @@
                                             </div>
                                         </form>
                                     </div>
+                                    <div class="login-separater text-center mb-5"> <span>OR SIGN IN WITH</span>
+                                        <hr>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
                 <!--end row-->
             </div>
@@ -108,6 +122,7 @@
     <script src="<?= base_url('vertical/'); ?>assets/plugins/notifications/js/notifications.min.js"></script>
     <script src="<?= base_url('vertical/'); ?>assets/sw/sweetalert2.all.min.js"></script>
     <script src="<?= base_url('vertical/'); ?>assets/plugins/notifications/js/my-notif.js"></script>
+    <script src="<?= base_url('vertical/'); ?>assets/js/app.js"></script>
     <script>
         $(document).ready(function() {
             $("#show_hide_password a").on('click', function(event) {

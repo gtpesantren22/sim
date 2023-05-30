@@ -6,6 +6,7 @@ class LembagaModel extends CI_Model
 
     public function __construct()
     {
+        // $this->table = 'rab_sm24';
     }
 
     function apikey()
@@ -15,6 +16,15 @@ class LembagaModel extends CI_Model
         $this->db->where('nama', 'Bendahara');
         return $this->db->get();
     }
+
+    public function get($where = 0)
+    {
+        if ($where)
+            $this->db->where($where);
+        $query = $this->db->get('rab_sm24');
+        return $query->row();
+    }
+
 
     function input($tbl, $data)
     {
@@ -40,6 +50,11 @@ class LembagaModel extends CI_Model
     }
 
     public function delete($table, $where, $dtwhere)
+    {
+        $this->db->where($where, $dtwhere);
+        $this->db->delete($table);
+    }
+    public function delete2($table, $where, $dtwhere, $where2, $dtwhere2)
     {
         $this->db->where($where, $dtwhere);
         $this->db->delete($table);
@@ -128,6 +143,21 @@ class LembagaModel extends CI_Model
         $this->db->join('pengajuan', 'ON  spj.kode_pengajuan=pengajuan.kode_pengajuan');
         $this->db->where('spj.lembaga', $lembaga);
         $this->db->where('spj.tahun', $tahun);
+        return $this->db->get();
+    }
+
+    public function add_batch($data)
+    {
+        return $this->db->insert_batch('rab_sm24', $data);
+    }
+
+    public function getRabByDppk($lembaga, $tahun)
+    {
+        $this->db->select('*');
+        $this->db->from('rab_sm24');
+        $this->db->where('lembaga', $lembaga);
+        $this->db->where('tahun', $tahun);
+        $this->db->group_by('kode_pak');
         return $this->db->get();
     }
 }

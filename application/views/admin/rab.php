@@ -26,12 +26,11 @@
                             <div class="col-md-8">
                                 <ul class="list-group">
                                     <?php foreach ($data as $a) : ?>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <?= $a->kode . '. ' . $a->nama; ?>
-                                        <a href="<?= base_url('admin/rabDetail/') . $a->kode ?>"
-                                            class="btn btn-primary btn-sm"><i class="bx bx-detail"></i> Lihat
-                                            Detail</a>
-                                    </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <?= $a->kode . '. ' . $a->nama; ?>
+                                            <a href="<?= base_url('admin/rabDetail/') . $a->kode ?>" class="btn btn-primary btn-sm"><i class="bx bx-detail"></i> Lihat
+                                                Detail</a>
+                                        </li>
                                     <?php endforeach; ?>
                                 </ul>
                             </div>
@@ -59,9 +58,7 @@
                                 </table>
                                 <hr>
                                 <h5 class="line_30">Upload File RAB (.xls)</h5>
-                                <button class="btn btn-success btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal"><i class="bx bx-cloud-upload"></i> Upload
-                                    RAB</button><br>
+                                <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="bx bx-cloud-upload"></i> Upload RAB</button><br>
                             </div>
 
                         </div>

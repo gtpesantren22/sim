@@ -2004,4 +2004,143 @@ Updater : ' . $this->user . '
 			redirect('admin/honor');
 		}
 	}
+
+	public function dppk()
+	{
+		$data['user'] = $this->Auth_model->current_user();
+		$data['tahun'] = $this->tahun;
+		$data['bulan'] = $this->bulan;
+		$data['data'] = $this->model->getBy('dppk', 'tahun', $this->tahun)->result();
+
+		$this->load->view('admin/head', $data);
+		$this->load->view('admin/dppk', $data);
+		$this->load->view('admin/foot');
+	}
+
+	public function rab24()
+	{
+		$data['user'] = $this->Auth_model->current_user();
+		$data['tahun'] = $this->tahun;
+		$data['bulan'] = $this->bulan;
+
+		$data['data'] = $this->db->query("SELECT * FROM rab_list JOIN lembaga ON lembaga.kode=rab_list.lembaga WHERE rab_list.tahun = '$this->tahun' AND lembaga.tahun = '$this->tahun'  AND rab_list.status = 'disetujui' ")->result();
+
+		$this->load->view('admin/head', $data);
+		$this->load->view('admin/rab24', $data);
+		$this->load->view('admin/foot');
+	}
+
+	public function rab24detail($lembaga)
+	{
+		$data['lembaga'] = $this->model->getBy2('lembaga', 'kode', $lembaga, 'tahun', $this->tahun)->row();
+		$data['user'] = $this->Auth_model->current_user();
+		$data['tahun'] = $this->tahun;
+
+		$data['dppk'] = $this->model->getBy2('dppk', 'lembaga', $lembaga, 'tahun', $this->tahun)->result();
+		$data['rab24Total'] = $this->model->getBySum2('rab_sm24', 'lembaga', $lembaga, 'tahun', $this->tahun, 'total');
+		$data['bidang'] = $this->model->getBy('bidang', 'tahun', $this->tahun)->result();
+
+		$data['data'] = $this->model->getBy2('rab_sm24', 'lembaga', $lembaga, 'tahun', $this->tahun)->result();
+		$data['cekData'] = $this->db->query("SELECT * FROM rab_list WHERE lembaga = '$lembaga' AND tahun = '$this->tahun' AND status = 'disetujui' OR status = 'selesai' OR status = 'proses' ")->num_rows();
+
+		$dppk = $this->model->getRabByDppk($lembaga, $this->tahun)->result();
+		$data['rab'] = array();
+		foreach ($dppk as $dts) :
+			$dppk = $dts->kode_pak;
+			$dppkData = $this->model->getBy('dppk', 'id_dppk', $dppk)->row(); // Mengambil data dari tabel DPPK
+			$dataDppk = $this->model->getBy('rab_sm24', 'kode_pak', $dppk);
+
+			$list = $dataDppk->result();
+			$totalItem = count($list);
+
+			foreach ($list as &$item) {
+				$item->nama_dppk = $dppkData->program;
+			}
+
+			$data['rab'][$dppk] = $list;
+		// $data['rab'][$dppk]['total_item'] = $totalItem;
+		endforeach;
+
+		$this->load->view('admin/head', $data);
+		$this->load->view('admin/rab24detail', $data);
+		$this->load->view('admin/foot');
+	}
+
+	public function rabUploadSnc24($kode)
+	{
+		$sql = $this->model->getBy3('rab_sm24', 'lembaga',  $kode, 'snc', 'belum', 'tahun', $this->tahun);
+		$data = $sql->result();
+		$cek = $sql->num_rows();
+
+		if ($cek < 1) {
+			$this->session->set_flashdata('error', 'Maaf. Tidak ada RAB yang akan diuload / RAB sudah disinkronkan');
+			redirect('admin/rab24detail/' . $kode);
+		} else {
+			foreach ($data as $key) {
+				$ins = [
+					'id_rab' => $key->id_rab,
+					'lembaga' => $key->lembaga,
+					'bidang' => $key->bidang,
+					'jenis' => $key->jenis,
+					'kode' => $key->kode,
+					'nama' => $key->nama,
+					'rencana' => $key->rencana,
+					'qty' => $key->qty,
+					'satuan' => $key->satuan,
+					'harga_satuan' => $key->harga_satuan,
+					'total' => $key->total,
+					'tahun' => $key->tahun,
+					'at' => $key->at
+				];
+
+				$up = ['snc' => 'sudah'];
+
+				$this->model->input('rab', $ins);
+				$this->model->update('rab_sm24', $up, 'id_rab', $key->id_rab);
+			}
+
+			if ($this->db->affected_rows() > 0) {
+				$this->session->set_flashdata('ok', 'Upload RAB Lembaga Berhasil');
+				redirect('admin/rab24detail/' . $kode);
+			} else {
+				$this->session->set_flashdata('error', 'Upload RAB Lembaga Gagal');
+				redirect('admin/rab24detail/' . $kode);
+			}
+		}
+	}
+
+	public function rabDone24($kode)
+	{
+		$data = $this->model->getBy2('rab_list', 'lembaga', $kode, 'tahun', $this->tahun)->row();
+		$lembaga = $this->model->getBy('lembaga', 'kode', $data->lembaga)->row();
+
+		$data2 = ['status' => 'selesai'];
+
+		$psn = '*INFORMASI RAB 23/24*
+
+pengajuan dari :
+    
+Lembaga : ' . $lembaga->nama . '
+Tahun : ' . $this->tahun . '
+Pada : ' .  date('Y-m-d H:i') . '
+
+*_RAB telah selesai disinkronisasi. Selanjutnya RAB baru sudah bisa digunakan_*
+Terimakasih';
+
+		$this->model->update('rab_list', $data2, 'lembaga', $kode);
+
+		if ($this->db->affected_rows() > 0) {
+			kirim_group($this->apiKey, '120363040973404347@g.us', $psn);
+			kirim_group($this->apiKey, '120363042148360147@g.us', $psn);
+			// kirim_person($this->apiKey, $lembaga->hp, $psn);
+			// kirim_person($this->apiKey, $lembaga->hp_kep, $psn);
+			// kirim_person($this->apiKey, '085236924510', $psn);
+
+			$this->session->set_flashdata('ok', 'Pengajuan RAB berhasil disetujui');
+			redirect('admin/rab24');
+		} else {
+			$this->session->set_flashdata('error', 'Pengajuan RAB tidak bisa disetujui');
+			redirect('admin/rab24');
+		}
+	}
 }

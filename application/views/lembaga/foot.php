@@ -300,6 +300,30 @@
 
     }
 </script>
+
+<script>
+    $(document).ready(function() {
+        //$("#search_results").slideUp();
+        $("#button_find2").click(function(event) {
+            event.preventDefault();
+            //search_ajax_way();
+            ajax_search2();
+        });
+    });
+
+    function ajax_search2() {
+        // var judul = $("#search_query").val();
+        $.ajax({
+            url: "<?= base_url('lembaga/dppk') ?>",
+            // data: "judul=" + judul,
+            success: function(data) {
+                // jika data sukses diambil dari server, tampilkan di <select id=kota>
+                $("#display_results2").html(data);
+            }
+        });
+
+    }
+</script>
 </body>
 
 </html>
