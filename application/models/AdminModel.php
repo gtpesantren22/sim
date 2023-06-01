@@ -212,7 +212,7 @@ class AdminModel extends CI_Model
 
     public function getTotalRealJenis($jenis, $lm, $tahun)
     {
-        $this->db->select_sum('nom_cair');
+        $this->db->select_sum('nominal');
         $this->db->where('jenis', $jenis);
         $this->db->where('lembaga', $lm);
         $this->db->where('tahun', $tahun);
