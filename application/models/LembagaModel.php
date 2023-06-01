@@ -101,6 +101,7 @@ class LembagaModel extends CI_Model
         $this->db->where('jenis', $jenis);
         $this->db->where('lembaga', $lm);
         $this->db->where('tahun', $tahun);
+        $this->db->not_like('kode_pengajuan', 'DISP.');
         return $this->db->get('realis');
     }
 
