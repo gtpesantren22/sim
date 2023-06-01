@@ -56,26 +56,26 @@
                                             <tr>
                                                 <td>A. Belanja Barang</td>
                                                 <td><?= rupiah($sumA->total); ?></td>
-                                                <td><?= rupiah($pakaiA->nominal); ?></td>
-                                                <td><?= rupiah($sumA->total - $pakaiA->nominal); ?></td>
+                                                <td><?= rupiah($pakaiA->nom_cair); ?></td>
+                                                <td><?= rupiah($sumA->total - $pakaiA->nom_cair); ?></td>
                                             </tr>
                                             <tr>
                                                 <td>B. Langganan & Jasa</td>
                                                 <td><?= rupiah($sumB->total); ?></td>
-                                                <td><?= rupiah($pakaiB->nominal); ?></td>
-                                                <td><?= rupiah($sumB->total - $pakaiB->nominal); ?></td>
+                                                <td><?= rupiah($pakaiB->nom_cair); ?></td>
+                                                <td><?= rupiah($sumB->total - $pakaiB->nom_cair); ?></td>
                                             </tr>
                                             <tr>
                                                 <td>C. Belanja Kegiatan</td>
                                                 <td><?= rupiah($sumC->total); ?></td>
-                                                <td><?= rupiah($pakaiC->nominal); ?></td>
-                                                <td><?= rupiah($sumC->total - $pakaiC->nominal); ?></td>
+                                                <td><?= rupiah($pakaiC->nom_cair); ?></td>
+                                                <td><?= rupiah($sumC->total - $pakaiC->nom_cair); ?></td>
                                             </tr>
                                             <tr>
                                                 <td>D. Umum</td>
                                                 <td><?= rupiah($sumD->total); ?></td>
-                                                <td><?= rupiah($pakaiD->nominal); ?></td>
-                                                <td><?= rupiah($sumD->total - $pakaiD->nominal); ?></td>
+                                                <td><?= rupiah($pakaiD->nom_cair); ?></td>
+                                                <td><?= rupiah($sumD->total - $pakaiD->nom_cair); ?></td>
                                             </tr>
                                         </tbody>
                                         <tfoot>
@@ -83,9 +83,9 @@
                                                 <th>TOTAL</th>
                                                 <th><?= rupiah($sumA->total + $sumB->total + $sumC->total + $sumD->total); ?>
                                                 </th>
-                                                <th><?= rupiah(($pakaiA->nominal + $pakaiB->nominal + $pakaiC->nominal + $pakaiD->nominal)); ?>
+                                                <th><?= rupiah(($pakaiA->nom_cair + $pakaiB->nom_cair + $pakaiC->nom_cair + $pakaiD->nom_cair)); ?>
                                                 </th>
-                                                <th><?= rupiah(($sumA->total + $sumB->total + $sumC->total + $sumD->total) - ($pakaiA->nominal + $pakaiB->nominal + $pakaiC->nominal + $pakaiD->nominal)); ?>
+                                                <th><?= rupiah(($sumA->total + $sumB->total + $sumC->total + $sumD->total) - ($pakaiA->nom_cair + $pakaiB->nom_cair + $pakaiC->nom_cair + $pakaiD->nom_cair)); ?>
                                                 </th>
                                             </tr>
                                         </tfoot>
