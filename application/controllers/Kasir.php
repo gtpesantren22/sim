@@ -48,7 +48,8 @@ class Kasir extends CI_Controller
         $data['keluar'] = $kebijakan->jml + $realis->jml + $dekos->nominal + $nikmus->nom_kriteria + $nikmus->transport + $nikmus->sopir + $keluar->jml + $sumPinjam->jml;
 
         $data['lembaga'] = $this->model->getBy('lembaga', 'tahun', $this->tahun)->result();
-        $data['saldo'] = $this->model->getAll('saldo')->result();
+        $data['saldo'] = $this->model->getBy('saldo', 'name', 'bank');
+        $data['cash'] = $this->model->getBy('saldo', 'name', 'cash');
 
         $this->load->view('kasir/head', $data);
         $this->load->view('kasir/index', $data);

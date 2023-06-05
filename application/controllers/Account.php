@@ -54,7 +54,8 @@ class Account extends CI_Controller
 		$data['spjData'] = $this->db->query("SELECT * FROM spj WHERE stts = 1 OR stts = 2 AND tahun = '$this->tahun' ");
 		$data['pakData'] = $this->model->getBy2('pak', 'tahun', $this->tahun, 'status', 'proses');
 
-		$data['saldo'] = $this->model->getAll('saldo')->result();
+		$data['saldo'] = $this->model->getBy('saldo', 'name', 'bank');
+		$data['cash'] = $this->model->getBy('saldo', 'name', 'cash');
 
 		$this->load->view('account/head', $data);
 		$this->load->view('account/index', $data);

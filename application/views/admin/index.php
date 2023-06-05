@@ -56,16 +56,6 @@
         <!--end row-->
 
         <div class="row">
-            <!-- <div class="col">
-                <div class="card">
-                    <div class="card-body">
-                        <div>
-                            <h5 class="card-title">Special title treatment</h5>
-                        </div>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p> <a href="javascript:;" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-            </div> -->
             <div class="col-md-5">
                 <div class="card">
                     <div class="card-body">
@@ -74,17 +64,57 @@
                         </div>
                         <div class="col">
                             <div class="p-0 border border-3 border-success text-center text-danger rounded bg-light">
-                                <?php foreach ($saldo as $data) : ?>
+                                <?php foreach ($saldo->result() as $data) : ?>
                                     <h2><?= rupiah($data->nominal) ?></h2>
                                     Last Update : <i class="bx bx-calendar"></i><?= date('d-M-Y', strtotime($data->last)) ?> <i class="bx bx-time"></i><?= date('H:i:s', strtotime($data->last)) ?>
                                 <?php endforeach; ?>
                             </div>
                             <?= form_open('admin/editSaldo') ?>
                             <div class="input-group mt-3">
-                                <input type="text" class="form-control uang" name="nominal" placeholder="Update nominal saldo" aria-label="Update nominal saldo" aria-describedby="button-addon2">
+                                <input type="text" class="form-control uang" name="nominal" placeholder="Update nominal saldo bank" aria-label="Update nominal saldo" aria-describedby="button-addon2">
                                 <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Simpan</button>
                             </div>
                             <?= form_close() ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div>
+                            <h5 class="card-title">Saldo Cash</h5>
+                        </div>
+                        <div class="col">
+                            <div class="p-0 border border-3 border-primary text-center text-danger rounded bg-light">
+                                <?php foreach ($cash->result() as $data) : ?>
+                                    <h2><?= rupiah($data->nominal) ?></h2>
+                                    <i class="bx bx-calendar"></i><?= date('d-M-Y', strtotime($data->last)) ?> <i class="bx bx-time"></i><?= date('H:i:s', strtotime($data->last)) ?>
+                                <?php endforeach; ?>
+                            </div>
+                            <?= form_open('admin/editSaldoCash') ?>
+                            <div class="input-group mt-3">
+                                <input type="text" class="form-control uang" name="nominal" placeholder="Update nominal saldo cash" aria-label="Update nominal saldo" aria-describedby="button-addon2">
+                                <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Simpan</button>
+                            </div>
+                            <?= form_close() ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div>
+                            <!-- <h5 class="card-title">Selisih Saldo</h5> -->
+                        </div>
+                        <div class="col">
+                            <div class="p-1 border border-1 text-center border-success rounded bg-light">
+                                <strong>Selisih = Saldo Sistem - (Saldo Bank + Saldo Cash)</strong><br>
+                            </div><br>
+                            <center>
+                                <h4><strong><?= rupiah(($masuk - $keluar) - ($saldo->row('nominal') + $cash->row('nominal'))) ?></strong></h4>
+                            </center>
                         </div>
                     </div>
                 </div>

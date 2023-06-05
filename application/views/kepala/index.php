@@ -55,18 +55,8 @@
         </div>
         <!--end row-->
 
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-2">
-            <!-- <div class="col">
-                <div class="card">
-                    <div class="card-body">
-                        <div>
-                            <h5 class="card-title">Special title treatment</h5>
-                        </div>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p> <a href="javascript:;" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-            </div> -->
-            <div class="col">
+        <div class="row">
+            <div class="col-md-5">
                 <div class="card">
                     <div class="card-body">
                         <div>
@@ -74,11 +64,92 @@
                         </div>
                         <div class="col">
                             <div class="p-0 border border-3 border-success text-center text-danger rounded bg-light">
-                                <?php foreach ($saldo as $data) : ?>
+                                <?php foreach ($saldo->result() as $data) : ?>
                                     <h2><?= rupiah($data->nominal) ?></h2>
                                     Last Update : <i class="bx bx-calendar"></i><?= date('d-M-Y', strtotime($data->last)) ?> <i class="bx bx-time"></i><?= date('H:i:s', strtotime($data->last)) ?>
                                 <?php endforeach; ?>
                             </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div>
+                            <h5 class="card-title">Saldo Cash</h5>
+                        </div>
+                        <div class="col">
+                            <div class="p-0 border border-3 border-primary text-center text-danger rounded bg-light">
+                                <?php foreach ($cash->result() as $data) : ?>
+                                    <h2><?= rupiah($data->nominal) ?></h2>
+                                    <i class="bx bx-calendar"></i><?= date('d-M-Y', strtotime($data->last)) ?> <i class="bx bx-time"></i><?= date('H:i:s', strtotime($data->last)) ?>
+                                <?php endforeach; ?>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div>
+                            <!-- <h5 class="card-title">Selisih Saldo</h5> -->
+                        </div>
+                        <div class="col">
+                            <div class="p-1 border border-1 text-center border-success rounded bg-light">
+                                <strong>Selisih = Saldo Sistem - (Saldo Bank + Saldo Cash)</strong><br>
+                            </div><br>
+                            <center>
+                                <h4><strong><?= rupiah(($masuk - $keluar) - ($saldo->row('nominal') + $cash->row('nominal'))) ?></strong></h4>
+                            </center>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div>
+                            <h5 class="card-title">Realisasi Nikmus</h5>
+                        </div>
+                        <div class="col">
+                            <div class="p-1 border border-1 text-center border-success rounded bg-light">
+                                <strong>Pagu Anggaran</strong><br>
+                                <strong><?= rupiah(72390000) ?></strong>
+                            </div>
+                            <div class="p-1 border border-1 text-center border-warning rounded bg-light">
+                                <strong>Terpakai</strong><br>
+                                <?php $dipakai = $nikmus->nom_kriteria + $nikmus->sopir + $nikmus->transport ?>
+                                <strong><?= rupiah($dipakai) ?> (<?= round(($dipakai / 72390000) * 100, 1) ?>%)</strong>
+                            </div>
+                            <div class="p-1 border border-1 text-center border-info rounded bg-light">
+                                <strong>Sisa</strong><br>
+                                <strong><?= rupiah(72390000 - $dipakai) ?> (<?= round(((72390000 - $dipakai) / 72390000) * 100, 1) ?>%)</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div>
+                            <h5 class="card-title">Setoran Dekosan</h5>
+                        </div>
+                        <div class="col">
+                            <div class="card radius-10 border-start border-0 border-3 border-info">
+                                <div class="card-body">
+                                    <p class="mb-0 text-secondary">Total Setoran</p>
+                                    <h5 class="my-1 text-info"><?= rupiah($dekos->nominal) ?></h5>
+                                </div>
+                            </div>
+                            <button class="btn btn-block btn-primary" type="button" id="button_find" data-bs-toggle="modal" data-bs-target="#addLembaga">Lihat Rincian</button>
+
                         </div>
                     </div>
                 </div>

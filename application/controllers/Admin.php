@@ -48,7 +48,8 @@ class Admin extends CI_Controller
 		$data['keluar'] = $kebijakan->jml + $realis->jml + $data['dekos']->nominal + $data['nikmus']->nom_kriteria + $data['nikmus']->transport + $data['nikmus']->sopir + $keluar->jml + $sumPinjam->jml;
 
 		$data['lembaga'] = $this->model->getBy('lembaga', 'tahun', $this->tahun)->result();
-		$data['saldo'] = $this->model->getAll('saldo')->result();
+		$data['saldo'] = $this->model->getBy('saldo', 'name', 'bank');
+		$data['cash'] = $this->model->getBy('saldo', 'name', 'cash');
 
 
 		$this->load->view('admin/head', $data);
@@ -1901,7 +1902,7 @@ https://simkupaduka.ppdwk.com/';
 			'last' => date('Y-m-d H:i:s')
 		];
 
-		$psn = '*Update Saldo Rek. Pesantren*
+		$psn = '*Update Saldo Bank Rek. Pesantren*
 
 Nominal : RP. ' . $this->input->post('nominal', true) . '
 Tgl Update : ' . date('Y-m-d H:i:s') . '
@@ -1909,11 +1910,39 @@ Updater : ' . $this->user . '
 
 *Terimkasih*';
 
-		$this->db->update('saldo', $saldo);
+		$this->model->update('saldo', $saldo, 'name', 'bank');
 		if ($this->db->affected_rows() > 0) {
 			kirim_person($this->apiKey, '082264061060', $psn);
-			kirim_person($this->apiKey, '085236924510', $psn);
 			kirim_person($this->apiKey, '085258222376', $psn);
+			kirim_person($this->apiKey, '085236924510', $psn);
+			$this->session->set_flashdata('ok', 'Saldo sudah diperbarui');
+			redirect('admin');
+		} else {
+			$this->session->set_flashdata('error', 'Hapus data gagal');
+			redirect('admin');
+		}
+	}
+
+	public function editSaldoCash()
+	{
+		$saldo = [
+			'nominal' => rmRp($this->input->post('nominal', true)),
+			'last' => date('Y-m-d H:i:s')
+		];
+
+		$psn = '*Update Saldo Cash Pesantren*
+
+Nominal : RP. ' . $this->input->post('nominal', true) . '
+Tgl Update : ' . date('Y-m-d H:i:s') . '
+Updater : ' . $this->user . '
+
+*Terimkasih*';
+
+		$this->model->update('saldo', $saldo, 'name', 'cash');
+		if ($this->db->affected_rows() > 0) {
+			kirim_person($this->apiKey, '082264061060', $psn);
+			kirim_person($this->apiKey, '085258222376', $psn);
+			kirim_person($this->apiKey, '085236924510', $psn);
 			$this->session->set_flashdata('ok', 'Saldo sudah diperbarui');
 			redirect('admin');
 		} else {
