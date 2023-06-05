@@ -100,9 +100,12 @@
                             <!-- <h5 class="card-title">Selisih Saldo</h5> -->
                         </div>
                         <div class="col">
-                            <div class="p-1 border border-1 text-center border-success rounded bg-light">
+                            <center>
+                                <strong style="color: #FC6A83;">(Saldo Bank + Saldo Cash) <?= rupiah($saldo->row('nominal') + $cash->row('nominal')) ?></strong>
+                            </center>
+                            <div class="p-1 border border-1 text-center border-success rounded bg-light mb-1 mt-1">
                                 <strong>Selisih = Saldo Sistem - (Saldo Bank + Saldo Cash)</strong><br>
-                            </div><br>
+                            </div>
                             <center>
                                 <h4><strong><?= rupiah(($masuk - $keluar) - ($saldo->row('nominal') + $cash->row('nominal'))) ?></strong></h4>
                             </center>
