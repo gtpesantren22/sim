@@ -35,6 +35,7 @@ use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Base;
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link href="<?= base_url('vertical/'); ?>assets/css/app.css" rel="stylesheet">
     <link href="<?= base_url('vertical/'); ?>assets/css/icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet" />
     <!-- Theme Style CSS -->
     <link rel="stylesheet" href="<?= base_url('vertical/'); ?>assets/css/dark-theme.css" />
     <link rel="stylesheet" href="<?= base_url('vertical/'); ?>assets/css/semi-dark.css" />

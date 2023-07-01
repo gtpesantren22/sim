@@ -1490,7 +1490,7 @@ https://simkupaduka.ppdwk.com/';
 
 	public function rab24()
 	{
-		$data['lembaga'] = $this->model->getBy2('lembaga', 'kode', $lembaga, 'tahun', $this->tahun)->row();
+		$data['lembaga'] = $this->model->getBy2('lembaga', 'kode', $this->lembaga, 'tahun', $this->tahun)->row();
 		$data['user'] = $this->Auth_model->current_user();
 		$data['tahun'] = $this->tahun;
 		$data['sumKeluar'] = $this->model->getBySum('keluar', 'tahun', $this->tahun, 'nominal')->row();
@@ -1600,8 +1600,8 @@ Terimakasih';
 		$this->model->update('rab_list', $data2, 'lembaga', $kode);
 
 		if ($this->db->affected_rows() > 0) {
-			// kirim_group($this->apiKey, '120363040973404347@g.us', $psn);
-			// kirim_group($this->apiKey, '120363042148360147@g.us', $psn);
+			kirim_group($this->apiKey, '120363040973404347@g.us', $psn);
+			kirim_group($this->apiKey, '120363042148360147@g.us', $psn);
 			// kirim_person($this->apiKey, '085235583647', $psn);
 			kirim_person($this->apiKey, '085236924510', $psn);
 

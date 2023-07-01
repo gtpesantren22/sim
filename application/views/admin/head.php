@@ -247,6 +247,18 @@ use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Base;
                     </ul>
                 </li>
 
+                <li>
+                    <a href="javascript:;" class="has-arrow">
+                        <div class="parent-icon"><i class='bx bx-line-chart-down'></i>
+                        </div>
+                        <div class="menu-title">Analisis Data</div>
+                    </a>
+                    <ul>
+                        <li> <a href="<?= base_url('admin/analistOut'); ?>"><i class="bx bx-right-arrow-alt"></i>Rencana Pengeluaran</a>
+                        </li>
+                    </ul>
+                </li>
+
             </ul>
             <!--end navigation-->
         </div>

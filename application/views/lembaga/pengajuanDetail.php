@@ -18,8 +18,7 @@
             </div>
             <div class="ms-auto">
                 <div class="btn-group">
-                    <a href="<?= base_url('lembaga/pengajuan'); ?>" class="btn btn-light btn-sm"><i
-                            class="bx bx-subdirectory-left"></i>
+                    <a href="<?= base_url('lembaga/pengajuan'); ?>" class="btn btn-light btn-sm"><i class="bx bx-subdirectory-left"></i>
                         Kembali</a>
                 </div>
             </div>
@@ -28,89 +27,39 @@
         <div class="row">
             <div class="col-12 col-lg-12">
                 <?php if ($pj->stts === 'no') { ?>
-                <div class="card radius-10">
-                    <div class="card-body">
-                        <?= form_open('lembaga/addItem'); ?>
-                        <input type="hidden" name="bln_pj" value="<?= $pj->bulan; ?>">
-                        <input type="hidden" name="kode_pengajuan" value="<?= $pj->kode_pengajuan; ?>">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="row mb-3">
-                                    <label for="inputEnterYourName" class="col-sm-3 col-form-label">Nama Lembaga</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="inputEnterYourName"
-                                            value="<?= $lembaga->nama; ?>" placeholder="Enter Your Name" readonly>
+                    <div class="card radius-10">
+                        <div class="card-body">
+                            <?= form_open('lembaga/addItem'); ?>
+                            <input type="hidden" name="bln_pj" value="<?= $pj->bulan; ?>">
+                            <input type="hidden" name="kode_pengajuan" value="<?= $pj->kode_pengajuan; ?>">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row mb-3">
+                                        <label for="selectDppk" class="col-sm-3 col-form-label">Pilih Program</label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control single-select" name="id_dppk" id="selectDppk" required>
+                                                <option value="">-pilih Program-</option>
+                                                <?php foreach ($dppk as $dppk) : ?>
+                                                    <option value="<?= $dppk->id_dppk ?>"><?= $dppk->id_dppk . ' - ' . $dppk->program ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="inputPhoneNo2" class="col-sm-3 col-form-label">Jenis Belanja</label>
-                                    <div class="col-sm-9">
-                                        <select name="jenis" id="jakarta" class="form-control" required>
-                                            <option value=""> - pilih - </option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="inputPhoneNo2" class="col-sm-3 col-form-label">Pilih RAB</label>
-                                    <div class="col-sm-7">
-                                        <select class="form-control single-select" name="id_rab" id="search_query"
-                                            required>
-                                            <option value="">-pilih RAB-</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <button class="btn btn-success btn-sm" type="button" id="button_find">
-                                            Cek</button>
-                                    </div>
-                                </div>
-                                <div id="display_results"></div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="row mb-3">
-                                    <label for="inputEnterYourName" class="col-sm-3 col-form-label">Periode</label>
-                                    <div class="col-sm-5">
-                                        <input type="text" class="form-control" id="inputEnterYourName"
-                                            value="<?= $bulan[date('n')]; ?>" placeholder="Enter Your Name" readonly>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <input type="text" class="form-control" id="inputEnterYourName"
-                                            value="<?= $tahun; ?>" placeholder="Enter Your Name" readonly>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="inputEnterYourName" class="col-sm-3 col-form-label">Nama PJ</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" name="pj" class="form-control" id="inputEnterYourName"
-                                            placeholder="Nama Penanggungjawab" required>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="inputEnterYourName" class="col-sm-3 col-form-label">Tanggal</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" name="tgl" class="form-control" id="date"
-                                            placeholder="Tanggal" required>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="inputEnterYourName" class="col-sm-3 col-form-label"></label>
-                                    <div class="col-sm-9">
-                                        <button type="submit" class="btn btn-primary btn-sm">Tambahkan</button>
+                                    <div id="tabelData">
+                                        <!-- Hasil dari permintaan Ajax akan dimuat di sini -->
                                     </div>
                                 </div>
                             </div>
+                            <?= form_close(); ?>
                         </div>
-                        <?= form_close(); ?>
                     </div>
-                </div>
                 <?php } ?>
 
                 <div class="card radius-10">
                     <div class="card-body">
                         <?php if ($pj->stts === 'no') { ?>
-                        <a href="<?= base_url('lembaga/ajukan/' . $pj->kode_pengajuan); ?>"
-                            value="Pengajuan akan dilanjutkan kepada Accounting untuk proses Verifikasi"
-                            class="btn btn-success btn-sm tbl-confirm mb-2"><i class="bx bx-window-open"></i>Ajukan ke
-                            Accounting</a>
+                            <a href="<?= base_url('lembaga/ajukan/' . $pj->kode_pengajuan); ?>" value="Pengajuan akan dilanjutkan kepada Accounting untuk proses Verifikasi" class="btn btn-success btn-sm tbl-confirm mb-2"><i class="bx bx-window-open"></i>Ajukan ke Bendahara</a>
+                            <button class="btn btn-warning btn-sm mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="bx bx-edit"></i>Edit PJ</button>
                         <?php } ?>
                         <div class="table-responsive">
                             <table id="example" class="table table-striped table-bordered" style="width:100%">
@@ -141,16 +90,16 @@
                                         $kd_rab = $ls_jns->kode;
                                         $kd_ppnj = $ls_jns->kode_pengajuan;
                                     ?>
-                                    <tr>
-                                        <td><?= $no++; ?></td>
-                                        <td><?= $ls_jns->kode; ?></td>
-                                        <td><?= $bulan[$ls_jns->bulan]; ?> <?= $ls_jns->tahun; ?></td>
-                                        <td><?= $ls_jns->pj; ?></td>
-                                        <td><?= rupiah($ls_jns->nominal); ?></td>
-                                        <!-- <td><?= date('H:i', strtotime($ls_jns->tgl)); ?></td> -->
-                                        <td>
-                                            <?= $ls_jns->ket; ?>
-                                            <?php
+                                        <tr>
+                                            <td><?= $no++; ?></td>
+                                            <td><?= $ls_jns->kode; ?></td>
+                                            <td><?= $bulan[$ls_jns->bulan]; ?> <?= $ls_jns->tahun; ?></td>
+                                            <td><?= $ls_jns->pj; ?></td>
+                                            <td><?= rupiah($ls_jns->nominal); ?></td>
+                                            <!-- <td><?= date('H:i', strtotime($ls_jns->tgl)); ?></td> -->
+                                            <td>
+                                                <?= $ls_jns->ket; ?>
+                                                <?php
                                                 if (preg_match("/honor/i", $ls_jns->ket)) {
                                                     $jm_upd = $this->db->query("SELECT * FROM honor_file WHERE kode_pengajuan = '$kd_ppnj' AND kode_rab = '$kd_rab' AND tahun = '$tahun' ")->num_rows();
                                                     if ($jm_upd > 0) {
@@ -161,37 +110,34 @@
                                                         $lbl = "<span class='badge bg-danger'><i class='bx bx-no-entry'></i> belum</span>";
                                                     }
                                                 ?>
-                                            <hr>
-                                            <i>Jika pengajuan honor. Maka diwajibkan untuk upload rincian honor.
-                                                (xls/xlsx)</i>
-                                            <form action="<?= base_url('lembaga/uploadHonor'); ?>" method="post"
-                                                enctype="multipart/form-data">
-                                                <input type="hidden" name="kd_rab" value="<?= $kd_rab; ?>">
-                                                <input type="hidden" name="kd_ppnj" value="<?= $kd_ppnj; ?>">
-                                                <input type="hidden" name="ktb" value="<?= $ktb; ?>">
-                                                <div class="row mb-3">
-                                                    <div class="col-sm-6">
-                                                        <input type="file" name="f_rin" class="form-control" required>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <button class="btn btn-success btn-sm" type="submit"><i
-                                                                class="bx bx-save"></i></button>
-                                                        | <b class="">Status Upload : <?= $lbl; ?></b>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                            <?php } ?>
-                                        </td>
-                                        <td><?= $ls_jns->stas; ?></td>
-                                        <td>
-                                            <?php if ($pj->verval == 0 && $pj->stts == 'no') { ?>
-                                            <a href="<?= base_url('lembaga/delReal/' . $ls_jns->id_realis) ?>"
-                                                class="btn btn-danger btn-sm tombol-hapus">Hapus</a>
-                                            <?php } else { ?>
-                                            <button class="btn btn-danger btn-sm" disabled>Hapus</button>
-                                            <?php } ?>
-                                        </td>
-                                    </tr>
+                                                    <hr>
+                                                    <i>Jika pengajuan honor. Maka diwajibkan untuk upload rincian honor.
+                                                        (xls/xlsx)</i>
+                                                    <form action="<?= base_url('lembaga/uploadHonor'); ?>" method="post" enctype="multipart/form-data">
+                                                        <input type="hidden" name="kd_rab" value="<?= $kd_rab; ?>">
+                                                        <input type="hidden" name="kd_ppnj" value="<?= $kd_ppnj; ?>">
+                                                        <input type="hidden" name="ktb" value="<?= $ktb; ?>">
+                                                        <div class="row mb-3">
+                                                            <div class="col-sm-6">
+                                                                <input type="file" name="f_rin" class="form-control" required>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <button class="btn btn-success btn-sm" type="submit"><i class="bx bx-save"></i></button>
+                                                                | <b class="">Status Upload : <?= $lbl; ?></b>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                <?php } ?>
+                                            </td>
+                                            <td><?= $ls_jns->stas; ?></td>
+                                            <td>
+                                                <?php if ($pj->verval == 0 && $pj->stts == 'no') { ?>
+                                                    <a href="<?= base_url('lembaga/delReal/' . $ls_jns->id_realis) ?>" class="btn btn-danger btn-sm tombol-hapus">Hapus</a>
+                                                <?php } else { ?>
+                                                    <button class="btn btn-danger btn-sm" disabled>Hapus</button>
+                                                <?php } ?>
+                                            </td>
+                                        </tr>
                                     <?php } ?>
                                 </tbody>
                                 <tfoot>
@@ -209,4 +155,69 @@
         <!--end row-->
     </div>
 </div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Isi Tanggal dan PJ Pengajuan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <?= form_open('lembaga/editPajukan') ?>
+            <div class="modal-body">
+                <div class="row mb-1">
+                    <label for="input35" class="col-sm-3 col-form-label">Kode</label>
+                    <div class="col-sm-9">
+                        <input type="text" name="kode_pengajuan" class="form-control" id="input35" value="<?= $pj->kode_pengajuan ?>" readonly>
+                    </div>
+                </div>
+                <div class="row mb-1">
+                    <label for="input35" class="col-sm-3 col-form-label">PJ</label>
+                    <div class="col-sm-9">
+                        <input type="text" name="pj" class="form-control" id="input35" required>
+                    </div>
+                </div>
+                <div class="row mb-1">
+                    <label for="input35" class="col-sm-3 col-form-label">Tanggal</label>
+                    <div class="col-sm-9">
+                        <input type="text" name="tgl" class="form-control date-time" id="input35" required>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Ajukan Sekarang</button>
+            </div>
+            <?= form_close() ?>
+        </div>
+    </div>
+</div>
+
 <!--end page wrapper -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#selectDppk').change(function() {
+            var dppk = $(this).val();
+
+            $.ajax({
+                url: '<?php echo base_url('lembaga/getDataBydppk'); ?>',
+                type: 'POST',
+                data: {
+                    dppk: dppk
+                },
+                success: function(response) {
+                    $('#tabelData').html(response);
+                }
+            });
+        });
+
+        $('#checkboxControl').change(function() {
+            if (this.checked) {
+                $('#checkboxTarget').prop('checked', true);
+            } else {
+                $('#checkboxTarget').prop('checked', false);
+            }
+        });
+    });
+</script>

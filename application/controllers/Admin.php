@@ -169,6 +169,7 @@ class Admin extends CI_Controller
 			}
 		}
 	}
+
 	public function bidangAdd()
 	{
 		$kode = $this->input->post('kode', true);
@@ -192,6 +193,26 @@ class Admin extends CI_Controller
 				$this->session->set_flashdata('error', 'Input Bidang Gagal');
 				redirect('admin/kode');
 			}
+		}
+	}
+	public function mitraAdd()
+	{
+
+		$data = [
+			'id_mitra' => $this->uuid->v4(),
+			'nama' => $this->input->post('nama', true),
+			'pj' => $this->input->post('pj', true),
+			'hp' => $this->input->post('hp', true),
+		];
+
+
+		$this->model->input('mitra', $data);
+		if ($this->db->affected_rows() > 0) {
+			$this->session->set_flashdata('ok', 'Input Mitra Berhasil');
+			redirect('admin/kode');
+		} else {
+			$this->session->set_flashdata('error', 'Input Mitra Gagal');
+			redirect('admin/kode');
 		}
 	}
 
@@ -2171,5 +2192,16 @@ Terimakasih';
 			$this->session->set_flashdata('error', 'Pengajuan RAB tidak bisa disetujui');
 			redirect('admin/rab24');
 		}
+	}
+
+	public function analistOut()
+	{
+		$data['user'] = $this->Auth_model->current_user();
+		$data['tahun'] = $this->tahun;
+		$data['bulan'] = $this->bulan;
+
+		$this->load->view('admin/head', $data);
+		$this->load->view('admin/analistOut', $data);
+		$this->load->view('admin/foot');
 	}
 }

@@ -134,8 +134,8 @@
 <script src="<?= base_url('vertical/'); ?>assets/plugins/notifications/js/notifications.min.js"></script>
 <script src="<?= base_url('vertical/'); ?>assets/sw/sweetalert2.all.min.js"></script>
 <script src="<?= base_url('vertical/'); ?>assets/plugins/notifications/js/my-notif.js"></script>
-<script src='https://cdn.tiny.cloud/1/vdqx2klew412up5bcbpwivg1th6nrh3murc6maz8bukgos4v/tinymce/5/tinymce.min.js' referrerpolicy="origin">
-</script>
+<script src='https://cdn.tiny.cloud/1/vdqx2klew412up5bcbpwivg1th6nrh3murc6maz8bukgos4v/tinymce/5/tinymce.min.js' referrerpolicy="origin"></script>
+<script src='https://cdn.jsdelivr.net/npm/flatpickr'></script>
 <script>
     $(document).ready(function() {
         $('#example').DataTable();
@@ -191,6 +191,7 @@
         $('#date-time').bootstrapMaterialDatePicker({
             format: 'YYYY-MM-DD HH:mm'
         });
+        $(".datepickerFlats").flatpickr();
 
     });
 </script>

@@ -2,10 +2,16 @@
 <div class="flash-data-error" data-flashdata="<?= $this->session->flashdata('error') ?>"></div>
 <?php
 
-$total = $sumA->total + $sumB->total + $sumC->total + $sumD->total;
-$pakai = $pakaiA->nominal + $pakaiB->nominal + $pakaiC->nominal + $pakaiD->nominal;
+// $total = $sumA1->total + $sumB1->total + $sumC1->total + $sumA2->total + $sumB2->total + $sumC2->total;
+// $pakai = $pakaiA1->nominal + $pakaiB1->nominal + $pakaiC1->nominal  + $pakaiA2->nominal + $pakaiB2->nominal + $pakaiC2->nominal;
 
-$pesern = round(($pakai / $total) * 100, 0);
+try {
+    //code...
+    $pesern = round(($totalReal->jml / $totalRab->jml) * 100, 0);
+} catch (DivisionByZeroError $th) {
+    //throw $th;
+    $pesern = 0;
+}
 if ($pesern >= 0 && $pesern <= 25) {
     $bg = 'progress-bar-success';
 } elseif ($pesern >= 26 && $pesern <= 50) {
@@ -42,7 +48,7 @@ if ($pesern >= 0 && $pesern <= 25) {
                             <div class="col-md-2">
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item">Kode Lembaga</li>
-                                    <li class="list-group-item">Nama Lembaga</li>
+                                    <li class="list-group-item">Nama</li>
                                     <li class="list-group-item">PJ</li>
                                     <li class="list-group-item">No. Hp</li>
                                     <li class="list-group-item">Pelaksanaan</li>
@@ -59,30 +65,18 @@ if ($pesern >= 0 && $pesern <= 25) {
                             </div>
                             <div class="col-md-6">
                                 <ul class="list-group">
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">A.
-                                        Belanja
-                                        Barang <span"><?= rupiah($sumA->total); ?></span></li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">B.
-                                        Langganan &
-                                        Jasa <span"><?= rupiah($sumB->total); ?></span></li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">C.
-                                        Belanja
-                                        Kegiatan <span"><?= rupiah($sumC->total); ?></span></li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">D.
-                                        Umum
-                                        <span><?= rupiah($sumD->total); ?></span>
-                                    </li>
-                                    <li class=" list-group-item d-flex justify-content-between align-items-center active"
-                                        aria-current="true">TOTAL RAB <span">
-                                            <?= rupiah($sumA->total + $sumB->total + $sumC->total + $sumD->total); ?></span>
+                                    <?php foreach ($jenis as $dtJenis) : ?>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <?= $dtJenis->kode_jns . '. ' . $dtJenis->nama ?> <span><?= rupiah($rabJml[$dtJenis->kode_jns]->jml3); ?></span></li>
+                                    <?php endforeach; ?>
+                                    <li class=" list-group-item d-flex justify-content-between align-items-center active" aria-current="true">TOTAL RAB <span">
+                                            <?= rupiah($totalRab->jml); ?></span>
                                     </li>
                                 </ul>
                             </div>
                             <div class="col-md-12 mt-3">
                                 <div class="progress" style="height:20px;">
-                                    <div class="progress-bar <?= $bg ?> progress-bar-striped progress-bar-animated"
-                                        role="progressbar" aria-valuenow="<?= $pesern ?>" aria-valuemin="0"
-                                        aria-valuemax="100" style="width: <?= $pesern ?>%"><?= $pesern ?>%</div>
+                                    <div class="progress-bar <?= $bg ?> progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="<?= $pesern ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $pesern ?>%"><?= $pesern ?>%</div>
                                 </div>
 
                                 <!-- <div class="progress active">
@@ -115,16 +109,16 @@ if ($pesern >= 0 && $pesern <= 25) {
                                     <?php
                                     $no = 1;
                                     foreach ($data as $a) : ?>
-                                    <tr>
-                                        <td><?= $no++ ?></td>
-                                        <td><?= $a->kode ?></td>
-                                        <td><?= $a->nama ?></td>
-                                        <td><?= $a->rencana ?></td>
-                                        <td><?= $a->qty . ' ' . $a->satuan ?></td>
-                                        <td><?= rupiah($a->harga_satuan) ?></td>
-                                        <td><?= rupiah($a->total) ?></td>
-                                        <!-- <td><?= round($rls->vol / $a->qty * 100, 1); ?>%</td> -->
-                                    </tr>
+                                        <tr>
+                                            <td><?= $no++ ?></td>
+                                            <td><?= $a->kode ?></td>
+                                            <td><?= $a->nama ?></td>
+                                            <td><?= $a->rencana ?></td>
+                                            <td><?= $a->qty . ' ' . $a->satuan ?></td>
+                                            <td><?= rupiah($a->harga_satuan) ?></td>
+                                            <td><?= rupiah($a->total) ?></td>
+                                            <!-- <td><?= round($rls->vol / $a->qty * 100, 1); ?>%</td> -->
+                                        </tr>
                                     <?php endforeach; ?>
                                 </tbody>
                                 <tfoot>

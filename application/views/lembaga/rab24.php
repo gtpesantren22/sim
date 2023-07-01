@@ -225,7 +225,9 @@
                                                         <?= '#' . $kodePak . ' - ' . $item->nama_dppk; ?><br>
                                                         <b>Jml Item : <?= count($list) ?></b><br>
                                                         <?php if ($cekData < 1) { ?>
-                                                            <a class="tbl-confirm" value="Kode RAB akan direalis secara otomatis oleh sistem" href="<?= base_url('lembaga/realisKode/' . $kodePak) ?>">Realis Kode Item RAB</a>
+                                                            <!-- <a class="tbl-confirm" value="Kode RAB akan direalis secara otomatis oleh sistem" href="<?= base_url('lembaga/realisKode/' . $kodePak) ?>">Realis Kode Item RAB</a> -->
+
+                                                            <a href="#" class="getDataLink" data-kode_pak="<?= $kodePak ?>">Realis Kode Item RAB</a>
                                                         <?php } ?>
                                                     </td>
                                                 <?php endif; ?>
@@ -411,3 +413,29 @@
         </div>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.getDataLink').on('click', function(e) {
+            e.preventDefault(); // Mencegah aksi bawaan tautan
+
+            var kode_pak = $(this).data('kode_pak');
+
+            $.ajax({
+                url: '<?php echo site_url("lembaga/realisKode"); ?>', // Ganti "controller/method" sesuai dengan URL controller Anda
+                type: 'POST',
+                data: {
+                    kode_pak: kode_pak,
+                },
+                success: function(response) {
+                    // Tampilkan data dalam tabel atau lakukan aksi lain sesuai kebutuhan
+                    location.reload();
+
+                    // console.log('Data berhasil disimpan');
+                }
+            });
+        });
+
+    });
+</script>

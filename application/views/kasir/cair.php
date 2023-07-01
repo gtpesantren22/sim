@@ -1,6 +1,6 @@
 <?php
 
-$dt = $this->db->query("SELECT SUM(nom_cair) as jml, SUM(IF( stas = 'tunai', nom_cair, 0)) AS tunai, SUM(IF( stas = 'barang', nom_cair, 0)) AS brg, SUM(IF( stas = 'tunai', nominal, 0)) AS tunai_asal, SUM(IF( stas = 'barang', nominal, 0)) AS brg_asal, SUM(IF( stas = 'tunai', nom_serap, 0)) AS tunai_serap, SUM(IF( stas = 'barang', nom_serap, 0)) AS brg_serap FROM $tbl_slct WHERE kode_pengajuan = '$pjn->kode_pengajuan' AND tahun = '$tahun' ")->row();
+$dt = $this->db->query("SELECT SUM(nom_cair) as jml, SUM(IF( stas = 'tunai', nom_cair, 0)) AS tunai, SUM(IF( stas = 'non tunai', nom_cair, 0)) AS brg, SUM(IF( stas = 'tunai', nominal, 0)) AS tunai_asal, SUM(IF( stas = 'non tunai', nominal, 0)) AS brg_asal, SUM(IF( stas = 'tunai', nom_serap, 0)) AS tunai_serap, SUM(IF( stas = 'non tunai', nom_serap, 0)) AS brg_serap FROM $tbl_slct WHERE kode_pengajuan = '$pjn->kode_pengajuan' AND tahun = '$tahun' ")->row();
 ?>
 
 <!--start page wrapper -->
@@ -63,7 +63,7 @@ $dt = $this->db->query("SELECT SUM(nom_cair) as jml, SUM(IF( stas = 'tunai', nom
                                     <tr style="color: white; background-color: #008CFF; font-weight: bold;">
                                         <th>#</th>
                                         <th>Kode RAB</th>
-                                        <th>PJ</th>
+                                        <!-- <th>PJ</th> -->
                                         <th>Keterangan</th>
                                         <th>Nominal</th>
                                         <th>Disetujui</th>
@@ -83,7 +83,7 @@ $dt = $this->db->query("SELECT SUM(nom_cair) as jml, SUM(IF( stas = 'tunai', nom
 
                                             </td>
                                             <td><?= $ls_jns->kode; ?></td>
-                                            <td><?= $ls_jns->pj; ?></td>
+                                            <!-- <td><?= $ls_jns->pj; ?></td> -->
                                             <td><?= $ls_jns->ket; ?></td>
                                             <td><?= rupiah($ls_jns->nominal); ?></td>
                                             <td><?= rupiah($ls_jns->nom_cair); ?></td>
@@ -106,7 +106,7 @@ $dt = $this->db->query("SELECT SUM(nom_cair) as jml, SUM(IF( stas = 'tunai', nom
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th colspan="4">Total</th>
+                                        <th colspan="3">Total</th>
                                         <th><?= rupiah($dt->tunai_asal) ?></th>
                                         <th><?= rupiah($dt->tunai) ?></th>
                                         <th><?= rupiah($dt->tunai_serap) ?></th>
@@ -123,12 +123,12 @@ $dt = $this->db->query("SELECT SUM(nom_cair) as jml, SUM(IF( stas = 'tunai', nom
                                     <tr style="color: white; background-color: #FD3550; font-weight: bold;">
                                         <th>#</th>
                                         <th>Kode RAB</th>
-                                        <th>PJ</th>
+                                        <!-- <th>PJ</th> -->
                                         <th>Keterangan</th>
+                                        <th>Mitra</th>
                                         <th>Nominal</th>
                                         <th>Disetujui</th>
                                         <th>Akan dicairkan</th>
-                                        <th>Ket</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -143,8 +143,24 @@ $dt = $this->db->query("SELECT SUM(nom_cair) as jml, SUM(IF( stas = 'tunai', nom
 
                                             </td>
                                             <td><?= $ls_jns->kode; ?></td>
-                                            <td><?= $ls_jns->pj; ?></td>
+                                            <!-- <td><?= $ls_jns->pj; ?></td> -->
                                             <td><?= $ls_jns->ket; ?></td>
+                                            <td>
+                                                <?php if ($ls_jns->pjnDataMitra) { ?>
+                                                    <span class="badge bg-secondary"><?= $ls_jns->pjnDataMitra->nama ?></span>
+
+                                                    <a href="#" class="delOrderMitra" data-id_order="<?= $ls_jns->pjnDataMitra->id_order ?>">
+                                                        <span class="badge bg-danger">X</span>
+                                                    </a>
+                                                <?php } else { ?>
+                                                    <?php foreach ($mitra as $mtr) : ?>
+
+                                                        <a href="#" class="getDataLink" data-id_mitra="<?= $mtr->id_mitra ?>" data-kode="<?= $ls_jns->kode ?>" data-kode_pengajuan="<?= $ls_jns->kode_pengajuan ?>">
+                                                            <span class="badge bg-primary"><?= $mtr->nama ?></span><br>
+                                                        </a>
+                                                    <?php endforeach; ?>
+                                                <?php } ?>
+                                            </td>
                                             <td><?= rupiah($ls_jns->nominal); ?></td>
                                             <td><?= rupiah($ls_jns->nom_cair); ?></td>
                                             <td>
@@ -159,14 +175,13 @@ $dt = $this->db->query("SELECT SUM(nom_cair) as jml, SUM(IF( stas = 'tunai', nom
                                                     </div>
                                                 </form>
                                             </td>
-                                            <td><span class="badge bg-danger"><?= $ls_jns->stas; ?></span></td>
                                         </tr>
 
                                     <?php } ?>
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th colspan="4">Total</th>
+                                        <th colspan="3">Total</th>
                                         <th><?= rupiah($dt->brg_asal) ?></th>
                                         <th><?= rupiah($dt->brg) ?></th>
                                         <th><?= rupiah($dt->brg_serap) ?></th>
@@ -178,29 +193,29 @@ $dt = $this->db->query("SELECT SUM(nom_cair) as jml, SUM(IF( stas = 'tunai', nom
                         <?php if ($pjn->cair == 0) : ?>
                             <hr>
                             <div class="row">
-                                <div class="col-md-8">
+                                <div class="col-md-7">
                                     <?= form_open('kasir/cairkan'); ?>
                                     <input type="hidden" name="kode_pengajuan" value="<?= $pjn->kode_pengajuan ?>">
                                     <div class="form-group mb-2">
-                                        <label for="inputEmail3"">Jumlah akan
-                                        dicairkan</label>
-                                        <input type=" text" name="total" class="form-control" id="" value="<?= rupiah($dt->brg_serap + $dt->tunai_serap) ?>" readonly>
+                                        <label for="inputEmail3">Jumlah akan
+                                            dicairkan</label>
+                                        <input type="text" name="total" class="form-control" id="" value="<?= rupiah($dt->brg_serap + $dt->tunai_serap) ?>" readonly>
 
                                     </div>
                                     <div class="form-group mb-2">
-                                        <label for="inputPassword3"">Tanggal
-                                        Pencairan</label>
-                                    <input type=" text" class="form-control" id="date" name="tgl_cair" required>
+                                        <label for="inputPassword3">Tanggal
+                                            Pencairan</label>
+                                        <input type="text" class="form-control datepickerFlats" id="" name="tgl_cair" required>
 
                                     </div>
                                     <div class="form-group mb-2">
-                                        <label for="inputPassword3"">Penerima</label>
-                                <input type=" text" class="form-control" id="" name="penerima" required>
+                                        <label for="inputPassword3">Penerima</label>
+                                        <input type="text" class="form-control" id="" name="penerima" required>
                                     </div>
 
                                     <div class="form-group mb-2">
                                         <label for="inputPassword3">Pencair</label>
-                                        <input type=" text" name="kasir" class="form-control" value="<?= $user->nama ?>" readonly>
+                                        <input type="text" name="kasir" class="form-control" value="<?= $user->nama ?>" readonly>
                                     </div>
 
                                     <div class="form-group mb-2">
@@ -210,7 +225,29 @@ $dt = $this->db->query("SELECT SUM(nom_cair) as jml, SUM(IF( stas = 'tunai', nom
                                     </div>
                                     <?= form_close(); ?>
                                 </div>
-                                <div class="col-md-4"></div>
+                                <div class="col-md-5">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            List Pencairan Mitra <br>
+                                            <ul class="list-group">
+                                                <?php foreach ($mitraHasil as $row) : ?>
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        <?= $infoMitra[$row->id_mitra]->nama ?>
+                                                        <span class="badge bg-primary rounded-pill"><?= $isiMitra[$row->id_mitra] ?></span>
+                                                        <!-- <span class="badge bg-danger"><i class="bx bx-printer"></i></span> -->
+                                                        <!-- <span class="badge bg-secondary"><i class="bx bx-send"></i></span> -->
+                                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                                            <button type="button" class="btn btn-outline-dark btn-sm"><i class="bx bx-printer"></i>
+                                                            </button>
+                                                            <button type="button" class="btn btn-outline-dark btn-sm"><i class="bx bx-send"></i>
+                                                            </button>
+                                                        </div>
+                                                    </li>
+                                                <?php endforeach; ?>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         <?php endif; ?>
                     </div>
@@ -221,3 +258,49 @@ $dt = $this->db->query("SELECT SUM(nom_cair) as jml, SUM(IF( stas = 'tunai', nom
     </div>
 </div>
 <!--end page wrapper -->
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.getDataLink').on('click', function(e) {
+            e.preventDefault(); // Mencegah aksi bawaan tautan
+
+            var id_mitra = $(this).data('id_mitra');
+            var kode = $(this).data('kode');
+            var kode_pengajuan = $(this).data('kode_pengajuan');
+
+            $.ajax({
+                url: '<?php echo site_url("kasir/addOrderMitra"); ?>', // Ganti "controller/method" sesuai dengan URL controller Anda
+                type: 'POST',
+                data: {
+                    id_mitra: id_mitra,
+                    kode: kode,
+                    kode_pengajuan: kode_pengajuan
+                },
+                success: function(response) {
+                    // Tampilkan data dalam tabel atau lakukan aksi lain sesuai kebutuhan
+                    location.reload();
+
+                    // console.log('Data berhasil disimpan');
+                }
+            });
+        });
+
+        $('.delOrderMitra').on('click', function(e) {
+            e.preventDefault();
+
+            var id_order = $(this).data('id_order');
+
+            $.ajax({
+                url: '<?= base_url('kasir/delOrderMitra') ?>',
+                type: 'POST',
+                data: {
+                    id_order: id_order
+                },
+                success: function(response) {
+                    location.reload()
+                }
+            })
+        })
+    });
+</script>

@@ -84,7 +84,9 @@ class Kasir extends CI_Controller
         $crr = $this->model->getBySum('pencairan', 'kode_pengajuan', $kode, 'nominal_cair')->row();
         $dt2 = $this->model->getBySum('real_sm', 'kode_pengajuan', $kode, 'nominal')->row();
 
-        if ($crr->jml > 0) {
+        $data['mitra'] = $this->model->getAll('mitra')->result();
+
+        if ($crr->jml) {
             $data['tbl_slct'] = 'realis';
             $sts_tmbl = 'disabled';
             $data['dcair'] = $crr->jml;
@@ -97,7 +99,17 @@ class Kasir extends CI_Controller
         }
 
         $data['rls'] = $this->model->getBy2($data['tbl_slct'], 'kode_pengajuan', $kode, 'stas', 'tunai')->result();
-        $data['rls2'] = $this->model->getBy2($data['tbl_slct'], 'kode_pengajuan', $kode, 'stas', 'barang')->result();
+        $data['rls2'] = $this->model->getBy2($data['tbl_slct'], 'kode_pengajuan', $kode, 'stas', 'non tunai')->result();
+        foreach ($data['rls2'] as $key => $ls_jns) {
+            $data['rls2'][$key]->pjnDataMitra = $this->model->getByJoin2('order_mitra', 'mitra', 'id_mitra', 'id_mitra', 'order_mitra.kode', $ls_jns->kode, 'order_mitra.kode_pengajuan', $ls_jns->kode_pengajuan)->row();
+        }
+
+        $data['mitraHasil'] = $this->model->getByGroup('order_mitra', 'kode_pengajuan', $kode, 'id_mitra')->result();
+        foreach ($data['mitraHasil'] as $key) {
+            $id_mitra = $key->id_mitra;
+            $data['isiMitra'][$id_mitra] = $this->model->getBy('order_mitra', 'id_mitra', $id_mitra)->num_rows();
+            $data['infoMitra'][$id_mitra] = $this->model->getBy('mitra', 'id_mitra', $id_mitra)->row();
+        }
 
         $this->load->view('kasir/head', $data);
         $this->load->view('kasir/cair', $data);
@@ -197,10 +209,10 @@ Penerima : ' . $penerima . '
 Terimakasih';
 
         if ($this->db->affected_rows() > 0) {
-            kirim_group($this->apiKey, '120363040973404347@g.us', $psn);
-            kirim_group($this->apiKey, '120363042148360147@g.us', $psn);
-            kirim_person($this->apiKey, '082264061060', $psn);
-            // kirim_person($this->apiKey, '085236924510', $psn);
+            // kirim_group($this->apiKey, '120363040973404347@g.us', $psn);
+            // kirim_group($this->apiKey, '120363042148360147@g.us', $psn);
+            // kirim_person($this->apiKey, '082264061060', $psn);
+            kirim_person($this->apiKey, '085236924510', $psn);
 
             $this->session->set_flashdata('ok', 'Pengajuan sudah dicairkan');
             redirect('kasir/cairProses/' . $kd_pnj);
@@ -843,5 +855,52 @@ Bendahara Pesantren
 _Jika sudah melakukan pelunasan abaikan pesan ini_';
 
         kirim_person($this->apiKey, $santri->hp, $pesan);
+    }
+
+    public function addOrderMitra()
+    {
+        $id_mitra = $this->input->post('id_mitra', true);
+        $kode = $this->input->post('kode', true);
+        $kode_pengajuan = $this->input->post('kode_pengajuan', true);
+
+        // $mitraData = $this->model->getBy('mitra', 'id_mitra', $id_mitra)->row();
+        $pjnData = $this->model->getBy2('real_sm', 'kode', $kode, 'kode_pengajuan', $kode_pengajuan)->row();
+
+        $data = [
+            'id_mitra' => $id_mitra,
+            'kode' => $kode,
+            'kode_pengajuan' => $kode_pengajuan,
+            'tgl_order' => $pjnData->tgl,
+            'tahun' => $pjnData->tahun,
+            'status' => 'belum',
+        ];
+
+        $this->model->input('order_mitra', $data);
+        if ($this->db->affected_rows() > 0) {
+            // $this->session->set_flashdata('ok', 'Add Mitra Berhasil');
+            // redirect('kasir/cairProses/' . $kode_pengajuan);
+            echo '';
+        } else {
+            // $this->session->set_flashdata('error', 'Add Mitra Gagal');
+            // redirect('kasir/cairProses/' . $kode_pengajuan);
+            echo '';
+        }
+    }
+
+    function delOrderMitra()
+    {
+        $id = $this->input->post('id_order', true);
+        $kode_pengajuan = $this->model->getBy('order_mitra', 'id_order', $id)->row('kode_pengajuan');
+
+        $this->model->delete('order_mitra', 'id_order', $id);
+        if ($this->db->affected_rows() > 0) {
+            // $this->session->set_flashdata('ok', 'Add Mitra Berhasil');
+            // redirect('kasir/cairProses/' . $kode_pengajuan);
+            echo '';
+        } else {
+            // $this->session->set_flashdata('error', 'Add Mitra Gagal');
+            // redirect('kasir/cairProses/' . $kode_pengajuan);
+            echo '';
+        }
     }
 }

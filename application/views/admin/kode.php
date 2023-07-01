@@ -18,14 +18,16 @@
             </div>
             <div class="ms-auto">
                 <div class="dropdown">
-                    <button class="btn btn-primary  dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                        aria-expanded="false"><i class="bx bx-add-to-queue"></i> Tambah Data</button>
+                    <button class="btn btn-primary  dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bx bx-add-to-queue"></i> Tambah Data</button>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#addLembaga">Tambah Data
                                 Lembaga</a>
                         </li>
                         <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#addBidang">Tambah Data
                                 Bidang</a>
+                        </li>
+                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#addMitra">Tambah Data
+                                Mitra</a>
                         </li>
                     </ul>
                 </div>
@@ -53,17 +55,17 @@
                                     <?php
                                     $no = 1;
                                     foreach ($lembaga as $a) : ?>
-                                    <tr>
-                                        <td><?= $no++ ?></td>
-                                        <td><?= $a->kode ?></td>
-                                        <td><?= $a->nama ?></td>
-                                        <!-- <td>
+                                        <tr>
+                                            <td><?= $no++ ?></td>
+                                            <td><?= $a->kode ?></td>
+                                            <td><?= $a->nama ?></td>
+                                            <!-- <td>
                                             <a data-toggle="modal" data-target="#modal_del<?= $a->id_lembaga; ?>"
                                                 href="#"><i class="bx bx-trash"></i> </a> |
                                             <a data-toggle="modal" data-target="#m<?= $a->id_lembaga; ?>" href="#"><i
                                                     class="bx bx-edit"></i> </a>
                                         </td> -->
-                                    </tr>
+                                        </tr>
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>
@@ -93,18 +95,18 @@
                                     <?php
                                     $no = 1;
                                     foreach ($bidang as $a) : ?>
-                                    <tr>
-                                        <td><?= $no++ ?></td>
-                                        <td><?= $a->kode ?></td>
-                                        <td><?= $a->nama ?></td>
-                                        <td><?= $a->lv ?></td>
-                                        <!-- <td>
+                                        <tr>
+                                            <td><?= $no++ ?></td>
+                                            <td><?= $a->kode ?></td>
+                                            <td><?= $a->nama ?></td>
+                                            <td><?= $a->lv ?></td>
+                                            <!-- <td>
                                             <a data-toggle="modal" data-target="#modal_del<?= $a->id_lembaga; ?>"
                                                 href="#"><i class="bx bx-trash"></i> </a> |
                                             <a data-toggle="modal" data-target="#m<?= $a->id_lembaga; ?>" href="#"><i
                                                     class="bx bx-edit"></i> </a>
                                         </td> -->
-                                    </tr>
+                                        </tr>
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>
@@ -191,6 +193,37 @@
                         <option value="ps">Pesantren</option>
                         <option value="lf">Lembaga Formal</option>
                     </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary"><i class="bx bx-save"></i> Simpan Data</button>
+            </div>
+            <?= form_close(); ?>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addMitra" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Tambah Data Mitra</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <?= form_open_multipart('admin/mitraAdd'); ?>
+            <div class="modal-body">
+                <div class="form-group mb-2">
+                    <label for="">Nama Mitra</label>
+                    <input type="text" name="nama" class="form-control" required>
+                </div>
+                <div class="form-group mb-2">
+                    <label for="">PJ Mitra</label>
+                    <input type="text" name="pj" class="form-control" required>
+                </div>
+                <div class="form-group mb-2">
+                    <label for="">No. HP</label>
+                    <input type="number" name="hp" class="form-control" required>
                 </div>
             </div>
             <div class="modal-footer">

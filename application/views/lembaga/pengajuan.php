@@ -22,9 +22,10 @@
             <div class="col-12 col-lg-12">
                 <div class="card radius-10">
                     <div class="card-body">
-                        <?php if ($pj->spj == 3) { ?>
-                        <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal"><i
-                                class="bx bx-plus"></i> Tambah Pengajuan Baru</button>
+                        <?php if (!$pj) { ?>
+                            <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="bx bx-plus"></i> Tambah Pengajuan Baru</button>
+                        <?php } else if ($pj->spj == 3) { ?>
+                            <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="bx bx-plus"></i> Tambah Pengajuan Baru</button>
                         <?php } ?>
 
                         <div class="table-responsive mt-3">
@@ -47,37 +48,35 @@
                                     $no = 1;
                                     foreach ($data as $ls_jns) :
                                     ?>
-                                    <tr>
-                                        <td><?= $no++; ?></td>
-                                        <td><?= $ls_jns->kode_pengajuan; ?></td>
-                                        <td><?= $bulan[$ls_jns->bulan]; ?></td>
-                                        <td><?= $ls_jns->tahun; ?></td>
-                                        <td>
-                                            <?= $ls_jns->verval == 1 ? "<span class='badge bg-success'><i class='bx bx-check'></i> sudah</span>" : "<span class='badge bg-danger'><i class='bx bx-no-entry'></i> belum</span>"; ?>
-                                        </td>
-                                        <td>
-                                            <?= $ls_jns->apr == 1 ? "<span class='badge bg-success'><i class='bx bx-check'></i> sudah</span>" : "<span class='badge bg-danger'><i class='bx bx-no-entry'></i> belum</span>"; ?>
-                                        </td>
-                                        <td>
-                                            <?= $ls_jns->cair == 1 ? "<span class='badge bg-success'><i class='bx bx-check'></i> sudah</span>" : "<span class='badge bg-danger'><i class='bx bx-no-entry'></i> belum</span>"; ?>
-                                        </td>
-                                        <td>
-                                            <?php if ($ls_jns->spj == 0) { ?>
-                                            <span class="badge bg-danger"><i class="bx bx-no-entry"></i> belum
-                                                upload</span>
-                                            <?php } else if ($ls_jns->spj == 1) { ?>
-                                            <span class="badge bg-warning"><i class="bx bx-recycle"></i>
-                                                proses verifikasi</span>
-                                            <?php } else { ?>
-                                            <span class="badge bg-success"><i class="bx bx-check"></i> sudah
-                                                selesai</span>
-                                            <?php } ?>
-                                        </td>
-                                        <td><a
-                                                href="<?= base_url('lembaga/pengajuanDetail/' . $ls_jns->kode_pengajuan) ?>"><button
-                                                    class="btn btn-info btn-sm"><i class="bx bx-search"></i>
-                                                    cek</button></a></td>
-                                    </tr>
+                                        <tr>
+                                            <td><?= $no++; ?></td>
+                                            <td><?= $ls_jns->kode_pengajuan; ?></td>
+                                            <td><?= $bulan[$ls_jns->bulan]; ?></td>
+                                            <td><?= $ls_jns->tahun; ?></td>
+                                            <td>
+                                                <?= $ls_jns->verval == 1 ? "<span class='badge bg-success'><i class='bx bx-check'></i> sudah</span>" : "<span class='badge bg-danger'><i class='bx bx-no-entry'></i> belum</span>"; ?>
+                                            </td>
+                                            <td>
+                                                <?= $ls_jns->apr == 1 ? "<span class='badge bg-success'><i class='bx bx-check'></i> sudah</span>" : "<span class='badge bg-danger'><i class='bx bx-no-entry'></i> belum</span>"; ?>
+                                            </td>
+                                            <td>
+                                                <?= $ls_jns->cair == 1 ? "<span class='badge bg-success'><i class='bx bx-check'></i> sudah</span>" : "<span class='badge bg-danger'><i class='bx bx-no-entry'></i> belum</span>"; ?>
+                                            </td>
+                                            <td>
+                                                <?php if ($ls_jns->spj == 0) { ?>
+                                                    <span class="badge bg-danger"><i class="bx bx-no-entry"></i> belum
+                                                        upload</span>
+                                                <?php } else if ($ls_jns->spj == 1) { ?>
+                                                    <span class="badge bg-warning"><i class="bx bx-recycle"></i>
+                                                        proses verifikasi</span>
+                                                <?php } else { ?>
+                                                    <span class="badge bg-success"><i class="bx bx-check"></i> sudah
+                                                        selesai</span>
+                                                <?php } ?>
+                                            </td>
+                                            <td><a href="<?= base_url('lembaga/pengajuanDetail/' . $ls_jns->kode_pengajuan) ?>"><button class="btn btn-info btn-sm"><i class="bx bx-search"></i>
+                                                        cek</button></a></td>
+                                        </tr>
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>
@@ -114,7 +113,7 @@
                             <option value=""> -- pilih bulan -- </option>
                             <?php
                             for ($i = 1; $i < count($bulan); $i++) { ?>
-                            <option value="<?= $i ?>"><?= $bulan[$i] ?></option>
+                                <option <?= date('m') == $i ? 'selected' : '' ?> value="<?= $i ?>"><?= $bulan[$i] ?></option>
                             <?php } ?>
                         </select>
                     </div>

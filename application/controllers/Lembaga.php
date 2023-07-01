@@ -17,7 +17,7 @@ class Lembaga extends CI_Controller
 		$user = $this->Auth_model->current_user();
 		$this->tahun = $this->session->userdata('tahun');
 		// $this->jenis = ['A. Belanja Barang', 'B. Langganan & Jasa', 'Belanja Kegiatan', 'D. Umum'];
-		$this->bulan = ['', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juli', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+		$this->bulan = ['', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
 
 		$api = $this->model->apiKey()->row();
 		$this->apiKey = $api->nama_key;
@@ -37,21 +37,6 @@ class Lembaga extends CI_Controller
 		$data['pj'] = $this->model->getPjn('pengajuan', $this->lembaga, $this->tahun)->row();
 		$data['spj'] = $this->model->getPjn('spj', $this->lembaga, $this->tahun)->row();
 
-		$sumA = $this->model->getTotalRabJenis('A', $this->lembaga, $this->tahun)->row();
-		$sumB = $this->model->getTotalRabJenis('B', $this->lembaga, $this->tahun)->row();
-		$sumC = $this->model->getTotalRabJenis('C', $this->lembaga, $this->tahun)->row();
-		$sumD = $this->model->getTotalRabJenis('D', $this->lembaga, $this->tahun)->row();
-
-		$pakaiA = $this->model->getTotalRealJenis('A', $this->lembaga, $this->tahun)->row();
-		$pakaiB = $this->model->getTotalRealJenis('B', $this->lembaga, $this->tahun)->row();
-		$pakaiC = $this->model->getTotalRealJenis('C', $this->lembaga, $this->tahun)->row();
-		$pakaiD = $this->model->getTotalRealJenis('D', $this->lembaga, $this->tahun)->row();
-
-		$data['prsnA'] = round($pakaiA->nominal / $sumA->total * 100, 1);
-		$data['prsnB'] = round($pakaiB->nominal / $sumB->total * 100, 1);
-		$data['prsnC'] = round($pakaiC->nominal / $sumC->total * 100, 1);
-		$data['prsnD'] = round($pakaiD->nominal / $sumD->total * 100, 1);
-
 		$data['info'] = $this->model->getBy('info', 'tahun', $this->tahun)->result();
 
 		$this->load->view('lembaga/head', $data);
@@ -65,15 +50,14 @@ class Lembaga extends CI_Controller
 		$data['data'] = $this->model->getBy2('rab', 'lembaga', $kode, 'tahun', $this->tahun)->result();
 		$data['lembaga'] = $this->model->getBy('lembaga', 'kode', $kode)->row();
 
-		$data['sumA'] = $this->model->getTotalRabJenis('A', $kode, $this->tahun)->row();
-		$data['sumB'] = $this->model->getTotalRabJenis('B', $kode, $this->tahun)->row();
-		$data['sumC'] = $this->model->getTotalRabJenis('C', $kode, $this->tahun)->row();
-		$data['sumD'] = $this->model->getTotalRabJenis('D', $kode, $this->tahun)->row();
+		$data['totalRab'] = $this->model->getBySum2('rab', 'lembaga', $this->lembaga, 'tahun', $this->tahun, 'total')->row();
+		$data['totalReal'] = $this->model->getBySum2('realis', 'lembaga', $this->lembaga, 'tahun', $this->tahun, 'nominal')->row();
 
-		$data['pakaiA'] = $this->model->getTotalRealJenis('A', $this->lembaga, $this->tahun)->row();
-		$data['pakaiB'] = $this->model->getTotalRealJenis('B', $this->lembaga, $this->tahun)->row();
-		$data['pakaiC'] = $this->model->getTotalRealJenis('C', $this->lembaga, $this->tahun)->row();
-		$data['pakaiD'] = $this->model->getTotalRealJenis('D', $this->lembaga, $this->tahun)->row();
+		$data['jenis'] = $this->model->getBy('jenis', 'tahun', $this->tahun)->result();
+		foreach ($data['jenis'] as $jns) {
+			$kodeJenis = $jns->kode_jns;
+			$data['rabJml'][$kodeJenis] = $this->model->getBySum3('rab', 'lembaga', $kode, 'tahun', $this->tahun, 'jenis', $kodeJenis, 'total')->row();
+		}
 
 		$data['user'] = $this->Auth_model->current_user();
 		$data['tahun'] = $this->tahun;
@@ -90,15 +74,12 @@ class Lembaga extends CI_Controller
 		$data['tahun'] = $this->tahun;
 		$data['lembaga'] = $this->model->getBy('lembaga', 'kode', $lembaga)->row();
 
-		$data['sumA'] = $this->model->getTotalRabJenis('A', $lembaga, $this->tahun)->row();
-		$data['sumB'] = $this->model->getTotalRabJenis('B', $lembaga, $this->tahun)->row();
-		$data['sumC'] = $this->model->getTotalRabJenis('C', $lembaga, $this->tahun)->row();
-		$data['sumD'] = $this->model->getTotalRabJenis('D', $lembaga, $this->tahun)->row();
-
-		$data['pakaiA'] = $this->model->getTotalRealJenis('A', $lembaga, $this->tahun)->row();
-		$data['pakaiB'] = $this->model->getTotalRealJenis('B', $lembaga, $this->tahun)->row();
-		$data['pakaiC'] = $this->model->getTotalRealJenis('C', $lembaga, $this->tahun)->row();
-		$data['pakaiD'] = $this->model->getTotalRealJenis('D', $lembaga, $this->tahun)->row();
+		$data['jenis'] = $this->model->getBy('jenis', 'tahun', $this->tahun)->result();
+		foreach ($data['jenis'] as $jns) {
+			$kodeJenis = $jns->kode_jns;
+			$data['rabJml'][$kodeJenis] = $this->model->getBySum3('rab', 'lembaga', $lembaga, 'tahun', $this->tahun, 'jenis', $kodeJenis, 'total')->row();
+			$data['pakaiJml'][$kodeJenis] = $this->model->getBySum3('realis', 'lembaga', $lembaga, 'tahun', $this->tahun, 'jenis', $kodeJenis, 'nominal')->row();
+		}
 
 		$data['rabA'] = $this->model->getBy2('rab', 'lembaga', $lembaga, 'tahun', $this->tahun)->result();
 		$data['user'] = $this->Auth_model->current_user();
@@ -209,6 +190,8 @@ class Lembaga extends CI_Controller
 		$data['lembaga'] = $this->model->getBy2('lembaga', 'kode', $this->lembaga, 'tahun', $this->tahun)->row();
 		$data['bidang'] = $this->model->getBy('bidang', 'tahun', $this->tahun)->result();
 
+		$data['dppk'] = $this->model->getBy2('dppk', 'tahun', $this->tahun, 'lembaga', $this->lembaga)->result();
+
 		$this->load->view('lembaga/head', $data);
 		if (preg_match("/DISP./i", $kode)) {
 			$this->load->view('lembaga/pengajuanDetailDisp', $data);
@@ -216,6 +199,23 @@ class Lembaga extends CI_Controller
 			$this->load->view('lembaga/pengajuanDetail', $data);
 		}
 		$this->load->view('lembaga/foot');
+	}
+
+	public function getDataBydppk()
+	{
+		$dppk = $this->input->post('dppk', true);
+		$data['rab'] = $this->model->getByOrd('rab_sm24', 'kode_pak', $dppk, 'nama')->result();
+		foreach ($data['rab'] as $kye) {
+			$kode_rab = $kye->kode;
+
+			$realSm = $this->db->query("SELECT SUM(real_sm.vol) as jml FROM real_sm JOIN rab_sm24 ON real_sm.kode = rab_sm24.kode WHERE real_sm.tahun = '$this->tahun' AND real_sm.kode = '$kode_rab' ")->row();
+			$data['realSm'][$kode_rab] = $realSm ? $realSm->jml : 0;
+
+			$real = $this->db->query("SELECT SUM(realis.vol) as jml FROM realis JOIN rab_sm24 ON realis.kode = rab_sm24.kode WHERE realis.tahun = '$this->tahun' AND realis.kode = '$kode_rab' ")->row();
+			$data['real'][$kode_rab] = $real ? $real->jml : 0;
+		}
+		$view = $this->load->view('lembaga/dataRabDppk', $data, true);
+		echo $view;
 	}
 
 
@@ -262,65 +262,73 @@ class Lembaga extends CI_Controller
 
 	public function addItem()
 	{
-		$id = $this->uuid->v4();
-		$kode = $this->input->post('id_rab');
-		$bulan = $this->input->post('bln_pj');
-		// $l = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM rab WHERE kode = '$kode' AND tahun = '$tahun_ajaran' "));
-		$l = $this->model->getBy2('rab', 'kode', $kode, 'tahun', $this->tahun)->row();
-		$kd_rab = $l->kode;
-		$lembaga = $l->lembaga;
-		$bidang = $l->bidang;
-		$jenis = $l->jenis;
-		$tgl = $this->input->post('tgl', true);
+		$kodeRab = $this->input->post('kodeRab', true);
 		$qty = $this->input->post('qty', true);
-		$pj = $this->input->post('pj', true);
-		$tahun = $this->tahun;
-		$nominal = $l->harga_satuan * $qty;
-		$nm_rab =  $l->nama;
-		$ket = $nm_rab . ' - @ ' . $qty . ' x ' . number_format($l->harga_satuan, 0, ',', '.');
-		$kd_pjn = $this->input->post('kode_pengajuan', true);
-		$sisa_jml = $this->input->post('sisa_jml', true);
+		$sisa = $this->input->post('sisa', true);
+		$kode_pengajuan = $this->input->post('kode_pengajuan', true);
 
-		if ($jenis === 'A') {
-			$stas = 'barang';
-		} else {
-			$stas = 'tunai';
-		}
+		if (!empty($kodeRab)) {
+			$data = array();
 
-		if ($qty > $sisa_jml) {
-			$this->session->set_flashdata('error', 'Maaf. Jumlah pengajuan anda melebihi dari yang tersisa');
-			redirect('lembaga/pengajuanDetail/' . $kd_pjn);
-		} elseif ($qty < 1) {
-			$this->session->set_flashdata('error', 'Jumlah item 0. Jumlah item harus diisi');
-			redirect('lembaga/pengajuanDetail/' . $kd_pjn);
-		} else {
+			foreach ($kodeRab as $key => $kode) {
+				$selectedQty = $qty[$key];
+				$selectedSisa = $sisa[$key];
 
-			$data = [
-				'id_realis' => $id,
-				'lembaga' => $lembaga,
-				'bidang' => $bidang,
-				'jenis' => $jenis,
-				'kode' => $kd_rab,
-				'vol' => $qty,
-				'nominal' => $nominal,
-				'tgl' => $tgl,
-				'pj' => $pj,
-				'bulan' => $bulan,
-				'tahun' => $tahun,
-				'ket' => $ket,
-				'kode_pengajuan' => $kd_pjn,
-				'nom_cair' => $nominal,
-				'nom_serap' => $nominal,
-				'stas' => $stas
-			];
+				$l = $this->model->getBy2('rab', 'kode', $kode, 'tahun', $this->tahun)->row();
+				$stats = $this->model->getBy2('jenis', 'kode_jns', $l->jenis, 'tahun', $this->tahun)->row();
 
-			$this->model->input('real_sm', $data);
+				// $jenis = $l->jenis;
+				// $tgl = $this->input->post('tgl', true);
+				// $qty = $this->input->post('qty', true);
+				// $pj = $this->input->post('pj', true);
+				// $tahun = $this->tahun;
+				// $nominal = $l->harga_satuan * $qty;
+				// $nm_rab =  $l->nama;
+				// $ket = $nm_rab . ' - @ ' . $qty . ' x ' . number_format($l->harga_satuan, 0, ',', '.');
+				// $kd_pjn = $this->input->post('kode_pengajuan', true);
+				// $sisa_jml = $this->input->post('sisa_jml', true);
+
+
+				if ($selectedQty > $selectedSisa) {
+					$this->session->set_flashdata('error', 'Maaf. Jumlah pengajuan anda melebihi dari yang tersisa');
+					redirect('lembaga/pengajuanDetail/' . $kode_pengajuan);
+				} elseif ($selectedQty < 1) {
+					$this->session->set_flashdata('error', 'Jumlah item 0. Jumlah item harus diisi');
+					redirect('lembaga/pengajuanDetail/' . $kode_pengajuan);
+				} else {
+
+					$data = [
+						'id_realis' => $this->uuid->v4(),
+						'lembaga' => $l->lembaga,
+						'bidang' => $l->bidang,
+						'jenis' => $l->jenis,
+						'kode' => $kode,
+						'vol' => $selectedQty,
+						'nominal' => $l->harga_satuan * $selectedQty,
+						'tgl' => '',
+						'pj' => '',
+						'bulan' => $this->input->post('bln_pj', true),
+						'tahun' => $this->tahun,
+						'ket' => $l->nama . ' - @ ' . $selectedQty . ' x ' . number_format($l->harga_satuan, 0, ',', '.'),
+						'kode_pengajuan' => $kode_pengajuan,
+						'nom_cair' => $l->harga_satuan * $selectedQty,
+						'nom_serap' => $l->harga_satuan * $selectedQty,
+						'stas' => $stats->stas
+					];
+
+					// echo json_encode($data);
+
+					$this->model->input('real_sm', $data);
+				}
+
+				// echo "Data berhasil disimpan.";
+			}
 			if ($this->db->affected_rows() > 0) {
 				$this->session->set_flashdata('ok', 'Item pengajuan berhasil ditambahkan');
-				redirect('lembaga/pengajuanDetail/' . $kd_pjn);
+				redirect('lembaga/pengajuanDetail/' . $kode_pengajuan);
 			} else {
 				$this->session->set_flashdata('error', 'Item pengajuan tidak ditambahkan');
-				redirect('lembaga/pengajuanDetail/' . $kd_pjn);
+				redirect('lembaga/pengajuanDetail/' . $kode_pengajuan);
 			}
 		}
 	}
@@ -395,7 +403,9 @@ class Lembaga extends CI_Controller
 	{
 		$bulan = $this->bulan;
 		$data = [
-			'stts' => 'yes'
+			'stts' => 'yes',
+			'verval' => 1,
+			'apr' => 1
 		];
 
 		$dt = $this->model->getBy('pengajuan', 'kode_pengajuan', $kode)->row();
@@ -411,8 +421,7 @@ class Lembaga extends CI_Controller
 			$rt = '';
 		}
 
-		$psn = '
-*INFORMASI PERMOHONAN VERIFIKASI* ' . $rt . '
+		$psn = '*INFORMASI PENGAJUAN* ' . $rt . '
 
 Ada pengajuan baru dari :
     
@@ -420,9 +429,9 @@ Lembaga : ' . $lm->nama . '
 Kode Pengajuan : ' . $dt->kode_pengajuan . '
 Periode : ' . $perod . '
 Pada : ' . $dt->at . '
-Nominal : ' . rupiah($jml->jm) . '
+Nominal : ' . rupiah($jml->jml) . '
 
-*_dimohon kepada SUB BAG ACCOUNTING untuk segera mengecek nya di https://simkupaduka.ppdwk.com/_*
+*_dimohon kepada KPA terkait untuk segera melakukan pencairan di Sekretariat Kantor Bendahara Pesantren_*
 Terimakasih';
 
 		$this->model->update('pengajuan', $data, 'kode_pengajuan', $kode);
@@ -431,12 +440,34 @@ Terimakasih';
 			kirim_group($this->apiKey, '120363040973404347@g.us', $psn);
 			kirim_group($this->apiKey, '120363042148360147@g.us', $psn);
 			kirim_person($this->apiKey, '082302301003', $psn);
+			kirim_person($this->apiKey, '082264061060', $psn);
 			// kirim_person($this->apiKey, '085236924510', $psn);
 
-			$this->session->set_flashdata('ok', 'Pengajuan berhasil dilanjutkan ke Accounting');
+			$this->session->set_flashdata('ok', 'Pengajuan berhasil diajukan kepada Bendahara');
 			redirect('lembaga/pengajuanDetail/' . $kode);
 		} else {
-			$this->session->set_flashdata('error', 'Pengajuan gagal dilanjutkan ke Accounting');
+			$this->session->set_flashdata('error', 'Pengajuan gagal diajukan kepada Bendahara');
+			redirect('lembaga/pengajuanDetail/' . $kode);
+		}
+	}
+
+	public function editPajukan()
+	{
+		$kode = $this->input->post('kode_pengajuan', true);
+		$data = [
+			'pj' => $this->input->post('pj', true),
+			'tgl' => $this->input->post('tgl', true)
+		];
+		// $listData = $this->model->getBy2('real_sm', 'kode_pengajuan', $kode, 'tahun', $this->tahun)->result();
+		// foreach ($listData as $list) {
+		// }
+		$this->model->update('real_sm', $data, 'kode_pengajuan', $kode);
+		if ($this->db->affected_rows() > 0) {
+
+			$this->session->set_flashdata('ok', 'Update Item Pengajuan berhasil');
+			redirect('lembaga/pengajuanDetail/' . $kode);
+		} else {
+			$this->session->set_flashdata('error', 'Update Item Pengajuan gagal');
 			redirect('lembaga/pengajuanDetail/' . $kode);
 		}
 	}
@@ -1024,7 +1055,7 @@ Terimakasih';
 		$data['bidang'] = $this->model->getBy('bidang', 'tahun', $this->tahun)->result();
 
 		$data['data'] = $this->model->getBy2('rab_sm24', 'lembaga', $this->lembaga, 'tahun', $this->tahun)->result();
-		$data['cekData'] = $this->db->query("SELECT * FROM rab_list WHERE lembaga = '$this->lembaga' AND tahun = '$this->tahun' AND status = 'disetujui' OR status = 'selesai' OR status = 'proses' ")->num_rows();
+		$data['cekData'] = $this->db->query("SELECT * FROM rab_list WHERE lembaga = '$this->lembaga' AND tahun = '$this->tahun' AND status <> 'belum' ")->num_rows();
 
 		$dppk = $this->model->getRabByDppk($this->lembaga, $this->tahun)->result();
 		$data['rab'] = array();
@@ -1171,6 +1202,7 @@ Terimakasih';
 					'at' => date('Y-m-d H:i'),
 					'snc' => 'belum',
 					'kode_pak' => $worksheet->getCell('K' . $row)->getValue(),
+					'kegiatan' => $worksheet->getCell('L' . $row)->getValue(),
 				];
 
 				$this->model->input('rab_sm24', $data);
@@ -1218,8 +1250,10 @@ Terimakasih';
 		$this->load->view('lembaga/dppk', $data);
 	}
 
-	public function realisKode($kode)
+	public function realisKode()
 	{
+		$kode = $this->input->post('kode_pak', true);
+
 		$data = $this->model->getBy2('rab_sm24', 'kode_pak', $kode, 'lembaga', $this->lembaga)->result();
 
 		foreach ($data as $item) :
@@ -1236,7 +1270,8 @@ Terimakasih';
 
 		// echo sprintf("%03s", $noUrut) . '<br>';
 		endforeach;
-		redirect('lembaga/rab24');
+		// redirect('lembaga/rab24');
+		echo '';
 	}
 
 	public function ajukanRab24()
@@ -1256,7 +1291,7 @@ Terimakasih';
 			$this->model->input('rab_list', $data);
 		}
 
-		$psn = '*INFORMASI PERMOHONAN VERIFIKASI* ' . $rt . '
+		$psn = '*INFORMASI PERMOHONAN VERIFIKASI* 
 
 Ada pengajuan RAB Tahun Ajaran 23/24  :
     
@@ -1272,7 +1307,7 @@ Terimakasih';
 			kirim_group($this->apiKey, '120363040973404347@g.us', $psn);
 			kirim_group($this->apiKey, '120363042148360147@g.us', $psn);
 			// kirim_person($this->apiKey, '082302301003', $psn);
-			// kirim_person($this->apiKey, '085236924510', $psn);
+			kirim_person($this->apiKey, '085236924510', $psn);
 			redirect('lembaga/rab24');
 		} else {
 			$this->session->set_flashdata('error', 'RAB gagal di ajukan');

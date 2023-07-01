@@ -66,6 +66,13 @@ class LembagaModel extends CI_Model
         return $this->db->get($table);
     }
 
+    function getByOrd($table, $where, $dtwhere, $ord)
+    {
+        $this->db->where($where, $dtwhere);
+        $this->db->order_by($ord, 'ASC');
+        return $this->db->get($table);
+    }
+
 
     function getBySum2($table, $where1, $dtwhere1, $where2, $dtwhere2, $sum)
     {
@@ -73,6 +80,16 @@ class LembagaModel extends CI_Model
         $this->db->select_sum($sum, 'jml');
         $this->db->where($where1, $dtwhere1);
         $this->db->where($where2, $dtwhere2);
+        return $this->db->get($table);
+    }
+
+    function getBySum3($table, $where1, $dtwhere1, $where2, $dtwhere2, $where3, $dtwhere3, $sum)
+    {
+        // $this->db->select('*');
+        $this->db->select_sum($sum, 'jml3');
+        $this->db->where($where1, $dtwhere1);
+        $this->db->where($where2, $dtwhere2);
+        $this->db->where($where3, $dtwhere3);
         return $this->db->get($table);
     }
 
@@ -159,6 +176,16 @@ class LembagaModel extends CI_Model
         $this->db->where('lembaga', $lembaga);
         $this->db->where('tahun', $tahun);
         $this->db->group_by('kode_pak');
+        return $this->db->get();
+    }
+
+    function getBy2JoinSum($tbl1, $tbl2,  $where1, $dtwhere1, $where2, $dtwhere2, $on, $sum)
+    {
+        $this->db->select_sum($sum, 'jml');
+        $this->db->from($tbl1);
+        $this->db->join($tbl2, 'ON ' . $tbl1 . '.' . $on . '=' . $tbl2 . '.' . $on);
+        $this->db->where($where1, $dtwhere1);
+        $this->db->where($where2, $dtwhere2);
         return $this->db->get();
     }
 }

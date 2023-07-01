@@ -97,6 +97,15 @@ class KasirModel extends CI_Model
         return $this->db->get();
     }
 
+    function getByJoin2($table1, $table2, $on1, $on2, $where1, $dtwhere1, $where2, $dtwhere2)
+    {
+        $this->db->from($table1);
+        $this->db->join($table2, 'ON ' . $table1 . '.' . $on1 . ' = ' . $table2 . '.' . $on2);
+        $this->db->where($where1, $dtwhere1);
+        $this->db->where($where2, $dtwhere2);
+        return $this->db->get();
+    }
+
     public function updateDb2($table, $data, $where, $dtwhere)
     {
         $this->db2->where($where, $dtwhere);
@@ -175,6 +184,15 @@ class KasirModel extends CI_Model
         $this->db->where('tahun', $tahun);
         return $this->db->get();
     }
+
+    public function getByGroup($table, $where, $dtwhere, $group)
+    {
+        $this->db->from($table);
+        $this->db->where($where, $dtwhere);
+        $this->db->group_by($group);
+        return $this->db->get();
+    }
+
 
     public function getAll($table)
     {
